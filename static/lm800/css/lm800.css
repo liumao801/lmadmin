@@ -1,0 +1,106 @@
+.width100{width: 100%;}
+.height100{height: 100%;}
+.width90{width: 90%;}
+.width80{width: 80%;}
+.width70{width: 70%;}
+.width60{width: 60%;}
+.width50{width: 50%;}
+.width40{width: 40%;}
+.width30{width: 30%;}
+.width20{width: 20%;}
+.width10{width: 10%;}
+.max-width1080px{max-width: 1080px;}
+.max-width1280px{max-width: 1280px;}
+
+.line-center{text-align: center;}.line-center>*{margin: auto;}
+.line-left{text-align: left;}
+.line-right{text-align: right;}
+.line-middle{vertical-align: middle;}
+
+.show{display: block;}
+.hide{display: none;}
+
+.relative{position: relative;}
+.absolute{position: absolute;}
+.top0{top: 0;}
+.left0{left: 0;}
+.right0{right: 0;}
+.bottom0{bottom: 0;}
+
+.border-radius5px{border-radius: 5px;}
+.border-radius8px{border-radius: 8px;}
+.border-radius10px{border-radius: 10px;}
+.border-radius15px{border-radius: 15px;}
+
+.padding5px{padding: 5px;}
+.padding10px{padding: 10px;}
+.padding15px{padding: 15px;}
+.padding20px{padding: 20px;}
+.padding-v5px{padding-top: 5px;padding-bottom: 5px;}
+.padding-v10px{padding-top: 10px;padding-bottom: 10px;}
+.padding-v15px{padding-top: 15px;padding-bottom: 15px;}
+.padding-v20px{padding-top: 20px;padding-bottom: 20px;}
+.padding-h5px{padding-left: 5px;padding-right: 5px;}
+.padding-h10px{padding-left: 10px;padding-right: 10px;}
+.padding-h15px{padding-left: 15px;padding-right: 15px;}
+.padding-h20px{padding-left: 20px;padding-right: 20px;}
+
+.margin-auto{margin: auto;}
+.margin5px{margin: 5px;}
+.margin10px{margin: 10px;}
+.margin15px{margin: 15px;}
+.margin20px{margin: 20px;}
+.margin-v5px{margin-top: 5px;margin-bottom: 5px;}
+.margin-v10px{margin-top: 10px;margin-bottom: 10px;}
+.margin-v15px{margin-top: 15px;margin-bottom: 15px;}
+.margin-v20px{margin-top: 20px;margin-bottom: 20px;}
+.margin-l20px{margin-left: 20px;}
+.margin-l30px{margin-left: 30px;}
+.margin-l40px{margin-left: 40px;}
+.margin-v30px{margin-top: 30px;margin-bottom: 30px;}
+
+.aline{white-space:nowrap;overflow:hidden;} /* 文字一行显示 */
+.nline{ word-wrap: break-word;word-break: normal;} /* 强制换行 */
+.inline-block{display: inline-block;}
+.forbidden-copy{ -moz-user-select:none; -webkit-user-select:none;  -ms-user-select:none; -khtml-user-select:none; -o-user-select:none; user-select:none;}/* 禁止复制 */
+
+.z-index99{z-index: 99;}
+.pointer-event-auto{pointer-events: auto;}
+.cursor-pointer{cursor: pointer;}
+
+.border0{border: 0;}
+.border1{border: 1px solid #ddd}
+
+.color0, .color-gray{color: #ddd;}
+.color1, .color-success, .color-green{color: #5BB85D;}
+.color2, .color-danger, .color-red{color: #D9544F;}
+.color3, .color-primary, .color-blue{color: #418BCA;}
+.color4, .color-info, .color-wathet{color: #5BC0DE;}
+.color5, .color-warning, .color-orange{color: #EFAD4D;}
+.color6, .color-default, .color-white{color: #fff;}
+.color7, .color-black{color: #000;}
+
+.bg-c0, .bg-gray{background: #ddd;}
+.bg-c1, .bg-green{background: #5BB85D;}
+.bg-c2, .bg-red{background: #D9544F;}
+.bg-c3, .bg-blue{background: #418BCA;}
+.bg-c4, .bg-wathet{background: #5BC0DE;}
+.bg-c5, .bg-orange{background: #EFAD4D;}
+.bg-c6, .bg-white{background: #fff;}
+.bg-c7, .bg-black{background: #000;}
+
+/* layui msg css 样式信息 */
+.layer-black-translucent {text-align: center;border-radius: 5px!important;background: rgba(0,0,0,.6)!important;color: #fff;}
+.layer--black-translucent .layui-layer-btn {text-align: center;}
+.layer--black-translucent .layui-layer-content {text-align: center;font-size: 16px!important;padding: 20px 20px 10px 20px!important;}
+.layer-skin6 {text-align: center;border-radius: 5px!important;background: rgba(0,0,0,.6)!important;color: #fff;}
+.layer-skin6 .layui-layer-btn a {background: rgba(0,0,0,0)!important;color: #fff!important;border: 0!important;}
+.layer-skin6 .layui-layer-content {text-align: center;font-size: 16px!important;padding: 20px 20px 10px 20px!important;}
+.layer-skin6 .layui-layer-title, .layer-skin6 .layui-layer-setwin {display: none!important;}
+.layui-layer-btn .layui-layer-btn0 { border-color: #252121!important; background-color: #252121!important; }
+
+
+
+/*bootstrap无间距栅格*/
+.row.no-space {margin-left: 0;margin-right: 0;}
+.row.no-space > [class*='col-'] {padding-right: 0;padding-left: 0;}

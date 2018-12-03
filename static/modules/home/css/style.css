@@ -1,0 +1,37 @@
+*{border:0;padding:0;margin:0;}
+.top {background: #08448E;padding: 5px;}
+.top .parts{padding: 0px 10px;border-right: 1px solid #FFFFFF;color: #FFFFFF;font-size: 13px;}
+.top .parts:last-child{border-right: 0px;}
+
+.logo-box{
+    background: #1456AC url("../img/xiaohui.jpg") no-repeat right center;
+    -webkit-background-size: contain;
+    background-size: contain;
+}
+.logo-box .xiaohui-bg{
+    background: url("../img/xiaoxun.jpg") no-repeat center;
+    -webkit-background-size: contain;
+    background-size: contain;
+}
+.logo-box img{height: 100px;}
+@media (min-width: 768px) {
+    .menu-box .navbar-nav > li.login-info {
+        float: right;
+    }
+}
+.menu-box .navbar{border: 0px;min-height: 40px;}
+.menu-box .navbar .navbar-brand{padding: 0;height: 40px;}
+.menu-box .navbar .navbar-toggle{color:#000;}
+.menu-box .navbar .navbar-toggle .icon-bar{background-color: #1456AC;}
+.menu-box .navbar .navbar-toggle{border:1px solid #1456AC;}
+.top-nav a{color:#000000;font-size: 16px;}
+.menu-box .top-nav>li>a{
+    color: #000;
+    font-size: 15px;
+    padding: 10px 15px;
+    min-width: 80px;text-align: center;
+}
+.top-nav .active a{color:#1456AC;}
+.menu-box .top-nav>li>a:hover{background:#1456AC;color:#FFFFFF;}
+/*.menu-box .nav li.dropdown a:focus {background:#fff;color:#000;}*/
+.scroll-banner{width: 100%;}
