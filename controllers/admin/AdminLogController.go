@@ -1,4 +1,4 @@
-package controllers
+package admin
 
 import (
 	"encoding/json"
@@ -6,14 +6,14 @@ import (
 )
 
 type AdminLogController struct {
-	BaseController
+	AdminBaseController
 }
 
 func (c *AdminLogController) Index() {
 	//是否显示更多查询条件的按钮
 	c.Data["showMoreQuery"] = true
 	//将页面左边菜单的某项激活
-	c.Data["activeSidebarUrl"] = c.URLFor(c.controllerName + "." + c.actionName)
+	c.Data["activeSidebarUrl"] = c.URLFor(c.ctrlName + "." + c.actiName)
 	//页面模板设置
 	c.setTpl()
 	c.LayoutSections = make(map[string]string)

@@ -12,7 +12,11 @@ func init() {
 	orm.RegisterModel(
 		new(Admin),
 		new(AdminLog),
-		new(Test) )
+		new(Article),
+		new(MenuWeb),
+		new(User),
+		new(Test),
+		)
 }
 
 /**
@@ -36,6 +40,15 @@ func AdminTBName() string {
 */
 func AdminLogTBName() string {
 	return TableName("admin_log")
+}
+func UserTBName() string {
+	return TableName("user")
+}
+func ArticleTBName() string {
+	return TableName("article")
+}
+func MenuWebTBName() string {
+	return TableName("menu_web")
 }
 
 

@@ -1,4 +1,4 @@
-package home
+package models
 
 type Article struct {
 	Id				int
@@ -19,7 +19,7 @@ type Article struct {
 }
 
 type ArticleQueryParam struct {
-	HomeBaseQueryParam
+	BaseQueryParam
 	TitleLike 		string
 	SubtitleLike	string
 	KeywordsLike 	string

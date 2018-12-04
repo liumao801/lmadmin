@@ -1,4 +1,4 @@
-package home
+package models
 
 type MenuWeb struct {
 	Id			int
@@ -18,7 +18,7 @@ type MenuWeb struct {
 }
 
 type MenuWebQueryParam struct {
-	HomeBaseQueryParam
+	BaseQueryParam
 	TitleLike 	string
 	Type 		int
 	ParId 		int

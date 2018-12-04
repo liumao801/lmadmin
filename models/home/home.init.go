@@ -8,9 +8,6 @@ import (
 func init()  {
 	// 注册模型，未注册模型不能正常使用
 	orm.RegisterModel(
-		new(User),
-		new(Article),
-		new(MenuWeb),
 		)
 }
 
@@ -29,10 +26,4 @@ func TableName(name string) string {
 */
 func UserTBName() string {
 	return TableName("user")
-}
-func ArticleTBName() string {
-	return TableName("article")
-}
-func MenuWebTBName() string {
-	return TableName("menu_web")
 }

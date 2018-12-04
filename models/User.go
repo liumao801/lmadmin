@@ -1,4 +1,4 @@
-package home
+package models
 
 import (
 	"errors"
@@ -18,7 +18,7 @@ type User struct {
 }
 
 type UserQueryParam struct {
-	HomeBaseQueryParam
+	BaseQueryParam
 	UsernameLike 	string
 }
 

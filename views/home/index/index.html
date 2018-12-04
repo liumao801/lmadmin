@@ -74,7 +74,7 @@
         </div>
     </header>
 
-    <div id="myCarousel" class="carousel slide">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="3000" data-wrap="true">
         <!-- 轮播（Carousel）指标 -->
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -116,24 +116,29 @@
             <span class="sr-only">Next</span>
         </a>
         <script>
+            // banner 图片宽高比
+            var scroll_banner_hw = 0;
             window.onload = function(){
+                // 获取 banner 对象
+                var banImgs = document.getElementsByClassName("scroll-banner");
+                scroll_banner_hw = banImgs[0].offsetHeight / banImgs[0].offsetWidth
                 // 统一所有 banner 图片的高度
-                resizeBannerImg("scroll-banner")
+                resizeBannerImg("scroll-banner", scroll_banner_hw)
             }
             window.onresize = function () {
-                resizeBannerImg("scroll-banner")
+                resizeBannerImg("scroll-banner", scroll_banner_hw)
             }
-            function resizeBannerImg(className) {
+            function resizeBannerImg(className, h_w) {
                 // 获取 banner 对象
                 var banImgs = document.getElementsByClassName(className);
                 // 获取第一个 banner 图片的高度
-                var banimgH = 0;
+                var banimgW = 0;
                 for (var i=0; i<banImgs.length; i++) {
-                    banimgH = banImgs[i].offsetHeight
-                    if (banimgH > 0) break;
+                    banimgW = banImgs[i].offsetWidth
+                    if (banimgW > 0) break;
                 }
                 for (var i=0; i<banImgs.length; i++) {
-                    banImgs[i].style.height = banimgH + "px"
+                    banImgs[i].style.height = (banimgW * h_w) + "px"
                 }
             }
         </script>

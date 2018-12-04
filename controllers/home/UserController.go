@@ -2,33 +2,21 @@ package home
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/cache"
-	"github.com/astaxie/beego/utils/captcha"
+	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
-	"liumao801/lmadmin/models/home"
+	"liumao801/lmadmin/models"
 )
-
-// 验证码
-var cpt *captcha.Captcha
-
-func init() {
-	// use beego cache system store the captcha data
-	store := cache.NewMemoryCache()
-	cpt = captcha.NewWithFilter("/captcha/", store)
-	cpt.ChallengeNums = 3
-	cpt.StdWidth = 100
-	cpt.StdHeight = 34
-}
 
 type UserController struct {
 	HomeBaseController
+	controllers.CommonController
 }
 
 // 登录页面
 func (c *UserController) Login() {
 	// 如果是 post 请求，则由save 处理
 	if c.Ctx.Request.Method == "POST" {
-		c.LoginDo()
+		c.loginDo()
 	}
 	c.Data["pageTitle"] = "用户登录"
 	c.setTpl()
@@ -38,9 +26,9 @@ func (c *UserController) Login() {
 }
 
 // 执行登录
-func (c *UserController) LoginDo() {
+func (c *UserController) loginDo() {
 	// 检测验证码
-	verified := cpt.VerifyReq(c.Ctx.Request)
+	verified := controllers.CheckCaptcha(c.Ctx.Request)
 	if !verified {
 		rel := make(map[string]string)
 		rel["focus"] = "#captcha"
@@ -50,12 +38,12 @@ func (c *UserController) LoginDo() {
 		c.JsonResult(enums.JRCodeFailed, "验证码错误", rel)
 	}
 
-	m := home.User{}
+	m := models.User{}
 	// 获取 form 里面的值
 	if err := c.ParseForm(&m); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "用户名/密码为空", m.Username)
 	}
-	u, err := home.UserOneByUsername(m.Username)
+	u, err := models.UserOneByUsername(m.Username)
 	if err != nil {
 		c.JsonResult(enums.JRCodeFailed, "当前用户不存在", m.Username)
 	}
@@ -64,12 +52,12 @@ func (c *UserController) LoginDo() {
 	}
 
 	c.SetSession("user", u)
-	c.JsonResult(enums.JRCode302, "登录成功", beego.URLFor("home/UserController.Register"))
+	c.JsonResult(enums.JRCode302, "登录成功", beego.URLFor("home/IndexController.Index"))
 }
 func (c *UserController) Register() {
 	// 如果是 post 请求，则由save 处理
 	if c.Ctx.Request.Method == "POST" {
-		c.RegisterDo()
+		c.registerDo()
 	}
 	c.Data["pageTitle"] = "用户注册"
 	c.setTpl()
@@ -79,9 +67,9 @@ func (c *UserController) Register() {
 }
 
 // 执行注册
-func (c *UserController) RegisterDo() {
+func (c *UserController) registerDo() {
 	// 检测验证码
-	verified := cpt.VerifyReq(c.Ctx.Request)
+	verified := controllers.CheckCaptcha(c.Ctx.Request)
 	if !verified {
 		rel := make(map[string]string)
 		rel["focus"] = "#captcha"
@@ -110,17 +98,17 @@ func (c *UserController) RegisterDo() {
 	case allow == "":
 		c.JsonResult(enums.JRCodeFailed, "请仔细阅读条例并允许，否则我们不能为你服务", allow)
 	}
-	u, _ := home.UserOneByUsername(username)
+	u, _ := models.UserOneByUsername(username)
 	if u != nil {
 		c.JsonResult(enums.JRCodeFailed, "当前用户已存在", username)
 	}
 
-	m := home.User{}
+	m := models.User{}
 	// 获取 form 里面的值
 	if err := c.ParseForm(&m); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "数据解析异常", m.Username)
 	}
-	u, err := home.UserAdd(&m)
+	u, err := models.UserAdd(&m)
 	if err != nil {
 		c.JsonResult(enums.JRCodeFailed, "注册失败，请重新注册", m.Username)
 	}

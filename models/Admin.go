@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"strings"
 )
@@ -52,6 +53,16 @@ func AdminOne(id int) (*Admin, error) {
 	return &m, nil
 }
 
+// 根据用户名和密码查询用户信息
+func AdminOneByUsername(username string) (*Admin, error) {
+	m := Admin{}
+	err := orm.NewOrm().QueryTable(AdminTBName()).Filter("username", username).One(&m)
+	if err != nil {
+		return nil, err
+	}
+	beego.Info("查询成功", m)
+	return &m, nil
+}
 /**
  * 获取分页数据
 */

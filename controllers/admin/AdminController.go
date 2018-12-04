@@ -1,12 +1,16 @@
-package controllers
+package admin
 
 import (
 	"encoding/json"
+	"github.com/astaxie/beego"
+	"liumao801/lmadmin/controllers"
+	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
 )
 
 type AdminController struct {
-	BaseController
+	AdminBaseController
+	controllers.CommonController
 }
 
 func (c *AdminController) Prepare() {
@@ -24,7 +28,7 @@ func (c *AdminController) Index() {
 	// 是否显示更多查询条件的按钮
 	c.Data["showMoreQuery"] = true
 	// 将页面左边菜单的某项激活
-	c.Data["activeSidebarUrl"] = c.URLFor(c.controllerName + "." + c.actionName)
+	c.Data["activeSidebarUrl"] = c.URLFor(c.ctrlName + "." + c.actiName)
 	// 页面模板设置
 	c.setTpl()
 	c.LayoutSections = make(map[string]string)
@@ -47,4 +51,42 @@ func (c *AdminController) DataGrid() {
 	result["rows"] = data
 	c.Data["json"] = result
 	c.ServeJSON()
+}
+
+// 登录页面
+func (c *AdminController) Login() {
+	if c.Ctx.Request.Method == "POST" {
+		c.loginDo()
+	}
+	c.setTpl("admin/login", "admin/login_layout")
+}
+
+// 执行登录
+func (c *AdminController) loginDo() {
+	// 检测验证码
+	verified := controllers.CheckCaptcha(c.Ctx.Request)
+	if !verified {
+		rel := make(map[string]string)
+		rel["focus"] = "#captcha"
+		rel["click"] = ".captcha-img"
+		rel["reset_val"] = "#captcha"
+		rel["captcha_val"] = c.GetString("captcha")
+		c.JsonResult(enums.JRCodeFailed, "验证码错误", rel)
+	}
+
+	m := models.Admin{}
+	// 获取 form 里面的值
+	if err := c.ParseForm(&m); err != nil {
+		c.JsonResult(enums.JRCodeFailed, "用户名/密码为空", m.Username)
+	}
+	u, err := models.AdminOneByUsername(m.Username)
+	if err != nil {
+		c.JsonResult(enums.JRCodeFailed, "当前用户不存在", m.Username)
+	}
+	if u.Passwd != m.Passwd {
+		c.JsonResult(enums.JRCodeFailed, "用户名/密码错误", m.Username)
+	}
+
+	c.SetSession("user", u)
+	c.JsonResult(enums.JRCode302, "登录成功", beego.URLFor("admin/IndexController.Index"))
 }
