@@ -42,7 +42,7 @@ func redisEngineCache() {
 	}
 }
 // 设置缓存数据
-func SetCache(key string, value interface{}, timeout int) error {
+func SetCache(key string, value interface{}, minite int) error {
 	data, err := Encode(value)
 	if err != nil {
 		return err
@@ -59,7 +59,7 @@ func SetCache(key string, value interface{}, timeout int) error {
 		}
 	}()
 
-	timeouts := time.Duration(timeout) * time.Second
+	timeouts := time.Duration(minite) * time.Second
 	err = lmcache.Put(key, data, timeouts)
 	if err != nil {
 		LogError(err)

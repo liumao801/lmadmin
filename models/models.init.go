@@ -13,7 +13,11 @@ func init() {
 		new(Admin),
 		new(AdminLog),
 		new(Article),
+		new(Menu),
 		new(MenuWeb),
+		new(Role),
+		new(RoleMenuRel),
+		new(RoleAdminRel),
 		new(User),
 		new(Test),
 		)
@@ -49,6 +53,18 @@ func ArticleTBName() string {
 }
 func MenuWebTBName() string {
 	return TableName("menu_web")
+}
+func MenuTBName() string {
+	return TableName("menu")
+}
+func RoleTBName() string {
+	return TableName("role")
+}
+func RoleAdminRelTBName() string {
+	return TableName("role_admin_rel")
+}
+func RoleMenuRelTBName() string {
+	return TableName("role_menu_rel")
 }
 
 

@@ -1,3 +1,14 @@
+$(function () {
+	// 初始化 iCheck 选框
+	if ($(".icheck input").length > 0) {
+	    $('input').iCheck({
+	        checkboxClass: 'icheckbox_square-blue',
+	        radioClass: 'iradio_square-blue',
+	        increaseArea: '20%' /* optional */
+	    });
+    }
+});
+
 /* 密码显示 */
 $(".show-password").on('click', function(e){
 	var show = $(this).data('show');

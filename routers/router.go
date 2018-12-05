@@ -20,6 +20,7 @@ func init() {
 	ns_admin :=
 		beego.NewNamespace("/admin/",
 			beego.NSAutoRouter(&admin.AdminController{}),
+			beego.NSAutoRouter(&admin.MenuController{}),
 		)
 	beego.AddNamespace(ns_admin)
 

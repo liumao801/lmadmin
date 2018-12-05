@@ -55,7 +55,7 @@ func (c *AdminBaseController) adapterUserInfo() {
 // 第一个参数模板，第二个参数 layout
 func (c *AdminBaseController) setTpl(template ...string) {
 	var tplName string
-	layout := "public/layout_page"
+	layout := "public/layout_base"
 	switch {
 	case len(template) == 1:
 		tplName = template[0]
