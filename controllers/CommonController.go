@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego/cache"
 	"github.com/astaxie/beego/utils/captcha"
 	"net/http"
+	"os"
 )
 
 type CommonController struct {
@@ -31,4 +32,19 @@ func CreateCaptcha() {
 func CheckCaptcha(request *http.Request) bool {
 	verified := cpt.VerifyReq(request)
 	return  verified
+}
+
+// 判断文件夹是否存在；不存在就创建
+func IsDir(path string) bool {
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		if os.IsNotExist(err) {
+			return false
+		}
+		return false
+	}
+	return true
 }

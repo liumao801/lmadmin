@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LM-{{.pageTitle}}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+{{template "admin/public/globalcss.html"}}
+
+{{ .headcssjs}}
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+{{template "admin/public/topbar.html"}}
+
+    <!-- Left side column. contains the logo and sidebar -->
+{{template "admin/public/sidebar_menu.html"}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+    {{.LayoutContent}}
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 0.0.1
+        </div>
+        <strong>Copyright &copy; 2018-2026 <a href="http://mmllmm.com">Liumao801</a>.</strong> All rights
+        reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+{{template "admin/public/sidebar_control.html"}}
+
+</div>
+<!-- ./wrapper -->
+
+{{template "admin/public/globaljs.html"}}
+<script>
+    $(function () {
+        // 初始化页面的用户信息
+        initAdminInfo()
+        //页面左侧菜单初始化
+        lmadmin.pageSidebarInit({
+            slideBarBox:'#pageSidebar',                         //菜单容器
+            url:'{{urlfor "admin/MenuController.AdminMenuTree"}}', //菜单数据地址
+            cur:'{{.activeSidebarUrl}}'             // 当前激活的菜单地址
+        });
+    });
+    // 初始化页面的用户信息
+    function initAdminInfo(){
+        $(".admin-username").html("{{.admin.Username}}")
+        $(".admin-face").attr("src", "{{.admin.Face}}")
+        $(".admin-created-at").html("{{.admin.CreatedAt}}")
+    }
+</script>
+{{ .footerjs}}
+</body>
+</html>

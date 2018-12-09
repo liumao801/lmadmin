@@ -1,12 +1,13 @@
 package models
 
+import "time"
+
 type RoleAdminRel struct {
 	Id  		int
-	//RoleId 		int
-	Role 		*Role 	`orm:"rel(fk)"`
-	//AdminId 	int
-	Admin 		*Role 	`orm:"rel(fk)"`
-	CreatedAt 	int
+	Role 		*Role 		`orm:"rel(fk)"`
+	Admin 		*Admin 		`orm:"rel(fk)"`
+	CreatedAt 	time.Time	`orm:"auto_now_add;type(datetime)"`
+	UpdatedAt 	time.Time	`orm:"auto_now_add;type(datetime)"`
 }
 
 func (m *RoleAdminRel) TableName() string {

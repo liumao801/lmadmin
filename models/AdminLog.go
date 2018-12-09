@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"strings"
+	"time"
 )
 
 type AdminLog struct {
@@ -13,7 +14,7 @@ type AdminLog struct {
 	Url 		string
 	Params 		string 	`json:"params"`
 	Ip 			string 	`orm:size(16)`
-	CreatedAt 	int
+	CreatedAt 	time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 type AdminLogQueryParam struct {

@@ -19,15 +19,60 @@ func init() {
 	// 后端 namespace 路由
 	ns_admin :=
 		beego.NewNamespace("/admin/",
-			beego.NSAutoRouter(&admin.AdminController{}),
-			beego.NSAutoRouter(&admin.MenuController{}),
+			beego.NSAutoRouter(&admin.IndexController{}),
+			//beego.NSAutoRouter(&admin.AdminController{}),
+			//beego.NSAutoRouter(&admin.MenuController{}),
+			// 用户角色路由
+			beego.NSRouter("role/index", &admin.RoleController{}, "*:Index"),
+			beego.NSRouter("role/datagrid", &admin.RoleController{}, "Get,Post:DataGrid"),
+			beego.NSRouter("role/edit/?:id", &admin.RoleController{}, "Get,Post:Edit"),
+			beego.NSRouter("role/delete", &admin.RoleController{}, "Post:Delete"),
+			beego.NSRouter("role/datalist", &admin.RoleController{}, "Post:DataList"),
+			beego.NSRouter("role/allocate", &admin.RoleController{}, "Post:Allocate"),
+			beego.NSRouter("role/updatesort", &admin.RoleController{}, "Post:UpdateSort"),
+
+			// 菜单路由
+			beego.NSRouter("menu/index", &admin.MenuController{}, "*:Index"),
+			beego.NSRouter("menu/treegrid", &admin.MenuController{}, "Post:TreeGrid"),
+			beego.NSRouter("menu/edit/?:id", &admin.MenuController{}, "Get,Post:Edit"),
+			beego.NSRouter("menu/parent", &admin.MenuController{}, "Post:ParentTreeGrid"),
+			beego.NSRouter("menu/delete", &admin.MenuController{}, "Post:Delete"),
+				//快速排序
+			beego.NSRouter("menu/updatesort", &admin.MenuController{}, "Post:UpdateSort"),
+				// 通用选择面板
+			beego.NSRouter("menu/select", &admin.MenuController{}, "Get:Select"),
+				// 用户有权管理的菜单列表（包括区域）
+			beego.NSRouter("menu/adminmenutree", &admin.MenuController{}, "Post:AdminMenuTree"),
+			beego.NSRouter("menu/checkurlfor", &admin.MenuController{}, "Post:CheckUrlFor"),
+
+			// 后台用户路由
+			beego.NSRouter("admin/index", &admin.AdminController{}, "*:Index"),
+			beego.NSRouter("admin/datagrid", &admin.AdminController{}, "Post:DataGrid"),
+			beego.NSRouter("admin/edit/?:id", &admin.AdminController{}, "Get,Post:Edit"),
+			beego.NSRouter("admin/delete", &admin.AdminController{}, "Post:Delete"),
+
+			// 后台用户中心
+			beego.NSRouter("admincenter/profile", &admin.AdminCenterController{}, "Get:Profile"),
+			beego.NSRouter("admincenter/basicinfosave", &admin.AdminCenterController{}, "Post:BasicInfoSave"),
+			beego.NSRouter("admincenter/uploadimage", &admin.AdminCenterController{}, "Post:UploadImage"),
+			beego.NSRouter("admincenter/passwdsave", &admin.AdminCenterController{}, "Post:PasswdSave"),
+
+			// 后台 Home
+			beego.NSRouter("home/index", &admin.HomeController{}, "*:Index"),
+			beego.NSRouter("home/login", &admin.HomeController{}, "*:Login"),
+			//beego.NSRouter("home/logindo", &admin.HomeController{}, "Post:LoginDo"),
+			beego.NSRouter("home/logout", &admin.HomeController{}, "*:Logout"),
+			beego.NSRouter("home/404", &admin.HomeController{}, "*:Page404"),
+			beego.NSRouter("home/error/?:error", &admin.HomeController{}, "*:Error"),
+			beego.NSRouter("/", &admin.HomeController{}, "*:Index"),
+
 		)
 	beego.AddNamespace(ns_admin)
 
 
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/home", &home.IndexController{})
-	beego.Router("/admin", &admin.IndexController{})
+	//beego.Router("/admin", &admin.IndexController{})
 	//beego.Router("/", &home.IndexController{})
 
 	// 自动匹配路由

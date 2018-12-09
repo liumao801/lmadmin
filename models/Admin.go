@@ -4,22 +4,25 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"strings"
+	"time"
 )
 
 // 管理员 实体类
 type Admin struct {
-	Id 			int
-	Username	string 	`orm:"size(32)"`
-	Passwd		string 	`orm:"size(32)"`
-	Face		string
-	Name 		string	`orm:"size(32)"`
-	Tel 		string	`orm:"size(11)"`
-	Email 		string 	`orm:"size(32)"`
-	IsSuper 	bool
-	Status 		int
-	UserId 		int
-	CreatedAt 	int
-	UpdatedAt 	int
+	Id 				int
+	RealName		string			`orm:"size(32)"`
+	Username		string 			`orm:"size(24)"`
+	Passwd			string 			`json:"-"`
+	IsSuper 		bool
+	Status 			int8
+	Tel 			string			`orm:"size(16)"`
+	Email 			string 			`orm:"size(256)"`
+	Face			string			`orm:"size(256)"`
+	RoleIds 		[]int 			`orm:"-" form:"RoleIds"`
+	RoleAdminRel	[]*RoleAdminRel	`orm:"reverse(many)"`
+	MenuUrlForList 	[]string		`orm:"-"`
+	CreatedAt		time.Time `orm:"auto_now_add;type(datetime)"`
+	UpdatedAt 		time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 /**
@@ -32,7 +35,7 @@ func (m *Admin) TableName() string {
 type AdminQueryParam struct {
 	BaseQueryParam
 	UsernameLike 	string // 模糊 like 查询
-	NameLike 		string // 模糊 like 查询
+	RealNameLike 	string // 模糊 like 查询
 	Tel 			string // 精确查询
 	SearchStatus 	string // 为空不查询，有值精确查询
 }
@@ -82,7 +85,7 @@ func AdminPageList(params *AdminQueryParam) ([]*Admin, int64) {
 	}
 
 	query = query.Filter("username__istartswith", params.UsernameLike)
-	query = query.Filter("name__istartswith", params.NameLike)
+	query = query.Filter("real_name__istartswith", params.RealNameLike)
 	if len(params.Tel) > 0 {
 		query = query.Filter("tel", params.Tel)
 	}

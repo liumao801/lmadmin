@@ -7,6 +7,10 @@ $(function () {
 	        increaseArea: '20%' /* optional */
 	    });
     }
+    if ($(".switch input").length > 0) {
+    	console.log(".switch input", $(".switch input").length)
+        //$(".switch input").bootstrapSwitch()
+	}
 });
 
 /* 密码显示 */
@@ -96,7 +100,7 @@ function ajaxFormNoJump(data){
 	if (data.obj.btn) {
 		btn = data.obj.btn
 	}
-	if (data.code == -1) {
+	if (data.code == 1) {
 		layer.msg(data.msg,  {
 			time: 2000, //2s后自动关闭
 			btn: btn,
@@ -167,19 +171,19 @@ $(function () {
 				}
                 if (data.code==1) {
                     layer.msg(data.msg,  {
-							time: 2000, //2s后自动关闭
-							btn: btn,
-							skin: 'layer-black-translucent'
-						}, function() {
-					  		window.location.href = data.obj.url;
-						}
-					);
+                        time: 2000, //2s后自动关闭
+                        btn: btn,
+                        skin: 'layer-black-translucent'
+                    });
                 } else {
                     layer.msg(data.msg,  {
-						time: 2000, //2s后自动关闭
-						btn: btn,
-						skin: 'layer-black-translucent'
-					});
+                            time: 2000, //2s后自动关闭
+                            btn: btn,
+                            skin: 'layer-black-translucent'
+                        }, function() {
+                            window.location.href = data.obj.url;
+                        }
+                    );
                 }
             }, "json");
         });

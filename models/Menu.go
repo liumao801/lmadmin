@@ -1,28 +1,30 @@
 package models
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/orm"
+	"liumao801/lmadmin/utils"
+	"time"
 )
 
 type Menu struct {
 	Id 			int
-	Name 		string	`orm"size(32)"`
+	Name 		string	`orm"size(64)"`
 	Parent 		*Menu	`orm:"null;rel(fk)"`
+	Type 		int
+	Sort 		uint8
 	Sons 		[]*Menu `orm:"reverse(many)"`
 	SonNum 		int 	`orm:"-"`
+	Icon 		string	`orm:"size(32)"`
+	LinkUrl 	string	`orm:"-"`
+	UrlFor 		string	`orm:"size(256)" json:"-"`
 	Level 		int 	`orm:"-"`
 	HtmlDisabled int 	`orm:"-"`             //在html里应用时是否可用
 	RoleMenuRel []*RoleMenuRel	`orm:"reverse(many)"`
-
-	Url 		string
-	UrlFor 		string
-	Type 		int
-	Icon 		string
 	Status 		int8
-	Show 		int8
-	Sort 		int8
-	CreatedAt 	int
-	UpdatedAt 	int
+	IsCheck		int8
+	CreatedAt 	time.Time `orm:"auto_now_add;type(datetime)"`
+	UpdatedAt 	time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 /*type MenuQueryParam struct {
@@ -45,11 +47,11 @@ func MenuOne(id int) (*Menu, error) {
 	}
 
 	return &m, err
-}/*
+}
 // 获取treeGrid 顺序的列表
 func MenuTreeGrid() []*Menu {
 	o := orm.NewOrm()
-	query := o.QueryTable(MenuTBName()).OrderBy("pid", "sort", "id")
+	query := o.QueryTable(MenuTBName()).OrderBy("sort", "id")
 	list := make([]*Menu, 0)
 	query.All(&list)
 	return menuList2TreeGrid(list)
@@ -124,17 +126,17 @@ func MenuTreeGridByAdminId(admin_id, maxtype int) []*Menu {
 	o := orm.NewOrm()
 	var sql string
 	if admin.IsSuper == true {
-		sql = fmt.Sprintf(`SELECT * FROM %s WHERE type < ? ORDER BY pid, sort, id`, MenuTBName())
+		sql = fmt.Sprintf(`SELECT id,name,parent_id,type,icon,sort,url_for FROM %s WHERE status=1 AND type <= ? ORDER BY sort, id`, MenuTBName())
 		o.Raw(sql, maxtype).QueryRows(&list)
 	} else {
-		sql = fmt.Sprintf(`SELECT DISTINCT T0.menu_id,T2.id,T2.name,T2.parent_id,T2.rtype,T2.icon,T2.seq,T2.url_for
+		sql = fmt.Sprintf(`SELECT DISTINCT T0.menu_id,T2.id,T2.name,T2.parent_id,T2.type,T2.icon,T2.sort,T2.url_for
 		FROM %s AS T0
 		INNER JOIN %s AS T1 ON T0.role_id = T1.role_id
-		INNER JOIN %s AS T2 ON T2.id = T0.resource_id
-		WHERE T1.backend_user_id = ? and T2.rtype <= ?  Order By T2.seq asc,T2.id asc`, RoleMenuRelTBName(), RoleAdminRelTBName(), MenuTBName())
+		INNER JOIN %s AS T2 ON T2.id = T0.menu_id
+		WHERE T2.status = 1 AND (T2.is_check=0 OR (T1.admin_id = ? AND T2.type <= ? )) Order By T2.sort asc,T2.id asc`, RoleMenuRelTBName(), RoleAdminRelTBName(), MenuTBName())
 		o.Raw(sql, admin_id, maxtype).QueryRows(&list)
 	}
 	result := menuList2TreeGrid(list)
 	utils.SetCache(cachekey, result, 30)
 	return result
-}*/
+}

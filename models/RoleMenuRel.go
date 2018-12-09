@@ -1,13 +1,13 @@
 package models
 
+import "time"
+
 type RoleMenuRel struct {
 	Id 			int
-	//RoleId 		int
-	Role 		*Role	`orm:"rel(fk)"`
-	//MenuId 		int
-	Menu 		*Menu	`orm:"rel(fk)"`
-	CreatedAt 	int
-	UpdatedAt 	int
+	Role 		*Role		`orm:"rel(fk)"`
+	Menu 		*Menu		`orm:"rel(fk)"`
+	CreatedAt 	time.Time	`orm:"auto_now_add;type(datetime)"`
+	UpdatedAt 	time.Time	`orm:"auto_now_add;type(datetime)"`
 }
 
 func (m *RoleMenuRel) TableName() string {

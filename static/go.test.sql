@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-03 16:05:27
+Date: 2018-12-09 21:32:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,6 +20,34 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `lm_admin`;
 CREATE TABLE `lm_admin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL COMMENT '用户名',
+  `passwd` varchar(255) NOT NULL COMMENT '密码',
+  `real_name` varchar(255) DEFAULT NULL COMMENT '真实姓名',
+  `tel` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `is_super` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否超级管理员 0否；1是',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；2已删除',
+  `face` varchar(255) DEFAULT NULL COMMENT '头像',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联用户表id',
+  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='管理员信息表';
+
+-- ----------------------------
+-- Records of lm_admin
+-- ----------------------------
+INSERT INTO `lm_admin` VALUES ('1', 'admin', '222222', '管理员', '13838383838', '138@gmail.com', '1', '1', '/static/upload/admincenter/2018-12/user3-128x128.jpg', '0', null, null);
+INSERT INTO `lm_admin` VALUES ('2', 'test', '111111', '测试', '13909820984', '213@qq.com', '0', '1', null, '0', null, null);
+INSERT INTO `lm_admin` VALUES ('3', 'customer', '111111', '游客', '13288743837', '123@qq.com', '0', '0', '', '0', null, null);
+INSERT INTO `lm_admin` VALUES ('4', 'tester', '96e79218965eb72c92a549dd5a330112', '测试用户', '13221234543', '231@gmail.com', '0', '0', '', '0', null, null);
+
+-- ----------------------------
+-- Table structure for lm_admin_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `lm_admin_copy`;
+CREATE TABLE `lm_admin_copy` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL COMMENT '用户名',
   `passwd` varchar(255) NOT NULL COMMENT '密码',
@@ -36,11 +64,11 @@ CREATE TABLE `lm_admin` (
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='管理员信息表';
 
 -- ----------------------------
--- Records of lm_admin
+-- Records of lm_admin_copy
 -- ----------------------------
-INSERT INTO `lm_admin` VALUES ('1', 'admin', '111111', null, '管理员', '13838383838', '138@gmail.com', '1', '1', '0', null, null);
-INSERT INTO `lm_admin` VALUES ('2', 'test', '111111', null, '测试', '13909820984', '213@qq.com', '0', '1', '0', null, null);
-INSERT INTO `lm_admin` VALUES ('3', 'customer', '111111', null, '游客', '13288743837', '123@qq.com', '0', '1', '0', null, null);
+INSERT INTO `lm_admin_copy` VALUES ('1', 'admin', '222222', null, '管理员', '13838383838', '138@gmail.com', '1', '1', '0', null, null);
+INSERT INTO `lm_admin_copy` VALUES ('2', 'test', '111111', null, '测试', '13909820984', '213@qq.com', '0', '1', '0', null, null);
+INSERT INTO `lm_admin_copy` VALUES ('3', 'customer', '111111', null, '游客', '13288743837', '123@qq.com', '0', '1', '0', null, null);
 
 -- ----------------------------
 -- Table structure for lm_admin_log
@@ -97,24 +125,77 @@ CREATE TABLE `lm_article` (
 DROP TABLE IF EXISTS `lm_menu`;
 CREATE TABLE `lm_menu` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
-  `url` varchar(255) NOT NULL,
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0菜单分类无链接；1菜单有链接；2页面菜单',
-  `icon` varchar(255) DEFAULT NULL COMMENT '菜单图标',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；2已删除',
-  `show` tinyint(1) unsigned DEFAULT '1' COMMENT '1显示；0隐藏',
+  `name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
+  `parent_id` int(11) unsigned DEFAULT '0',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序；越小越靠前',
-  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级菜单id',
+  `icon` varchar(255) DEFAULT 'fa-circle-o' COMMENT '菜单图标',
+  `url_for` varchar(256) NOT NULL DEFAULT '' COMMENT 'beego URLFor',
+  `url` varchar(255) DEFAULT NULL COMMENT 'url地址',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；2已删除',
+  `is_check` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否检测权限 1检测；0不检测',
   `created_at` int(10) unsigned DEFAULT NULL,
   `updated_at` int(10) unsigned DEFAULT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `url_for` varchar(256) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
 
 -- ----------------------------
 -- Records of lm_menu
 -- ----------------------------
+INSERT INTO `lm_menu` VALUES ('1', '1', '首页', null, '1', 'fa-dashboard', 'HomeController.Index', 'admin/index/index', '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('2', '0', '系统管理', '0', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('7', '1', '系统配置', '2', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('8', '1', '日志管理', '2', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('9', '1', '网站配置', '7', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('10', '1', '注册管理', '7', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('11', '1', '权限管理', '12', '100', 'fa fa-balance-scale', '', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('12', '0', '系统设置', null, '100', '', '', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('13', '1', '菜单管理', '11', '100', 'fa-pinterest', 'MenuController.Index', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('14', '1', '角色管理', '11', '100', 'fa-users', 'RoleController.Index', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('15', '1', '用户管理', '11', '100', 'fa-user', 'AdminController.Index', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('17', '0', '业务菜单', null, '170', '', '', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('18', '1', '课程资源(空)', '17', '100', 'fa fa-book', '', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('20', '2', '编辑', '13', '100', 'fa fa-pencil', 'MenuController.Edit', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('21', '2', '编辑', '15', '100', 'fa fa-pencil', 'AdminController.Edit', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('22', '2', '删除', '13', '100', 'fa fa-trash', 'MenuController.Delete', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('23', '2', '删除', '15', '100', 'fa fa-trash', 'AdminController.Delete', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('24', '2', '编辑', '14', '100', 'fa fa-pencil', 'RoleController.Edit', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('25', '2', '删除', '14', '100', 'fa fa-trash', 'RoleController.Delete', null, '1', '1', null, null);
+INSERT INTO `lm_menu` VALUES ('26', '2', '分配资源', '14', '100', 'fa fa-th', 'RoleController.Allocate', null, '1', '1', null, null);
+
+-- ----------------------------
+-- Table structure for lm_menu_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `lm_menu_copy`;
+CREATE TABLE `lm_menu_copy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
+  `url_for` varchar(256) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL,
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0菜单分类无链接；1菜单有链接；2页面菜单',
+  `icon` varchar(255) DEFAULT 'fa-circle-o' COMMENT '菜单图标',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；2已删除',
+  `show` tinyint(1) unsigned DEFAULT '1' COMMENT '1显示；0隐藏',
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序；越小越靠前',
+  `parent_id` int(11) unsigned DEFAULT '0',
+  `created_at` int(10) unsigned DEFAULT NULL,
+  `updated_at` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
+
+-- ----------------------------
+-- Records of lm_menu_copy
+-- ----------------------------
+INSERT INTO `lm_menu_copy` VALUES ('1', '首页', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '0', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('2', '系统管理', 'admin/IndexController.index', 'admin/index/index', '0', 'fa-dashboard', '1', '1', '100', '0', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('3', '权限管理', 'admin/IndexController.index', 'admin/index/index', '0', 'fa-dashboard', '1', '1', '100', '0', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('4', '菜单管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '3', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('5', '角色管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '3', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('6', '管理员', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '3', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('7', '系统设置', 'admin/IndexController.index', 'admin/index/index', '0', 'fa-dashboard', '1', '1', '100', '2', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('8', '日志管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '2', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('9', '网站配置', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '7', null, null);
+INSERT INTO `lm_menu_copy` VALUES ('10', '注册管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '7', null, null);
 
 -- ----------------------------
 -- Table structure for lm_menu_web
@@ -149,17 +230,18 @@ DROP TABLE IF EXISTS `lm_role`;
 CREATE TABLE `lm_role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '角色名称',
-  `mark` varchar(255) NOT NULL COMMENT '角色标识',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
+  `mark` varchar(255) NOT NULL COMMENT '角色标识',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；2已删除',
-  `created_at` int(10) unsigned DEFAULT NULL,
-  `updated_at` int(10) unsigned DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色信息表';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色信息表';
 
 -- ----------------------------
 -- Records of lm_role
 -- ----------------------------
+INSERT INTO `lm_role` VALUES ('1', '管理员', '0', 'admin', '1', null, null);
 
 -- ----------------------------
 -- Table structure for lm_role_admin_rel
@@ -169,12 +251,49 @@ CREATE TABLE `lm_role_admin_rel` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` int(10) unsigned NOT NULL,
   `admin_id` int(10) unsigned NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色用户关联表';
+
+-- ----------------------------
+-- Records of lm_role_admin_rel
+-- ----------------------------
+INSERT INTO `lm_role_admin_rel` VALUES ('2', '1', '4', '2018-12-09 12:07:46', '2018-12-09 12:07:46');
+
+-- ----------------------------
+-- Table structure for lm_role_admin_rel_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `lm_role_admin_rel_copy`;
+CREATE TABLE `lm_role_admin_rel_copy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) unsigned NOT NULL,
+  `admin_id` int(10) unsigned NOT NULL,
   `created_at` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色用户关联表';
 
 -- ----------------------------
--- Records of lm_role_admin_rel
+-- Records of lm_role_admin_rel_copy
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for lm_role_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `lm_role_copy`;
+CREATE TABLE `lm_role_copy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '角色名称',
+  `mark` varchar(255) NOT NULL COMMENT '角色标识',
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；2已删除',
+  `created_at` int(10) unsigned DEFAULT NULL,
+  `updated_at` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色信息表';
+
+-- ----------------------------
+-- Records of lm_role_copy
 -- ----------------------------
 
 -- ----------------------------
@@ -185,13 +304,31 @@ CREATE TABLE `lm_role_menu_rel` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` int(10) unsigned NOT NULL,
   `menu_id` int(10) unsigned NOT NULL,
-  `created_at` int(10) unsigned NOT NULL,
-  `created` datetime NOT NULL,
+  `updated_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色菜单关联表';
 
 -- ----------------------------
 -- Records of lm_role_menu_rel
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for lm_role_menu_rel_copy
+-- ----------------------------
+DROP TABLE IF EXISTS `lm_role_menu_rel_copy`;
+CREATE TABLE `lm_role_menu_rel_copy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) unsigned NOT NULL,
+  `menu_id` int(10) unsigned NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  `created` datetime NOT NULL,
+  `updated_at` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色菜单关联表';
+
+-- ----------------------------
+-- Records of lm_role_menu_rel_copy
 -- ----------------------------
 
 -- ----------------------------

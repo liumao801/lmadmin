@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Article struct {
 	Id				int
 	Title 			string
@@ -14,7 +16,7 @@ type Article struct {
 	CommentCount 	int
 	IsBack 			int8
 	Status 			int8
-	CreatedAt 		int
+	CreatedAt 		time.Time `orm:"auto_now_add;type(datetime)"`
 	UpdatedAt 		int
 }
 
