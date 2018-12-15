@@ -1,8 +1,11 @@
 package admin
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
@@ -23,6 +26,8 @@ func (c *AdminBaseController) Prepare() {
 	c.ctrlName, c.actiName = c.GetControllerAndAction()
 	// 从 session 获取数据，设置用户信息
 	c.adapterAdminInfo()
+	// 记录操作日志
+	//c.OperationLog()
 }
 
 // checkLogin 判断用户是否登录，未登录跳转登录页面
@@ -142,6 +147,7 @@ func (c *AdminBaseController) setTpl(template ...string) {
 		actiName := strings.ToLower(c.actiName)
 		tplName = ctrlName + "/" + actiName
 	}
+	c.Data["pageTitle"] = "🐜后台管理系统🐝"
 
 	c.Layout = "admin/" + layout + ".html"
 	c.TplName = "admin/" + tplName + ".html"
@@ -171,6 +177,27 @@ func (c *AdminBaseController) LMURLFor(endpoint string, values ...interface{}) s
 }
 
 // 记录操作日志
-func (c *AdminBaseController) OperationLog() {
-
+// 没有实现参数记录
+func (c *AdminBaseController) OperationLog() error {
+	if c.currAdmin.Id == 0 {
+		return errors.New("暂时没有登录")
+	}
+	log := models.AdminLog{}
+	log.Username = c.currAdmin.Username
+	log.Url = c.Ctx.Input.URL()
+	log.Ip = c.Ctx.Input.IP()
+	beego.Info(c.Ctx.Input.Params())
+	params, err := json.Marshal(c.Ctx.Input.Params())
+	if err == nil {
+		log.Params = string(params)
+	}
+	log.Admin = &c.currAdmin
+	m, err := models.MenuOneByUrlFor(c.ctrlName + "." + c.actiName)
+	if err == nil {
+		log.Menu = m
+	} else {
+		return errors.New("菜单不存在")
+	}
+	orm.NewOrm().Insert(&log)
+	return nil
 }

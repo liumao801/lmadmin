@@ -243,7 +243,7 @@
         });
     }
     function AllocateFun(Id) {
-        var url = '{{ urlfor "ResourceController.Select"}}' + '?desttype=1&destval=' + Id;
+        var url = '{{ urlfor "MenuController.Select"}}' + '?desttype=1&destval=' + Id;
         var urlAllocate = '{{ urlfor "RoleController.Allocate"}}';
         layer.open({
             type: 2,
@@ -252,7 +252,7 @@
             shade: 0.2,
             maxmin: true,
             shift: 1,
-            area: ['1000px', '95%'],
+            area: ['100%', '100%'],
             content: url,
             btn: ['保存', '关闭'],
             yes: function (index, layero) {

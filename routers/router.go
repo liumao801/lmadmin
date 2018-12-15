@@ -60,6 +60,7 @@ func init() {
 			// 后台 Home
 			beego.NSRouter("home/index", &admin.HomeController{}, "*:Index"),
 			beego.NSRouter("home/login", &admin.HomeController{}, "*:Login"),
+			beego.NSRouter("home/register", &admin.HomeController{}, "*:Register"),
 			//beego.NSRouter("home/logindo", &admin.HomeController{}, "Post:LoginDo"),
 			beego.NSRouter("home/logout", &admin.HomeController{}, "*:Logout"),
 			beego.NSRouter("home/404", &admin.HomeController{}, "*:Page404"),

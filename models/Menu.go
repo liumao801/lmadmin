@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/utils"
 	"time"
@@ -47,6 +48,16 @@ func MenuOne(id int) (*Menu, error) {
 	}
 
 	return &m, err
+}
+// 根据用户名和密码查询用户信息
+func MenuOneByUrlFor(url_for string) (*Menu, error) {
+	m := Menu{}
+	err := orm.NewOrm().QueryTable(MenuTBName()).Filter("url_for", url_for).One(&m)
+	if err != nil {
+		return nil, err
+	}
+	beego.Info("查询成功", m)
+	return &m, nil
 }
 // 获取treeGrid 顺序的列表
 func MenuTreeGrid() []*Menu {

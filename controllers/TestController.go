@@ -10,6 +10,13 @@ type TestController struct {
 	beego.Controller
 }
 
+func (c *TestController) Test() {
+	c.TplName = "test/test.html"
+
+	c.Ctx.SetCookie("lminfo", "21321321", 60)
+	c.Data["lminfo"] = c.Ctx.GetCookie("lminfo")
+	beego.Info(c.Ctx.GetCookie("lminfo"))
+}
 /**
  * 注册页面
  */

@@ -130,7 +130,7 @@ func (c *RoleController) Allocate() {
 		c.JsonResult(enums.JRCodeFailed, "数据无效，请刷新后重试", "")
 	}
 	// 删除已关联的历史数据
-	if _, err := o.QueryTable(models.RoleTBName()).Filter("role__id", m.Id).Delete(); err != nil {
+	if _, err := o.QueryTable(models.RoleMenuRelTBName()).Filter("role__id", m.Id).Delete(); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "删除历史关系失败", "")
 	}
 	var relations []models.RoleMenuRel

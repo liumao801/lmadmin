@@ -12,4 +12,5 @@ func init()  {
 	utils.InitCache()
 	// 初始化数据库
 	InitDatabase()
+	//InitSession()
 }

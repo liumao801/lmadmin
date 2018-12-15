@@ -8,10 +8,10 @@ import (
 
 type AdminLog struct {
 	Id	 		int
-	AdminId 	int
-	Username 	string	`orm:"size(32)"`
-	Menu 		string
+	Admin 		*Admin	`orm:"rel(fk)"`
+	Menu 		*Menu	`orm:"rel(fk)"`
 	Url 		string
+	Username 	string
 	Params 		string 	`json:"params"`
 	Ip 			string 	`orm:size(16)`
 	CreatedAt 	time.Time `orm:"auto_now_add;type(datetime)"`
@@ -20,7 +20,6 @@ type AdminLog struct {
 type AdminLogQueryParam struct {
 	BaseQueryParam
 	UsernameLike 	string
-	MenuLike 		string
 	UrlLike 		string
 	CreatedAt 		int
 	Ip 				string
@@ -42,7 +41,6 @@ func AdminLogPageList(params *AdminLogQueryParam) ([]*AdminLog, int64) {
 		sortorder = "-" + sortorder
 	}
  	query = query.Filter("username__istartswith", params.UsernameLike)
- 	query = query.Filter("menu__istartswith", params.MenuLike)
  	query = query.Filter("url__istartswith", params.UrlLike)
 	if len(params.Ip) > 0 {
 		query = query.Filter("ip", params.Ip)

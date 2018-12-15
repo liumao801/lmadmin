@@ -196,7 +196,7 @@ func (c *MenuController) Select() {
 			}
 		}
 	}
-	c.Data["selectIds"] = strings.Join(selectedIds, ",")
+	c.Data["selectedIds"] = strings.Join(selectedIds, ",")
 	c.setTpl("menu/select", "public/layout_pullbox")
 
 	layoutSections := make(map[string]string)

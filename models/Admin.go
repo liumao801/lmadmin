@@ -15,14 +15,16 @@ type Admin struct {
 	Passwd			string 			`json:"-"`
 	IsSuper 		bool
 	Status 			int8
+	RememberPasswd 	string			`orm:"size(32)"`
+	RememberOut		int
 	Tel 			string			`orm:"size(16)"`
 	Email 			string 			`orm:"size(256)"`
 	Face			string			`orm:"size(256)"`
 	RoleIds 		[]int 			`orm:"-" form:"RoleIds"`
 	RoleAdminRel	[]*RoleAdminRel	`orm:"reverse(many)"`
 	MenuUrlForList 	[]string		`orm:"-"`
-	CreatedAt		time.Time `orm:"auto_now_add;type(datetime)"`
-	UpdatedAt 		time.Time `orm:"auto_now_add;type(datetime)"`
+	CreatedAt		time.Time 		`orm:"auto_now_add;type(datetime)"`
+	UpdatedAt 		time.Time 		`orm:"auto_now_add;type(datetime)"`
 }
 
 /**
