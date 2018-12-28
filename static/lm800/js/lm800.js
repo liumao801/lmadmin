@@ -72,7 +72,7 @@ function getQueryString(name) {
  */
 $(function(){
 	$(".ajaxFormNoCheckNoJump").ajaxForm({
-		success: ajaxFormNoJump,
+		success: showenum,
 		dataType: 'json',
 		forceSync: true,
 	})
@@ -231,4 +231,12 @@ $(function(){
 	$('body').on('click','.jump-url',function () {
 		location.href = $(this).data('url');
 	})
+	// 编辑框的最大化样式调整
+	$('body').on('click', '.layui-layer-max', function () {
+		if($(this).attr('class').indexOf('layui-layer-maxmin') == -1) {
+            $('.layui-layer.layui-layer-iframe').css({'max-width':'1000px', 'max-height': '600px'})
+		} else {
+            $('.layui-layer.layui-layer-iframe').css({'max-width': '100%', 'max-height': '100%'})
+        }
+    })
 })

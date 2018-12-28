@@ -1,0 +1,126 @@
+
+<!-- 验证插件 -->
+<script src="/static/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="/static/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+<!-- 针对当前主题进行简单封装，精简代码 -->
+<script src="/static/modules/admin/js/lmvalidate.js"></script>
+
+<script>
+    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+    CKEDITOR.replace( 'Content' , {
+        customConfig: '/static/plugins/ckeditor/lm-common-config.js'
+    });
+    $(function () {
+        pageInit();
+    })
+    function pageInit() {
+        //父节点下拉初始化
+        ParentSelectInit('{{.parent}}');
+        //附值
+        $("#Type").selectpicker('val','{{.m.Type}}');
+        $("#Status").selectpicker('val','{{.m.Status}}');
+        //验证
+        validateInfo();
+    }
+    function ParentSelectInit(curPid){
+        var url = '{{urlfor "MenuWebController.ParentTreeGrid"}}'
+        $.lmpost(url, { id: $("#Id").val() }, function (re) {
+            if (re.code === 0) {
+                var html = ['<option value="0">- 无 -</option>']
+                var $select = $("#Parent");
+                $select.html('')
+                $(re.obj).each(function (i, e) {
+                    //下拉菜单里只显示区域和菜单
+                    if(e.Type >1){
+                        return true
+                    }
+                    var str = new Array(e.Level * 4).join("&nbsp;");
+                    if (e.Level > 0)
+                        str = str + "|-";
+                    html.push('<option value="' + e.Id + '"');
+                    if (e.HtmlDisabled == 1) {
+                        html.push('disabled');
+                    }
+                    html.push('>' + str + e.Title + '</option>')
+                });
+                $select.html(html.join(''));
+                $select.selectpicker();
+                $select.selectpicker('val',curPid);
+            } else {
+                parent.layer.alert("获取资源树失败", { icon: 2, title: '失败' })
+            }
+        });
+    }
+    //区域只能是一级节点，不能有父节点
+    jQuery.validator.methods.TypeCheck = function (value, element, param) {
+        //如果为空，直接过
+        if (value.length == 0) return true;
+        var p = $("#Parent").selectpicker('val')
+        if (value === "0" && p!="0"){
+            return false
+        }
+        return true
+    }
+    //表单验证及AJAX提交
+    function validateInfo() {
+        var $thisForm = $('#thisForm');
+        $thisForm.lmvalidate({
+            rules: {
+                Title: {
+                    maxlength: 32,
+                    required: true
+                },
+                Icon: {
+                    maxlength: 32,
+                },
+                Sort: {
+                    digits:true,
+                    max: 255,
+                    required: true
+                },
+                Type:{
+                    required: true,
+                    TypeCheck:true
+                },
+                LinkUrl:{
+                    UrlLinkCheck:true
+                }
+            },
+            messages: {
+                Type:{
+                    TypeCheck:"区域只能是一级节点，不能有父节点"
+                },
+                LinkUrl:{
+                    UrlLinkCheck:"您输入的UrlFor值并不能解析为有效的地址"
+                }
+            },
+            submitHandler: function (form) {
+                var url = '{{ urlfor "MenuWebController.Edit"}}'
+                var data = $thisForm.serialize();
+                $.lmpost(url, data, function (re) {
+                    if (re.code === 0) {
+                        parent.layer.msg(re.msg)
+                        //刷新，并将所编辑的节点展开
+                        parent.refresh(re.obj,true)
+                        parent.layer.close(index)
+                    } else {
+                        parent.layer.alert(re.msg, { icon: 2, title: '失败' })
+                    }
+                });
+                return false;
+            }
+        });
+    }
+    function chkUrlFor(){
+        $("#LinkUrl").valid();
+    }
+    function urlForChange(ctrl){
+        var v = $.trim($(ctrl).val()).replace(/，| /g,",")
+        $(ctrl).val(v)
+        chkUrlFor();
+    }
+    function FormSubmit() {
+        $("#thisForm").submit();
+    }
+
+</script>

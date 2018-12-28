@@ -1,0 +1,76 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        文章分类管理
+        <small>管理前端菜单和文章分类信息</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{urlfor "HomeController.Index"}}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li class="active">文章分类管理</li>
+    </ol>
+</section>
+<!-- Content Header (Page header) -->
+<section class="content container-fluid">
+    <form id="thisForm" class="margin5px padding15px bg-white">
+        <input type="hidden" name="Id" id="Id" value="{{.m.Id}}">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>菜单名称</label>
+                    <input type="text" name="Title" class="form-control" placeholder="长度不超过32" value="{{.m.Title}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>父节点</label>
+                    <select name="Parent" id="Parent" class="form-control" data-live-search="true">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>类型</label>
+                    <select name="Type" id="Type" class="form-control bs-select">
+                        {{ range $key, $val := .Types}}
+                            <option value="{{$key}}">{{$val}}</option>
+                        {{end}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>顺序（可取值范围 0~255）</label>
+                    <input type="text" name="Sort" class="form-control" placeholder="非负整数" value="{{.m.Sort}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>状态</label>
+                    <select name="Status" id="Status" class="form-control bs-select">
+                        <option value="1">启用</option>
+                        <option value="0">停用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>SEO标题</label>
+                    <input type="text" name="SeoTitle" class="form-control" placeholder="长度不超过32" value="{{.m.SeoTitle}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>SEO描述</label>
+                    <input type="text" name="SeoDesc" class="form-control" placeholder="长度不超过32" value="{{.m.SeoDesc}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <div class="form-group">
+                    <label>页面内容</label>
+                    <textarea name="Content" id="Content" rows="10" cols="80" placeholder="请输入内容"></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

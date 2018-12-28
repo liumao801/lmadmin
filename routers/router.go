@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/controllers/admin"
+	"liumao801/lmadmin/controllers/common"
 	"liumao801/lmadmin/controllers/home"
 )
 
@@ -67,9 +68,24 @@ func init() {
 			beego.NSRouter("home/error/?:error", &admin.HomeController{}, "*:Error"),
 			beego.NSRouter("/", &admin.HomeController{}, "*:Index"),
 
+			beego.NSAutoRouter(&admin.MenuWebController{}),
+			// 分类菜单路由
+			//beego.NSRouter("menuweb/index", &admin.MenuWebController{}, "*:Index"),
+			//beego.NSRouter("menuweb/treegrid", &admin.MenuWebController{}, "Post:TreeGrid"),
+			//beego.NSRouter("menuweb/edit/?:id", &admin.MenuWebController{}, "Get,Post:Edit"),
+			//beego.NSRouter("menuweb/parent", &admin.MenuWebController{}, "Post:ParentTreeGrid"),
+			//beego.NSRouter("menuweb/delete", &admin.MenuWebController{}, "Post:Delete"),
+
 		)
 	beego.AddNamespace(ns_admin)
 
+	// 公共 namespace 路由
+	ns_common :=
+		beego.NewNamespace("/common/",
+			beego.NSRouter("upload", &common.UploadController{}, "*:CommonUpload"),
+			//beego.NSAutoRouter(&common.UploadController{}),
+		)
+	beego.AddNamespace(ns_common)
 
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/home", &home.IndexController{})
