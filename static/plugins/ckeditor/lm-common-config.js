@@ -2,7 +2,7 @@
 * @Author: Actor Liu
 * @Date:   2018-12-26 21:42:30
 * @Last Modified by:   Actor Liu
-* @Last Modified time: 2019-01-01 08:19:02
+* @Last Modified time: 2019-01-04 23:13:26
 */
 CKEDITOR.editorConfig = function( config ) {
 	config.toolbarGroups = [
@@ -27,9 +27,9 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.defaultLanguage = 'zh-cn';
 	config.language = 'zh-cn';
 	
-	// config.filebrowserUploadUrl = '/common/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
+	config.filebrowserUploadUrl = '/common/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
 	// config.filebrowserUploadUrl = '/upload/commonupload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
-	config.filebrowserUploadUrl = '/test/upload?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
+	// config.filebrowserUploadUrl = '/test/upload?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
 	// config.filebrowserUploadUrl = '/home/test/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
 	// config.filebrowserUploadUrl = '/admin/test/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
     config.removeDialogTabs = 'link:advanced;link:target;image:Upload;image:target;flash:Upload;flash:target;'; // 移除超链接的“目标”、“上传”工具栏

@@ -12,7 +12,6 @@ func init() {
 	// 前端 namespace 路由
 	ns_home :=
 		beego.NewNamespace("/home/",
-			beego.NSAutoRouter(&home.TestController{}),
 			beego.NSAutoRouter(&home.UserController{}),
 			beego.NSAutoRouter(&home.IndexController{}),
 		)
@@ -22,7 +21,6 @@ func init() {
 	ns_admin :=
 		beego.NewNamespace("/admin/",
 			beego.NSAutoRouter(&admin.IndexController{}),
-			beego.NSAutoRouter(&admin.TestController{}),
 			//beego.NSAutoRouter(&admin.AdminController{}),
 			//beego.NSAutoRouter(&admin.MenuController{}),
 			// 用户角色路由
