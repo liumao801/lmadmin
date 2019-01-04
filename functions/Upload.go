@@ -1,51 +1,21 @@
-package common
+package functions
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/astaxie/beego"
-	"liumao801/lmadmin/functions"
+	"io"
+	"liumao801/lmadmin/utils"
 	"mime/multipart"
+	"net/url"
+	"os"
+	"path"
+	"path/filepath"
+	"regexp"
+	"strings"
+	"time"
 )
 
-type UploadController struct {
-	beego.Controller
-}
-
-type UploadResult struct {
-	Url 		string	`json:"url"`
-	Uploaded 	bool	`json:"uploaded"`
-	Msg 		string	`json:"msg"`
-}
-// 公共的上传方法
-func (c *UploadController) CommonUpload() {
-	var allfiles map[string][]*multipart.FileHeader = c.Ctx.Request.MultipartForm.File
-
-	uped := &UploadResult{}
-	var rel []*UploadResult
-
-	for k, _ := range allfiles {
-		file, err := functions.LmUpload(&c.Controller, k)
-		//file, err := common.LmUpload(&c.Controller, k)
-		if err != "" {
-			uped.Uploaded = false
-			uped.Msg = err
-			uped.Url = ""
-		} else {
-			uped.Uploaded = true
-			uped.Url = file
-			uped.Msg = ""
-		}
-		if c.GetString("refer") == "CKEDITOR" {
-			c.Data["json"] = uped
-			c.ServeJSON()
-			c.StopRun()
-		}
-		rel = append(rel, uped)
-	}
-
-	c.Data["json"] = rel
-	c.ServeJSON()
-}
-/*
 type Sizer interface {
 	Size() int64
 }
@@ -168,11 +138,11 @@ func LmUpload(c *beego.Controller,fileName string) (string, string) {
 	ctrlName, _ := c.GetControllerAndAction()
 	dirPath := LOCAL_FILE_DIR + strings.ToLower(ctrlName[0 : len(ctrlName)-10]) + "/" + now.Format("2006-01") + "/" + now.Format("02")
 	fileExt := strings.TrimLeft(fi.Type, ".")
-	fileSaveName := fmt.Sprintf("%s_%d.%s", controllers.RandCode(5, 3), now.Unix(), fileExt)
+	fileSaveName := fmt.Sprintf("%s_%d.%s", RandCode(5, 3), now.Unix(), fileExt)
 	filePath := fmt.Sprintf("%s/%s", dirPath, fileSaveName)
 
 	beego.Info("filePath===========",filePath)
-	if !controllers.IsDir(dirPath) {
+	if !IsDir(dirPath) {
 		if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
 			return "", "文件夹“" + dirPath + "”创建失败"
 		}
@@ -180,4 +150,4 @@ func LmUpload(c *beego.Controller,fileName string) (string, string) {
 	// 保存位置在 static/upload， 没有文件夹要先创建
 	c.SaveToFile(fileName, filePath)
 	return "/" + filePath, ""
-}*/
+}

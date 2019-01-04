@@ -12,3 +12,4 @@
 *.out
 .idea/*
 static/upload/*
+.idea/workspace.xml

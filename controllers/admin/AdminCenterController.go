@@ -3,8 +3,8 @@ package admin
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
+	"liumao801/lmadmin/functions"
 	"liumao801/lmadmin/models"
 	"liumao801/lmadmin/utils"
 	"os"
@@ -90,8 +90,8 @@ func (c *AdminCenterController) PasswdSave() {
 		c.JsonResult(enums.JRCodeSucc, "保存成功", oM.Id)
 	}
 }
-// 更新用户头像
-func (c *AdminCenterController) UploadImage() {
+// 老的更新用户头像
+func (c *AdminCenterController) UploadImage0() {
 	// 这里 type 没有用，只是为了演示传值
 	stype, _ := c.GetInt32("type", 0)
 	if stype > 0 {
@@ -103,7 +103,7 @@ func (c *AdminCenterController) UploadImage() {
 		date := beego.Date(time.Now(), "Y-m")
 		dirPath := "static/upload/" + strings.ToLower(c.ctrlName[0 : len(c.ctrlName)-10]) + "/" + date
 		beego.Info(dirPath)
-		if !controllers.IsDir(dirPath) {
+		if !functions.IsDir(dirPath) {
 			if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
 				c.JsonResult(enums.JRCodeFailed, "文件夹创建失败", dirPath)
 			}
@@ -114,5 +114,22 @@ func (c *AdminCenterController) UploadImage() {
 		c.JsonResult(enums.JRCodeSucc, "上传成功", "/" + filePath)
 	} else {
 		c.JsonResult(enums.JRCodeFailed, "上传失败", "")
+	}
+}
+// 更新用户头像
+func (c *AdminCenterController) UploadImage() {
+	beego.Info("this", c)
+	beego.Info("this.upload", c)
+	//var upload = &common.UploadController{}
+	//beego.Info("upload", upload)
+	//filePath, err := upload.LmUpload("fileImageUrl")
+	beego.Info("UploadImage ========================")
+	beego.Info("*UploadImage ========================", c)
+	beego.Info("*UploadImage ========================", &c)
+	filePath, err := functions.LmUpload(&c.Controller, "fileImageUrl")
+	if err != "" {
+		c.JsonResult(enums.JRCodeFailed, err, "")
+	} else {
+		c.JsonResult(enums.JRCodeSucc, "上传成功", filePath)
 	}
 }

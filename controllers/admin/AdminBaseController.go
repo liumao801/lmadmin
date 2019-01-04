@@ -112,6 +112,13 @@ func (c *AdminBaseController) adapterAdminInfo() {
 	if a != nil {
 		c.currAdmin = a.(models.Admin)
 		c.Data["admin"] = a
+	} else {
+		// 开发阶段省略登录
+		// 上线记得删除
+		c.setAdmin2Session(1)
+		noA , _ := models.AdminOne(1)
+		c.currAdmin = *noA
+		c.Data["admin"] = a
 	}
 }
 
