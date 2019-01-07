@@ -21,8 +21,6 @@ func init() {
 	ns_admin :=
 		beego.NewNamespace("/admin/",
 			beego.NSAutoRouter(&admin.IndexController{}),
-			//beego.NSAutoRouter(&admin.AdminController{}),
-			//beego.NSAutoRouter(&admin.MenuController{}),
 			// 用户角色路由
 			beego.NSRouter("role/index", &admin.RoleController{}, "*:Index"),
 			beego.NSRouter("role/datagrid", &admin.RoleController{}, "Get,Post:DataGrid"),
@@ -38,11 +36,12 @@ func init() {
 			beego.NSRouter("menu/edit/?:id", &admin.MenuController{}, "Get,Post:Edit"),
 			beego.NSRouter("menu/parent", &admin.MenuController{}, "Post:ParentTreeGrid"),
 			beego.NSRouter("menu/delete", &admin.MenuController{}, "Post:Delete"),
-				//快速排序
+
+			//快速排序
 			beego.NSRouter("menu/updatesort", &admin.MenuController{}, "Post:UpdateSort"),
-				// 通用选择面板
+			// 通用选择面板
 			beego.NSRouter("menu/select", &admin.MenuController{}, "Get:Select"),
-				// 用户有权管理的菜单列表（包括区域）
+			// 用户有权管理的菜单列表（包括区域）
 			beego.NSRouter("menu/adminmenutree", &admin.MenuController{}, "Post:AdminMenuTree"),
 			beego.NSRouter("menu/checkurlfor", &admin.MenuController{}, "Post:CheckUrlFor"),
 
@@ -62,19 +61,17 @@ func init() {
 			beego.NSRouter("home/index", &admin.HomeController{}, "*:Index"),
 			beego.NSRouter("home/login", &admin.HomeController{}, "*:Login"),
 			beego.NSRouter("home/register", &admin.HomeController{}, "*:Register"),
-			//beego.NSRouter("home/logindo", &admin.HomeController{}, "Post:LoginDo"),
 			beego.NSRouter("home/logout", &admin.HomeController{}, "*:Logout"),
 			beego.NSRouter("home/404", &admin.HomeController{}, "*:Page404"),
 			beego.NSRouter("home/error/?:error", &admin.HomeController{}, "*:Error"),
 			beego.NSRouter("/", &admin.HomeController{}, "*:Index"),
 
-			beego.NSAutoRouter(&admin.MenuWebController{}),
 			// 分类菜单路由
-			//beego.NSRouter("menuweb/index", &admin.MenuWebController{}, "*:Index"),
-			//beego.NSRouter("menuweb/treegrid", &admin.MenuWebController{}, "Post:TreeGrid"),
-			//beego.NSRouter("menuweb/edit/?:id", &admin.MenuWebController{}, "Get,Post:Edit"),
-			//beego.NSRouter("menuweb/parent", &admin.MenuWebController{}, "Post:ParentTreeGrid"),
-			//beego.NSRouter("menuweb/delete", &admin.MenuWebController{}, "Post:Delete"),
+			beego.NSRouter("menuweb/index", &admin.MenuWebController{}, "*:Index"),
+			beego.NSRouter("menuweb/treegrid", &admin.MenuWebController{}, "Post:TreeGrid"),
+			beego.NSRouter("menuweb/edit/?:id", &admin.MenuWebController{}, "Get,Post:Edit"),
+			beego.NSRouter("menuweb/parent", &admin.MenuWebController{}, "Post:ParentTreeGrid"),
+			beego.NSRouter("menuweb/delete", &admin.MenuWebController{}, "Post:Delete"),
 
 		)
 	beego.AddNamespace(ns_admin)

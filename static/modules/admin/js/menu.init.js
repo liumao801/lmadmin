@@ -133,7 +133,8 @@ var lmadmin = function () {
             validate: defaultvalidate,
             success: function (response, newValue) {
                 if (response.code == 0) {
-                    parent.layer.msg(response.msg, { icon: 1, title: '成功' });
+                    // parent.layer.msg(response.msg, { icon: 1, title: '成功' });
+                    parent.layer.msg(response.msg, { time: 2000, skin: 'layer-black-translucent' });
                     if (refreshPk) {
                         //刷新列表数据
                         refresh(response.obj);

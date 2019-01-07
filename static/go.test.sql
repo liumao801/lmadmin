@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-04 22:56:08
+Date: 2019-01-07 22:44:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,6 +32,8 @@ CREATE TABLE `lm_admin` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联用户表id',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '最后更新时间',
+  `login_at` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `login_ip` varchar(255) DEFAULT NULL,
   `name` varchar(32) NOT NULL DEFAULT '',
   `remember_passwd` varchar(255) NOT NULL DEFAULT '' COMMENT '记住密码的密码',
   `remember_out` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '记住密码的过期时间',
@@ -41,10 +43,10 @@ CREATE TABLE `lm_admin` (
 -- ----------------------------
 -- Records of lm_admin
 -- ----------------------------
-INSERT INTO `lm_admin` VALUES ('1', 'admin', 'e3ceb5881a0a1fdaad01296d7554868d', '管理员', '13838383838', '138@gmail.com', '1', '1', '/static/upload/admincenter/2018-12/user3-128x128.jpg', '0', '2018-12-02 11:51:51', '2018-12-02 11:51:51', '', 'a68738287709c96abb8e15eef94fd910', '1545208139');
-INSERT INTO `lm_admin` VALUES ('2', 'test', '111111', '测试', '13909820984', '213@qq.com', '0', '1', null, '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51', '', '0', '0');
-INSERT INTO `lm_admin` VALUES ('3', 'customer', '111111', '游客', '13288743837', '123@qq.com', '0', '0', '', '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51', '', '0', '0');
-INSERT INTO `lm_admin` VALUES ('4', 'tester', '96e79218965eb72c92a549dd5a330112', '测试用户', '13221234543', '231@gmail.com', '0', '1', '', '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51', '', '0', '0');
+INSERT INTO `lm_admin` VALUES ('1', 'admin', 'e3ceb5881a0a1fdaad01296d7554868d', '管理员', '13838383838', '138@gmail.com', '1', '1', '/static/upload/admincenter/2019-01/04/e6BCD_1546614717.jpg', '0', '2018-12-01 03:51:51', '2018-12-01 03:51:51', '2019-01-07 12:59:53', '::1', '', 'a68738287709c96abb8e15eef94fd910', '1546865993');
+INSERT INTO `lm_admin` VALUES ('2', 'test', '111111', '测试', '13909820984', '213@qq.com', '0', '1', null, '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51', null, null, '', '0', '0');
+INSERT INTO `lm_admin` VALUES ('3', 'customer', '111111', '游客', '13288743837', '123@qq.com', '0', '0', '', '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51', null, null, '', '0', '0');
+INSERT INTO `lm_admin` VALUES ('4', 'tester', '96e79218965eb72c92a549dd5a330112', '测试用户', '13221234543', '231@gmail.com', '0', '1', '', '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51', null, null, '', '0', '0');
 
 -- ----------------------------
 -- Table structure for lm_admin_copy
@@ -144,7 +146,7 @@ CREATE TABLE `lm_menu` (
   `updated_at` int(10) unsigned DEFAULT NULL,
   `show` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
 
 -- ----------------------------
 -- Records of lm_menu
@@ -172,6 +174,7 @@ INSERT INTO `lm_menu` VALUES ('26', '2', '分配资源', '14', '100', 'fa fa-th'
 INSERT INTO `lm_menu` VALUES ('33', '0', 'CMF系统', null, '100', 'fa-file-text', '', null, '1', '0', '2018', '2018', '0');
 INSERT INTO `lm_menu` VALUES ('34', '1', '文章菜单分类', '33', '100', 'fa-ge', '', null, '1', '0', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('35', '1', '文章分类管理', '34', '100', 'fa-adn', 'MenuWebController.Index', null, '1', '1', null, null, '0');
+INSERT INTO `lm_menu` VALUES ('36', '1', '文章管理', '34', '100', 'fa-file-text-o', 'MenuWebController.Index', null, '1', '1', '2019', '2019', '0');
 
 -- ----------------------------
 -- Table structure for lm_menu_copy
@@ -214,28 +217,29 @@ DROP TABLE IF EXISTS `lm_menu_web`;
 CREATE TABLE `lm_menu_web` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL COMMENT '菜单名称',
+  `icon` varchar(255) DEFAULT NULL COMMENT '图标',
   `type` tinyint(3) unsigned NOT NULL COMMENT '1频道页；2跳转页；3栏目页；4单页',
-  `model_id` int(11) DEFAULT NULL COMMENT '模型ID',
-  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级Id',
+  `parent_id` int(10) unsigned DEFAULT '0' COMMENT '父级Id',
   `list_tpl` varchar(255) DEFAULT NULL COMMENT '列表页模板',
+  `page_tpl` varchar(255) DEFAULT NULL COMMENT '页面模型',
   `article_tpl` varchar(255) DEFAULT NULL COMMENT '文章页模板',
   `url` varchar(255) DEFAULT NULL COMMENT 'type=2 时的跳转地址',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0停用；1正常；',
-  `sort` tinyint(3) unsigned DEFAULT '100' COMMENT '排序',
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
   `img` varchar(255) DEFAULT NULL COMMENT 'type=4 的缩略图',
   `seo_title` varchar(255) DEFAULT NULL,
   `seo_desc` varchar(255) DEFAULT NULL,
   `content` text COMMENT 'type=4 的页面内容',
-  `son_num` int(11) NOT NULL DEFAULT '0',
-  `level` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='前端菜单/文章分类';
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='前端菜单/文章分类';
 
 -- ----------------------------
 -- Records of lm_menu_web
 -- ----------------------------
-INSERT INTO `lm_menu_web` VALUES ('1', '就发大水', '1', '1', '0', 'jk', '；l', null, '0', '100', null, null, null, null, '0', '0');
-INSERT INTO `lm_menu_web` VALUES ('2', '范德萨', '1', '1', '1', null, null, null, '0', '100', null, null, null, null, '0', '0');
+INSERT INTO `lm_menu_web` VALUES ('1', '就发大水', null, '1', '0', 'jk', '1', '；l', null, '1', '100', null, null, null, null);
+INSERT INTO `lm_menu_web` VALUES ('2', '范德萨', null, '1', '1', '', '0', '', '', '1', '100', '', '123456', '', '');
+INSERT INTO `lm_menu_web` VALUES ('3', '测试二', null, '2', '2', '', '0', '', '', '1', '100', '', '21', '21', '');
+INSERT INTO `lm_menu_web` VALUES ('6', '首页', 'fa-home', '2', null, '', null, '', '/home', '1', '100', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for lm_role

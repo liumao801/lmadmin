@@ -1,11 +1,13 @@
-
 <!-- 验证插件 -->
 <script src="/static/plugins/jquery-validation/jquery.validate.min.js"></script>
 <script src="/static/plugins/jquery-validation/localization/messages_zh.min.js"></script>
 <!-- 针对当前主题进行简单封装，精简代码 -->
-<script src="/static/modules/admin/js/lmvalidate.js"></script>
+<script src="/static/lm800/js/lmvalidate.js"></script>
+<script src="/static/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="/static/lm800/js/lmajaxForm.js"></script>
 
 <script>
+    // $("[name='my-checkbox']").bootstrapSwitch();
     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
     CKEDITOR.replace( 'Content' , {
         customConfig: '/static/plugins/ckeditor/lm-common-config.js'
@@ -18,9 +20,10 @@
         ParentSelectInit('{{.parent}}');
         //附值
         $("#Type").selectpicker('val','{{.m.Type}}');
-        $("#Status").selectpicker('val','{{.m.Status}}');
+        switchState("#Status", '{{.m.Status}}')
         //验证
         validateInfo();
+        changeShow('#Type', 0)
     }
     function ParentSelectInit(curPid){
         var url = '{{urlfor "MenuWebController.ParentTreeGrid"}}'
@@ -51,27 +54,15 @@
             }
         });
     }
-    //区域只能是一级节点，不能有父节点
-    jQuery.validator.methods.TypeCheck = function (value, element, param) {
-        //如果为空，直接过
-        if (value.length == 0) return true;
-        var p = $("#Parent").selectpicker('val')
-        if (value === "0" && p!="0"){
-            return false
-        }
-        return true
-    }
+
     //表单验证及AJAX提交
     function validateInfo() {
-        var $thisForm = $('#thisForm');
+        var $thisForm = $('.vajaxFormCheckNoJump');
         $thisForm.lmvalidate({
             rules: {
                 Title: {
                     maxlength: 32,
                     required: true
-                },
-                Icon: {
-                    maxlength: 32,
                 },
                 Sort: {
                     digits:true,
@@ -80,21 +71,20 @@
                 },
                 Type:{
                     required: true,
-                    TypeCheck:true
+                    //TypeCheck:true
                 },
-                LinkUrl:{
-                    UrlLinkCheck:true
-                }
             },
             messages: {
-                Type:{
-                    TypeCheck:"区域只能是一级节点，不能有父节点"
-                },
-                LinkUrl:{
-                    UrlLinkCheck:"您输入的UrlFor值并不能解析为有效的地址"
-                }
+                // Type:{
+                //     TypeCheck:"区域只能是一级节点，不能有父节点"
+                // },
+                // LinkUrl:{
+                //     UrlLinkCheck:"您输入的UrlFor值并不能解析为有效的地址"
+                // }
             },
             submitHandler: function (form) {
+                ajax2Form($thisForm)
+                return false;
                 var url = '{{ urlfor "MenuWebController.Edit"}}'
                 var data = $thisForm.serialize();
                 $.lmpost(url, data, function (re) {
@@ -111,16 +101,8 @@
             }
         });
     }
-    function chkUrlFor(){
-        $("#LinkUrl").valid();
-    }
-    function urlForChange(ctrl){
-        var v = $.trim($(ctrl).val()).replace(/，| /g,",")
-        $(ctrl).val(v)
-        chkUrlFor();
-    }
     function FormSubmit() {
         $("#thisForm").submit();
     }
-
+    // console.log()
 </script>

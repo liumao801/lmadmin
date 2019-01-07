@@ -7,23 +7,23 @@ import (
 
 type MenuWeb struct {
 	Id			int
-	Title 		string
+	Title 		string		`orm"size(64)"`
+	Icon 		string		`orm"size(64)"`
 	Type 		int8
-	ModelId 	int
+	//PageTpl 	string		`orm"size(64)"`
 	Parent 		*MenuWeb	`orm:"null;rel(fk)"`
 	Sons 		[]*MenuWeb	`orm:"reverse(many)"`
-	SonNum 		int
-	//ParentId 		int
-	ListTpl 	string
-	ArticleTpl 	string
-	Url 		string
+	SonNum 		int			`orm:"-"`
+	ListTpl 	string		`orm"size(64)"`
+	ArticleTpl 	string		`orm"size(64)"`
+	Url 		string		`orm"size(64)"`
 	Status 		int8
 	Sort 		uint8
 	Img 		string
 	SeoTitle 	string
 	SeoDesc 	string
 	Content 	string
-	Level 		int
+	Level 		int			`orm:"-"`
 	HtmlDisabled 	int 	`orm:"-"`
 }
 
@@ -31,7 +31,7 @@ type MenuWebQueryParam struct {
 	BaseQueryParam
 	TitleLike 	string
 	Type 		int
-	ParentId 		int
+	ParentId 	int
 	Status 		int8
 }
 

@@ -105,6 +105,8 @@ func (c *HomeController) loginDo() {
 		c.Ctx.SetCookie(rememberKey, "", 1)
 	}
 	u.RememberOut = m.RememberOut * 3600 + int(time.Now().Unix())
+	u.LoginAt = time.Now()	// 最后登录时间
+	u.LoginIp = c.Ctx.Input.IP()	// 最后登录IP
 	orm.NewOrm().Update(u)
 	if u.Status == enums.Disabled {
 		c.JsonResult(enums.JRCodeFailed, "用户被禁用，请联系管理员", "")

@@ -2,7 +2,7 @@
 <section class="content-header">
     <h1>
         文章分类管理
-        <small>管理后台左侧菜单、按钮等需要加入到权限控制的资源</small>
+        <small>管理文章分类信息、前端菜单资源</small>
     </h1>
     <ol class="breadcrumb">
         <li>
@@ -23,8 +23,8 @@
                         <div class="col-md-6">
                             <div class="btn-group">
                             {{ if .canEdit}}
-                                <button class="btn btn-info" href="javascript:;" onclick="EditFun()">
-                                    <i class="fa fa-plus"></i> 添加</button>
+                                <a class="btn btn-info" href="{{urlfor "MenuWebController.Edit"}}" >
+                                    <i class="fa fa-plus"></i> 添加</a>
                             {{end}}
                             </div>
                         </div>
@@ -41,6 +41,7 @@
                     <table id="treeGrid" class="table  table-bordered table-hover margin-top-10">
                         <thead>
                         <th>分类名称</th>
+                        <th class="line-center hidden-xs hidden-sm">图标</th>
                         <th class="line-center">类别</th>
                         <th class="hidden-xs hidden-sm">地址</th>
                         <th class="line-center hidden-xs hidden-sm">状态</th>

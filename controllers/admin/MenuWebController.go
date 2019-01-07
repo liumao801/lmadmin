@@ -2,6 +2,7 @@ package admin
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
@@ -13,13 +14,13 @@ type MenuWebController struct {
 
 func (c *MenuWebController) Prepare() {
 	c.AdminBaseController.Prepare()
-
-	types := []string{1:"频道页", 2:"跳转页", 3:"栏目页", 4:"单页"}
-	c.Data["Types"] = types
 }
 
 func (c *MenuWebController) Index() {
 	c.Data["activeSidebarUrl"] = c.URLFor(c.ctrlName + "." + c.actiName)
+
+	types := []string{1:"频道页", 2:"跳转页", 3:"栏目页", 4:"单页"}
+	c.Data["Types"] = types
 	// 页面模板设置
 	c.setTpl()
 	layoutSections := make(map[string]string)
@@ -43,7 +44,7 @@ func (c *MenuWebController) Edit() {
 	if c.Ctx.Request.Method == "POST" {
 		c.Save()
 	}
-	Id, _ := c.GetInt("id", 0)
+	Id, _ := c.GetInt(":id", 0)
 	m := &models.MenuWeb{}
 	var err error
 	if Id == 0 {
@@ -84,6 +85,7 @@ func (c *MenuWebController) Save() {
 	parentId, _ := c.GetInt("Parent", 0)
 	// 获取 form 里面的值
 	if err = c.ParseForm(&m); err != nil {
+		beego.Info(err)
 		c.JsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
 	}
 	// 获取父节点
@@ -96,14 +98,20 @@ func (c *MenuWebController) Save() {
 		}
 	}
 	if m.Id == 0 {
+		beego.Info("mmm========", m)
 		if _, err = o.Insert(&m); err == nil {
-			c.JsonResult(enums.JRCodeSucc, "添加成功", m.Id)
+			obj := map[string]string{"url": beego.URLFor(c.ctrlName + ".Index")}
+
+			c.JsonResult(enums.JRCode302, "添加成功", obj)
 		} else {
+			beego.Info("添加失败", err)
 			c.JsonResult(enums.JRCodeFailed, "添加失败", m.Id)
 		}
 	} else {
 		if _, err = o.Update(&m); err == nil {
-			c.JsonResult(enums.JRCodeSucc, "编辑成功", m.Id)
+			obj := map[string]string{"url": beego.URLFor(c.ctrlName + ".Index")}
+
+			c.JsonResult(enums.JRCode302, "编辑成功", obj)
 		} else {
 			c.JsonResult(enums.JRCodeFailed, "编辑失败", m.Id)
 		}

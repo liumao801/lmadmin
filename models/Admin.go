@@ -25,6 +25,8 @@ type Admin struct {
 	MenuUrlForList 	[]string		`orm:"-"`
 	CreatedAt		time.Time 		`orm:"auto_now_add;type(datetime)"`
 	UpdatedAt 		time.Time 		`orm:"auto_now_add;type(datetime)"`
+	LoginAt 		time.Time 		`orm:"auto_now_add;type(datetime)"`
+	LoginIp			string			`orm:"size(16)"`
 }
 
 /**

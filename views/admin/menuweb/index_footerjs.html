@@ -55,6 +55,11 @@
             }
             html.push('<tr data-tt-id="' + e.Id + '" data-tt-parent-id="' + parentid + '" data-SonNum="'+e.SonNum+'">');
             html.push('<td class="ellipsis" title="' + e.Title + '">' + e.Title + '</td>');
+            html.push('<td class="line-center hidden-xs hidden-sm">');
+            if (e.Icon && e.Icon.length > 0) {
+                html.push('<label class="label label-primary"><i class="fa ' + e.Icon + '"></i></label>')
+            }
+            html.push('</td>');
             html.push('<td class="line-center">' + GetTypeText(e.Type) + '</td>');
             html.push('<td class="hidden-xs hidden-sm ellipsis" title="' + e.Url + '">' + e.Url + '</td>');
             html.push('<td class="line-center hidden-xs hidden-sm">' + GetStatusText(e.Status) + '</td>');
