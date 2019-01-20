@@ -135,7 +135,8 @@ function changeShow(self, setself=1) {
 	console.log('show', showclass, 'hide', hideclass, 'disa', disa)
 	if(disa==1) {
 		$(hideclass).removeClass('show').addClass('hide').hide();
-		$(hideclass).contents().find('input, textarea, select').attr({'disabled':true});
+        // $(hideclass).contents().find('input, textarea, select').attr({'disabled':true});
+        $(hideclass).contents().find('input, select').attr({'disabled':true});
 		$(showclass).removeClass('hide').addClass('show').show();
 		$(showclass).contents().find('input, textarea, select').attr({'disabled':false});
 	} else {

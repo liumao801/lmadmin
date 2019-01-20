@@ -32,6 +32,9 @@ func (c *TestController) Upload() {
 
 
 
+func (c *TestController) AdminTest() {
+	c.TplName = "admin/test.html"
+}
 func (c *TestController) Test() {
 	c.TplName = "test/test.html"
 
