@@ -26,6 +26,9 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// config.defaultLanguage = 'zh-cn';
 	config.language = 'zh-cn';
+
+	config.allowedContent = true; 	// 抓取什么就是什么；不过滤html标签
+	config.autoGrow_minHeight = 200;	// 编辑器可以采用的最小高度
 	
 	config.filebrowserUploadUrl = '/common/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
 	// config.filebrowserUploadUrl = '/upload/commonupload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 

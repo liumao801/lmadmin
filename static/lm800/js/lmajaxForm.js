@@ -121,17 +121,35 @@ $(function(){
  */
 $(function () {
     $('.ajaxFormCheckNoJump').ajaxForm({
+        // $('.ajaxFormCheckNoJump').ajaxSubmit({
         beforeSubmit: ajaxFormCheck, // 此方法主要是提交前执行的方法，根据需要设置
         success: ajaxFormNoJump, // 这是提交后的方法
         dataType: 'json',
         forceSync: true,
     });
+
+    // 同步 ckeditor 内容到文本框
+    $("body").on('click', ckeditorSync)
 });
+
+function  ckeditorSync() {
+    if (CKEDITOR.instances == undefined || typeof CKEDITOR.instances == 'undefined') {
+        return '';
+    }
+    // $('#Content').val(CKEDITOR.instances.Content.getData());
+    for ( instance in CKEDITOR.instances )
+    {
+        // console.log('CKEDITOR.instances', CKEDITOR.instances[instance].getData())
+        $("#"+ CKEDITOR.instances[instance].name).val(CKEDITOR.instances[instance].getData())
+        CKEDITOR.instances[instance].updateElement();
+    }
+}
 //提交数据之前检测信息合法
 function ajaxFormCheck() {
     console.log('ajaxFormCheckNoJump')
     console.info($(this))
     validateInfo()
+    ckeditorSync()
     var check_ok = true;
     $(".no-space").each(function(){
         var nowVal = $.trim($(this).val());
