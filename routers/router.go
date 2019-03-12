@@ -72,6 +72,7 @@ func init() {
 			beego.NSRouter("menuweb/edit/?:id", &admin.MenuWebController{}, "Get,Post:Edit"),
 			beego.NSRouter("menuweb/parent", &admin.MenuWebController{}, "Post:ParentTreeGrid"),
 			beego.NSRouter("menuweb/delete", &admin.MenuWebController{}, "Post:Delete"),
+			beego.NSRouter("menuweb/updatesort", &admin.MenuWebController{}, "Post:UpdateSort"),
 
 		)
 	beego.AddNamespace(ns_admin)
