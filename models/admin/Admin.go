@@ -93,8 +93,8 @@ func AdminPageList(params *AdminQueryParam) ([]*Admin, int64) {
 	if len(params.Tel) > 0 {
 		query = query.Filter("tel", params.Tel)
 	}
-	if len(params.SearchStatus) > -10 {
-		query.Filter("status", params.SearchStatus)
+	if len(params.SearchStatus) > 0 {
+		query = query.Filter("status", params.SearchStatus)
 	}
 
 	total, _ := query.Count()

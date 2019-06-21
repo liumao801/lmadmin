@@ -24,7 +24,7 @@
         });
         //清除搜索
         $("#btnClearSearch").on("click", function (e) {
-            $('select', $searchForm).selectpicker('val', '-10');
+            $('select', $searchForm).selectpicker('val', '');
             $('input', $searchForm).val('');
             refreshToFirstPage();
         });
@@ -68,7 +68,7 @@
                 //params的自带参数类型由queryParamsType决定
                 params.TitleLike =$.trim($('.searchForm input[name="Title"]').val());
                 params.SubtitleLike = $.trim($('.searchForm input[name="Subtitle"]').val());
-                params.Status = parseInt($('.searchForm select[name="Status"]').selectpicker('val')) ;
+                params.Status = $('.searchForm select[name="Status"]').selectpicker('val');
                 params.MenuWebId = parseInt($('.searchForm select[name="MenuWebId"]').selectpicker('val'));
                 return params;
             },

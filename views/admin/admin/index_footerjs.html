@@ -24,7 +24,7 @@
         });
         //清除搜索
         $("#btnClearSearch").on("click", function (e) {
-            $('select', $searchForm).selectpicker('val', '-10');
+            $('select', $searchForm).selectpicker('val', '');
             $('input', $searchForm).val('');
             refreshToFirstPage();
         });

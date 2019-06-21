@@ -33,7 +33,7 @@ type MenuWebQueryParam struct {
 	TitleLike 	string
 	Type 		int
 	ParentId 	int
-	Status 		int8
+	Status 		string
 }
 
 func (m *MenuWeb) TableName() string {
@@ -97,7 +97,7 @@ func MenuWebPageList(params *MenuWebQueryParam) ([]*MenuWeb, int64) {
 	if params.Type > 0 {
 		query = query.Filter("type", params.Type)
 	}
-	if params.Status > -10 {
+	if len(params.Status) > 0 {
 		query = query.Filter("status", params.Status)
 	}
 	if params.ParentId > 0 {
@@ -175,7 +175,7 @@ func MenuWebListForMap(params *MenuWebQueryParam) ([]*MenuWeb) {
 	if params.Type > 0 {
 		query = query.Filter("type", params.Type)
 	}
-	if params.Status > 10 {
+	if len(params.Status) > 0 {
 		query = query.Filter("status", params.Status)
 	}
 	if params.ParentId > 0 {

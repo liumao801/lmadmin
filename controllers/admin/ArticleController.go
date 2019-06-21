@@ -23,7 +23,7 @@ func (c *ArticleController) Prepare() {
 func (c *ArticleController) Index() {
 	c.Data["activeSidebarUrl"] = c.URLFor(c.ctrlName + "." + c.actiName)
 	c.Data["showMoreQuery"] = true
-	param := &models.MenuWebQueryParam{Status:1, Type:3}
+	param := &models.MenuWebQueryParam{Status:"1", Type:3}
 	c.Data["articleTypes"] = models.MenuWebListForMap(param)
 
 	// 页面模板设置
@@ -71,7 +71,7 @@ func (c *ArticleController) Edit() {
 	} else {
 		// 没有 Id 表示编辑文章
 	}
-	param := &models.MenuWebQueryParam{Status:1, Type:3}
+	param := &models.MenuWebQueryParam{Status:"1", Type:3}
 	c.Data["articleTypes"] = models.MenuWebListForMap(param)
 
 	c.Data["m"] = m

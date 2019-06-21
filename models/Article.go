@@ -34,7 +34,7 @@ type ArticleQueryParam struct {
 	KeywordsLike 	string
 	MenuWebId 		int
 	IsBack 			int8
-	Status 			int8
+	Status 			string
 }
 
 func (m *Article) TableName() string {
@@ -66,10 +66,10 @@ func ArticlePageList(params *ArticleQueryParam) ([]*Article, int64) {
 	query = query.Filter("title__istartswith", params.TitleLike)
 	query = query.Filter("subtitle__istartswith", params.SubtitleLike)
 	query = query.Filter("keywords__istartswith", params.KeywordsLike)
-	if params.MenuWebId > -10 {
+	if params.MenuWebId > 0 {
 		query = query.Filter("menu_web_id", params.MenuWebId)
 	}
-	if params.Status > -10 {
+	if len(params.Status) > 0 {
 		query = query.Filter("status", params.Status)
 	}
 	if params.IsBack != 0 {

@@ -21,7 +21,7 @@
                 <div class="box box-solid collapsed-box">
                     <div class="box-header with-border">
                         <select name="MenuWebId" class="form-control input-wd-md bs-select" data-width="200px">
-                            <option value="-10">- 全部 -</option>
+                            <option value="">- 全部 -</option>
                             {{range $key, $item := .articleTypes}}
                                 <option value="{{$item.Id}}">{{$item.Title}}</option>
                             {{end}}
@@ -44,7 +44,7 @@
                     <div class="box-body" style="display: none;">
                         <input type="text" name="Subtitle" class="form-control pull-left input-wd-md" placeholder="副标题">
                         <select name="Status" class="form-control bs-select" data-width="150px">
-                            <option value="-10">- 全部状态 -</option>
+                            <option value="">- 全部状态 -</option>
                             <option value="0">审核中</option>
                             <option value="-1">审核失败</option>
                             <option value="1">审核通过</option>
