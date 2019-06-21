@@ -59,17 +59,17 @@
     //bootstrap table data init
     function dataGridInit() {
         $dataGrid.bootstrapTable({
-            url: '{{ urlfor "AdminController.DataGrid"}}',
+            url: '{{ urlfor "ArticleController.DataGrid"}}',
             method: 'post',
             sidePagination: 'server', //服务器端用 server
             idField: 'Id',
             queryParamsType: 'limit',
             queryParams: function (params) {
                 //params的自带参数类型由queryParamsType决定
-                params.UsernameLike =$.trim($('.searchForm input[name="Username"]').val());
-                params.RealNameLike = $.trim($('.searchForm input[name="RealName"]').val());
-                params.Tel = $.trim($('.searchForm input[name="Tel"]').val());
-                params.SearchStatus = $('.searchForm select[name="Status"]').selectpicker('val');
+                params.TitleLike =$.trim($('.searchForm input[name="Title"]').val());
+                params.SubtitleLike = $.trim($('.searchForm input[name="Subtitle"]').val());
+                params.Status = parseInt($('.searchForm select[name="Status"]').selectpicker('val')) ;
+                params.MenuWebId = parseInt($('.searchForm select[name="MenuWebId"]').selectpicker('val'));
                 return params;
             },
             pagination: true,
@@ -99,22 +99,21 @@
                 align: 'center',
                 sortable: true,
             }, {
-                field: 'Username',
-                title: '用户名',
+                field: 'Title',
+                title: '标题',
             }, {
-                field: 'RealName',
-                title: '姓名',
+                field: 'Subtitle',
+                title: '副标题',
             }, {
-                field: 'IsSuper',
-                title: '是否超级管理员',
-                formatter: lmtheme.showyes
+                field: 'Desc',
+                title: '简述',
             }, {
-                field: 'Tel',
-                title: '手机号',
+                field: 'MenuWeb.Title',
+                title: '分类',
             }, {
                 field: 'Status',
                 title: '状态',
-                formatter:lmtheme.showenable,
+                formatter:lmtheme.showcheck,
             }, {
                 field: 'operate',
                 title: '操作',
@@ -175,31 +174,8 @@
         return "";
     }
 
-    function EditFun(Id) {
-        var title = '添加用户';
-        if (Id > 0) {
-            title = "编辑用户"
-        }
-        var url = '{{ urlfor "AdminController.Edit"}}' + '/' + Id;
-        layer.open({
-            type: 2,
-            title: title,
-            shadeClose: false,
-            shade: 0.2,
-            maxmin: true,
-            shift: 1,
-            area: ['1000px', '600px'],
-            content: url,
-            btn: ['保存', '关闭'],
-            yes: function (index, layero) {
-                var iframeWin = window[layero.find('iframe')[0]['name']];
-                iframeWin.FormSubmit();
-            }
-        });
-    }
-
     function DeleteFun() {
-        var url = '{{ urlfor "AdminController.Delete"}}';
+        var url = '{{ urlfor "ArticleController.Delete"}}';
         var rows = $dataGrid.bootstrapTable("getSelections")
         if (rows.length === 0) {
             layer.alert('请选择想要删除的项', {icon: 0, title: '提示'});

@@ -1,15 +1,15 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        后台用户管理
-        <small>管理后台用户</small>
+        文章信息管理
+        <small>管理文章信息资源</small>
     </h1>
     <ol class="breadcrumb">
         <li>
             <a href="{{urlfor "HomeController.Index"}}">
                 <i class="fa fa-dashboard"></i> 首页</a>
         </li>
-        <li class="active">后台用户</li>
+        <li class="active">文章信息管理</li>
     </ol>
 </section>
 <!-- Main content -->
@@ -20,8 +20,14 @@
             <form id="searchForm" class="searchForm">
                 <div class="box box-solid collapsed-box">
                     <div class="box-header with-border">
-                        <input type="text" name="Username" class="form-control pull-left input-wd-md" placeholder="用户名">
-                        <input type="text" name="RealName" class="form-control pull-left input-wd-md" placeholder="姓名">
+                        <select name="MenuWebId" class="form-control input-wd-md bs-select" data-width="200px">
+                            <option value="-10">- 全部 -</option>
+                            {{range $key, $item := .articleTypes}}
+                                <option value="{{$item.Id}}">{{$item.Title}}</option>
+                            {{end}}
+                        </select>
+                        <input type="text" name="Title" class="form-control pull-left input-wd-md" placeholder="标题">
+
                         <div class="btn-group">
                             <button type="button" class="btn btn-warning" id="btnSearch"><i class="fa fa-search"></i> 搜索</button>
                             <button type="button" class="btn btn-default" id="btnClearSearch"><i class="fa fa-eraser"></i> 清除</button>
@@ -36,12 +42,12 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body" style="display: none;">
-                        <input type="text" name="Tel" class="form-control pull-left input-wd-md" placeholder="手机号">
-                        <select name="Status" class="form-control bs-select" data-width="100px">
-                            <option value="-1">- 全部 -</option>
-                            <option value="-1">锁定</option>
-                            <option value="0">禁用</option>
-                            <option value="1">启用</option>
+                        <input type="text" name="Subtitle" class="form-control pull-left input-wd-md" placeholder="副标题">
+                        <select name="Status" class="form-control bs-select" data-width="150px">
+                            <option value="-10">- 全部状态 -</option>
+                            <option value="0">审核中</option>
+                            <option value="-1">审核失败</option>
+                            <option value="1">审核通过</option>
                         </select>
                     </div>
                     <!-- /.box-body -->
@@ -52,8 +58,8 @@
                 <div class="box-body">
                     <div class="btn-group" id="toolbar">
                     {{ if .canEdit}}
-                        <button class="btn btn-info" href="javascript:;" onclick="EditFun(0)">
-                            <i class="fa fa-plus"></i> 添加</button>
+                        <a class="btn btn-info" href="{{ urlfor "ArticleController.Edit"}}" >
+                            <i class="fa fa-plus"></i> 添加</a>
                     {{end}}
                     {{ if .canDelete}}
                         <button class="btn btn-danger table-btn-check-enable" disabled onclick="DeleteFun()">

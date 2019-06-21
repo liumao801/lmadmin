@@ -10,14 +10,8 @@ import (
 */
 func init() {
 	orm.RegisterModel(
-		new(Admin),
-		new(AdminLog),
 		new(Article),
-		new(Menu),
 		new(MenuWeb),
-		new(Role),
-		new(RoleMenuRel),
-		new(RoleAdminRel),
 		new(User),
 		new(Test),
 		)
@@ -33,18 +27,8 @@ func TableName(name string) string {
 }
 
 /**
- * 获取 Admin model 对应的表名
+ * 获取 User model 对应的表名
 */
-func AdminTBName() string {
-	return TableName("admin")
-}
-
-/**
- * 获取 Admin model 对应的表名
-*/
-func AdminLogTBName() string {
-	return TableName("admin_log")
-}
 func UserTBName() string {
 	return TableName("user")
 }
@@ -54,19 +38,6 @@ func ArticleTBName() string {
 func MenuWebTBName() string {
 	return TableName("menu_web")
 }
-func MenuTBName() string {
-	return TableName("menu")
-}
-func RoleTBName() string {
-	return TableName("role")
-}
-func RoleAdminRelTBName() string {
-	return TableName("role_admin_rel")
-}
-func RoleMenuRelTBName() string {
-	return TableName("role_menu_rel")
-}
-
 
 /**
  * 获取 Test model 对应的表名

@@ -1,0 +1,62 @@
+<div class="register-box">
+    <div class="register-logo">
+        <a href="/home/index/index.html"><b>Admin</b>LTE</a>
+    </div>
+
+    <div class="register-box-body border-radius5px background-btm">
+        <p class="login-box-msg"><span class="glyphicon glyphicon-tree-deciduous"></span> 新用户注册</p>
+
+        <form action="{{urlfor "home/UserController.Register"}}" class="ajaxFormNoCheckNoJump" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" name="Name" placeholder="姓名" required>
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" name="Username" class="form-control" placeholder="用户名" required>
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="Passwd" class="form-control" placeholder="密码" required>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="RePasswd" class="form-control" placeholder="确认密码" required>
+                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <div class="row no-space">
+                    <div class="col-xs-5">
+                    {{create_captcha}}
+                    </div>
+                    <div class="col-xs-7">
+                        <input name="captcha" id="captcha" class="form-control" type="text" required>
+                        <span class="glyphicon glyphicon-barcode form-control-feedback"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" name="Allow" value="1" required> 我已阅读并同意 <a href="#">服务条款</a>
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+
+                </div>
+                <!-- /.col -->
+            </div>
+            <div class="form-group has-feedback">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">注 册</button>
+            </div>
+        </form>
+
+        <div class="social-auth-links text-center">
+            <a href="{{urlfor "home/UserController.Login"}}" class="text-center">已有账号，返回登录</a>
+        </div>
+    </div>
+    <!-- /.form-box -->
+</div>
+<!-- /.register-box -->

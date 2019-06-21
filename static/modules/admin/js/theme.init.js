@@ -30,11 +30,22 @@ var lmtheme = function () {
         if (val === 1 || val === "1") {
             return '<label class="label label-success label-sm"><i class="fa fa-check"></i> 启用</label>';
         } else if (val === 0 || val === "0") {
-            return '<label class="label label-danger label-sm"><i class="fa fa-ban"></i> 禁用</label>';
-        } else if (val === -1 || val === "-1")
-            return '<label class="label label-info label-sm"><i class="fa fa-trash"></i> 删除</label>';
-        else {
-            return "";
+            return '<label class="label label-danger label-sm"><i class="fa fa-ban"></i> 已删除</label>';
+        } else if (val === -1 || val === "-1") {
+            return '<label class="label label-info label-sm"><i class="fa fa-trash"></i> 禁用</label>';
+        } else {
+            return "未知";
+        }
+    }
+    showcheck = function (val) {
+        if (val === 1 || val === "1") {
+            return '<label class="label label-success label-sm"><i class="fa fa-check-square-o"></i> 审核通过</label>';
+        } else if (val === -1 || val === "-1") {
+            return '<label class="label label-danger label-sm"><i class="fa fa-ban"></i> 审核失败</label>';
+        } else if (val === 0 || val === "0") {
+            return '<label class="label label-warning label-sm"><i class="fa fa-question-circle"></i> 审核中</label>';
+        } else {
+            return "未知";
         }
     }
     showyes = function (val) {
@@ -315,6 +326,8 @@ var lmtheme = function () {
         showlongstr: showlongstr,
         //显示启用或者禁用
         showenable: showenable,
+        //显示审核状态
+        showcheck: showcheck,
         //显示是否
         showyes: showyes,
         //显示枚举

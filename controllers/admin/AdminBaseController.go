@@ -8,7 +8,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
-	"liumao801/lmadmin/models"
+	adminModelNS "liumao801/lmadmin/models/admin"
 	"liumao801/lmadmin/utils"
 	"strings"
 )
@@ -17,7 +17,7 @@ type AdminBaseController struct {
 	controllers.BaseController
 	ctrlName 	string
 	actiName 	string
-	currAdmin 	models.Admin
+	currAdmin 	adminModelNS.Admin
 }
 
 
@@ -59,7 +59,7 @@ func (c *AdminBaseController) checkActionAuthor(ctrlName, actiName string) bool 
 	// 从 session 获取用户信息
 	admin := c.GetSession("admin")
 	// 类型断言
-	v, ok := admin.(models.Admin)
+	v, ok := admin.(adminModelNS.Admin)
 	if ok {
 		// 判断是否超级管理员，是则直接通过权限检测
 		if v.IsSuper == true {
@@ -110,13 +110,13 @@ func (c *AdminBaseController) checkAuthor(ignores ...string) {
 func (c *AdminBaseController) adapterAdminInfo() {
 	a := c.GetSession("admin")
 	if a != nil {
-		c.currAdmin = a.(models.Admin)
+		c.currAdmin = a.(adminModelNS.Admin)
 		c.Data["admin"] = a
 	} else {
 		// 开发阶段省略登录
 		// 上线记得删除
 		c.setAdmin2Session(1)
-		noA , _ := models.AdminOne(1)
+		noA , _ := adminModelNS.AdminOne(1)
 		c.currAdmin = *noA
 		c.Data["admin"] = a
 	}
@@ -124,13 +124,13 @@ func (c *AdminBaseController) adapterAdminInfo() {
 
 // 获取用户信息（包括菜单 UrlFor） 保存至 Session
 func (c *AdminBaseController) setAdmin2Session(adminId int) error {
-	m, err := models.AdminOne(adminId)
+	m, err := adminModelNS.AdminOne(adminId)
 	if err != nil {
 		return err
 	}
 
 	// 获取这个用户能获取到的所有菜单列表
-	menuList := models.MenuTreeGridByAdminId(adminId, 100)
+	menuList := adminModelNS.MenuTreeGridByAdminId(adminId, 100)
 	for _, item := range menuList {
 		m.MenuUrlForList = append(m.MenuUrlForList, strings.TrimSpace(item.UrlFor))
 	}
@@ -189,7 +189,7 @@ func (c *AdminBaseController) OperationLog() error {
 	if c.currAdmin.Id == 0 {
 		return errors.New("暂时没有登录")
 	}
-	log := models.AdminLog{}
+	log := adminModelNS.AdminLog{}
 	log.Username = c.currAdmin.Username
 	log.Url = c.Ctx.Input.URL()
 	log.Ip = c.Ctx.Input.IP()
@@ -199,7 +199,7 @@ func (c *AdminBaseController) OperationLog() error {
 		log.Params = string(params)
 	}
 	log.Admin = &c.currAdmin
-	m, err := models.MenuOneByUrlFor(c.ctrlName + "." + c.actiName)
+	m, err := adminModelNS.MenuOneByUrlFor(c.ctrlName + "." + c.actiName)
 	if err == nil {
 		log.Menu = m
 	} else {

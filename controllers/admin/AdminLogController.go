@@ -2,7 +2,7 @@ package admin
 
 import (
 	"encoding/json"
-	"liumao801/lmadmin/models"
+	adminModelNS "liumao801/lmadmin/models/admin"
 )
 
 type AdminLogController struct {
@@ -25,10 +25,10 @@ func (c *AdminLogController) Index() {
 }
 func (c *AdminLogController) DataGrid() {
 	//直接反序化获取json格式的requestbody里的值（要求配置文件里 copyrequestbody=true）
-	var params models.AdminLogQueryParam
+	var params adminModelNS.AdminLogQueryParam
 	json.Unmarshal(c.Ctx.Input.RequestBody, &params)
 	//获取数据列表和总数
-	data, total := models.AdminLogPageList(&params)
+	data, total := adminModelNS.AdminLogPageList(&params)
 	//定义返回的数据结构
 	result := make(map[string]interface{})
 	result["total"] = total

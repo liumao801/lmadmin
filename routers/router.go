@@ -74,6 +74,12 @@ func init() {
 			beego.NSRouter("menuweb/delete", &admin.MenuWebController{}, "Post:Delete"),
 			beego.NSRouter("menuweb/updatesort", &admin.MenuWebController{}, "Post:UpdateSort"),
 
+			// 文章菜单路由
+			beego.NSRouter("article/index", &admin.ArticleController{}, "*:Index"),
+			beego.NSRouter("article/datagrid", &admin.ArticleController{}, "Post:DataGrid"),
+			beego.NSRouter("article/edit/?:id", &admin.ArticleController{}, "Get,Post:Edit"),
+			beego.NSRouter("article/delete", &admin.ArticleController{}, "Post:Delete"),
+
 		)
 	beego.AddNamespace(ns_admin)
 

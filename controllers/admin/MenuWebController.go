@@ -19,7 +19,7 @@ func (c *MenuWebController) Prepare() {
 func (c *MenuWebController) Index() {
 	c.Data["activeSidebarUrl"] = c.URLFor(c.ctrlName + "." + c.actiName)
 
-	types := []string{1:"频道页", 2:"跳转页", 3:"栏目页", 4:"单页"}
+	types := []string{1:"频道页（层级菜单）", 2:"跳转页（URL跳转）", 3:"栏目页（文章分类栏目）", 4:"单页（HTML页面）"}
 	c.Data["Types"] = types
 	// 页面模板设置
 	c.setTpl()
@@ -88,6 +88,9 @@ func (c *MenuWebController) Save() {
 		beego.Info(err)
 		c.JsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
 	}
+
+	c.validate(m) // 数据检测
+
 	// 获取父节点
 	if parentId > 0 {
 		parent, err = models.MenuWebOne(parentId)
@@ -98,7 +101,6 @@ func (c *MenuWebController) Save() {
 		}
 	}
 	if m.Id == 0 {
-		beego.Info("mmm========", m)
 		if _, err = o.Insert(&m); err == nil {
 			obj := map[string]string{"url": beego.URLFor(c.ctrlName + ".Index")}
 
@@ -114,6 +116,26 @@ func (c *MenuWebController) Save() {
 			c.JsonResult(enums.JRCode302, "编辑成功", obj)
 		} else {
 			c.JsonResult(enums.JRCodeFailed, "编辑失败", m.Id)
+		}
+	}
+}
+// 保存信息的验证
+func (c *MenuWebController) validate(m models.MenuWeb) {
+	if m.Type < 1 || m.Type > 4 {
+		c.JsonResult(enums.JRCodeFailed, "分类类型异常", "")
+	}
+
+	if m.Type == 2 {
+		// 跳转类型地址必须填写url地址
+		if m.Url == "" {
+			c.JsonResult(enums.JRCodeFailed, "请填写跳转地址", "")
+		}
+	}
+
+	if m.Type == 4 {
+		// 单页类型页面内容必须填
+		if m.Content == "" {
+			c.JsonResult(enums.JRCodeFailed, "请编辑页面内容", "")
 		}
 	}
 }

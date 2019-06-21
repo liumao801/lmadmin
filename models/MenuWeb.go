@@ -13,6 +13,7 @@ type MenuWeb struct {
 	//PageTpl 	string		`orm"size(64)"`
 	Parent 		*MenuWeb	`orm:"null;rel(fk)"`
 	Sons 		[]*MenuWeb	`orm:"reverse(many)"`
+	Articles	[]*Article	`orm:"reverse(many)"`
 	SonNum 		int			`orm:"-"`
 	ListTpl 	string		`orm"size(64)"`
 	ArticleTpl 	string		`orm"size(64)"`
@@ -72,7 +73,6 @@ func menuWebAddSons(cur *MenuWeb, list, result []*MenuWeb) []*MenuWeb {
 	return result
 }
 
-
 /**
  * 获取分页数据
 */
@@ -97,18 +97,20 @@ func MenuWebPageList(params *MenuWebQueryParam) ([]*MenuWeb, int64) {
 	if params.Type > 0 {
 		query = query.Filter("type", params.Type)
 	}
-	if params.Status > 0 {
-		query.Filter("status", params.Status)
+	if params.Status > -10 {
+		query = query.Filter("status", params.Status)
 	}
 	if params.ParentId > 0 {
-		query.Filter("par_id", params.ParentId)
+		query = query.Filter("par_id", params.ParentId)
 	}
 
 	total, _ := query.Count()
 	query.OrderBy(sortorder).Limit(params.Limit, params.Offset).All(&data)
 	return data, total
 }
-
+/**
+ * 查询一个菜单信息
+ */
 func MenuWebOne(id int) (*MenuWeb, error) {
 	o := orm.NewOrm()
 	m := MenuWeb{Id: id}
@@ -146,4 +148,40 @@ func MenuWebTreeGrid4Parent(id int) []*MenuWeb {
 		}
 	}
 	return tree
+}
+
+
+/**
+ * 根据条件查询数据信息
+ */
+func MenuWebListForMap(params *MenuWebQueryParam) ([]*MenuWeb) {
+	query := orm.NewOrm().QueryTable(MenuWebTBName())
+	data := make([]*MenuWeb, 0)
+	// 默认排序
+	sortorder := "Id"
+	switch params.Sort {
+	case "CreatedAt":
+		sortorder = "CreatedAt"
+	case "IsSuper":
+		sortorder = "IsSuper"
+	default:
+		sortorder = "sort"
+	}
+	if strings.ToLower(params.Order) == "desc" {
+		sortorder = "-" + sortorder
+	}
+
+	query = query.Filter("title__istartswith", params.TitleLike)
+	if params.Type > 0 {
+		query = query.Filter("type", params.Type)
+	}
+	if params.Status > 10 {
+		query = query.Filter("status", params.Status)
+	}
+	if params.ParentId > 0 {
+		query = query.Filter("par_id", params.ParentId)
+	}
+
+	query.OrderBy(sortorder).Limit(params.Limit, params.Offset).All(&data)
+	return data
 }
