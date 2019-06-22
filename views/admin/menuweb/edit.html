@@ -1,0 +1,121 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        文章分类管理
+        <small>管理前端菜单和文章分类信息</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{urlfor "HomeController.Index"}}">
+                <i class="fa fa-dashboard"></i> 首页</a>
+        </li>
+        <li class="active">文章分类管理</li>
+    </ol>
+</section>
+<!-- Content Header (Page header) -->
+<section class="content container-fluid">
+    <form id="thisFo0rm" class="margin5px padding15px bg-white ajaxFormCheckNoJump" method="post" action="{{ urlfor "MenuWebController.Edit"}}">
+        <input type="hidden" name="Id" id="Id" value="{{.m.Id}}">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <div class="tip-title"> <label>菜单名称</label> </div>
+                    <input type="text" name="Title" class="form-control" placeholder="长度不超过32" value="{{.m.Title}}" required>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <div class="tip-title"> <label>父节点</label> </div>
+                    <select name="Parent" id="Parent" class="form-control" data-live-search="true">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>图标（<a href="http://www.runoob.com/font-awesome/fontawesome-reference.html" target="_blank">图标参考手册</a> ）</label>
+                    <input type="text" name="Icon" class="form-control" placeholder="长度不超过32" value="{{.m.Icon}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <div class="tip-title"> <label>类型</label> </div>
+                    <select name="Type" id="Type" class="form-control bs-select change-show">
+                        <option data-disa="1" data-show="" data-hide=".hide-box" value="1">频道页（层级菜单）</option>
+                        <option data-disa="1" data-show=".url-box" data-hide=".hide-box" value="2">跳转页（URL跳转）</option>
+                        <option data-disa="1" data-show=".list-tpl-box" data-hide=".hide-box" value="3">栏目页（文章分类栏目）</option>
+                        <option data-disa="1" data-show=".article-info-box" data-hide=".hide-box" value="4">单页（HTML页面）</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <div class="tip-title"> <label>顺序（可取值范围 0~255）</label> </div>
+                    <input type="text" name="Sort" class="form-control" placeholder="非负整数" value="{{.m.Sort}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <div class="tip-title"> <label>状态</label> </div>
+                    <div class="switch">
+                        <input type="checkbox" name="Status" id="Status" value="1" data-on-color="success" data-off-color="danger"  data-on-text="启用" data-off-text="停用"/>
+                    </div>
+                    <!-- <select name="Status" id="Status" class="form-control bs-select">
+                        <option value="1">启用</option>
+                        <option value="0">停用</option>
+                    </select> -->
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 hide-box hide url-box">
+                <div class="form-group">
+                    <div class="tip-title"> <label>链接地址</label> </div>
+                    <input type="text" name="Url" class="form-control" placeholder="长度不超过32" value="{{.m.Url}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 hide-box hide list-tpl-box">
+                <div class="form-group">
+                    <div class="tip-title"> <label>列表页模板</label> </div>
+                    <select name="ListTpl" id="ListTpl" class="form-control bs-select">
+                    {{ range $key, $val := .ListTpls}}
+                        <option value="{{$key}}">{{$val}}</option>
+                    {{end}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 hide-box hide article-info-box">
+                <div class="form-group">
+                    <div class="tip-title"> <label>文章页模板</label> </div>
+                    <select name="ArticleTpl" id="ArticleTpl" class="form-control bs-select">
+                    {{ range $key, $val := .ArticleTpls}}
+                        <option value="{{$key}}">{{$val}}</option>
+                    {{end}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 hide-box hide article-info-box">
+                <div class="form-group">
+                    <div class="tip-title"> <label>SEO标题</label> </div>
+                    <input type="text" name="SeoTitle" class="form-control" placeholder="长度不超过32" value="{{.m.SeoTitle}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 hide-box hide article-info-box">
+                <div class="form-group">
+                    <div class="tip-title"> <label>SEO描述</label> </div>
+                    <input type="text" name="SeoDesc" class="form-control" placeholder="长度不超过32" value="{{.m.SeoDesc}}">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 hide-box hide article-info-box">
+                <div class="form-group">
+                    <div class="tip-title"> <label>页面内容</label> </div>
+                    <textarea name="Content" id="Content" rows="10" cols="80" placeholder="请输入内容">{{.m.Content}}</textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <div class="form-group">
+                    <label></label>
+                    <input type="submit" class="btn btn-info" value="提 交">
+                    <input type="reset" value="重 置" class="btn btn-primary margin-l20px">
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

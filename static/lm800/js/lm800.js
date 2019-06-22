@@ -1,17 +1,61 @@
 $(function () {
 	// 初始化 iCheck 选框
 	if ($(".icheck input").length > 0) {
-	    $('input').iCheck({
-	        checkboxClass: 'icheckbox_square-blue',
-	        radioClass: 'iradio_square-blue',
-	        increaseArea: '20%' /* optional */
-	    });
+	    var iCheckTime
+        if (typeof $(".icheck input").iCheck == 'undefined') {
+            iCheckTime = setInterval(initICheck, 50)
+        } else {
+            initICheck()
+        }
+	    function initICheck() {
+            $(".icheck input").iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+            clearInterval(iCheckTime)
+        }
     }
+    // 初始化 Switch 组件
     if ($(".switch input").length > 0) {
-    	console.log(".switch input", $(".switch input").length)
-        //$(".switch input").bootstrapSwitch()
+        var switchTime
+        if (typeof $(".switch input").bootstrapSwitch == 'undefined') {
+            switchTime = setInterval(initSwitch, 50)
+        } else {
+            initSwitch()
+        }
+        function initSwitch() {
+            $(".switch input").bootstrapSwitch()
+            if (switchTime != undefined) {
+                clearInterval(switchTime)
+            }
+        }
+        // $(".switch input").bootstrapSwitch()
 	}
 });
+/**
+ * 切换 switch 的状态
+ * item 对象或者对象id属性
+ * state 状态值
+ */
+function switchState(item, state) {
+    if (state != 0 && state != '' && state != null && state != undefined) {
+        state = true
+    } else {
+        state = false
+    }
+    if (typeof item == 'string') {
+        item = $(item)
+    }
+    if (typeof item.bootstrapSwitch == 'undefined') {
+        setTimeout(function () {
+            switchState(item, state)
+        }, 50)
+        return false
+    }
+    item.bootstrapSwitch('state', state)
+	item.attr('checked', state)
+}
 
 /* 密码显示 */
 $(".show-password").on('click', function(e){
@@ -23,27 +67,6 @@ $(".show-password").on('click', function(e){
 		$(show).attr('type', 'text')
 	}
 })
-
-/*搜索form导出数据*/
-$(function () {
-	$('body').on('click','.ajax-export-csv',function () {
-		var query = $(this).parents("form").serialize();
-		var url = $(this).attr('href');
-
-		window.location.href = url + '?' + query;
-		// $.ajax({
-		// 	type:"POST",
-		// 	data:{},            
-		// 	success: function(data,status){
-		// 		$("#ajax-data").html(data);
-		// 	}
-		// });	
-        return false;
-    });
-});
-
-
-
 /**
  * 去除空格
  */
@@ -65,170 +88,59 @@ function getQueryString(name) {
 }
 
 
-/**
- * ajaxform 表单提交
- * 提交前不检测
- * 失败不跳转
- */
-$(function(){
-	$(".ajaxFormNoCheckNoJump").ajaxForm({
-		success: ajaxFormNoJump,
-		dataType: 'json',
-		forceSync: true,
-	})
-})
-/**
- * ajaxform 表单提交
- * 提交前检测
- * 失败不跳转
- */
-$(function () {
-    $('.ajaxFormCheckNoJump').ajaxForm({
-        beforeSubmit: ajaxFormCheck, // 此方法主要是提交前执行的方法，根据需要设置
-        success: ajaxFormNoJump, // 这是提交后的方法
-        dataType: 'json',
-		forceSync: true,
-    });
-});
-/**
- * ajax 提交失败不跳转
- */
-function ajaxFormNoJump(data){
-	console.log(data)
-	console.log(data.obj)
-	var btn = [];
-	if (data.obj.btn) {
-		btn = data.obj.btn
-	}
-	if (data.code == 1) {
-		layer.msg(data.msg,  {
-			time: 2000, //2s后自动关闭
-			btn: btn,
-			skin: 'layer-black-translucent'
-		}, function(){
-			if (data.obj.click!=undefined) {
-				$(data.obj.click).click()
-			}
-			if (data.obj.reset_val!=undefined) {
-				$(data.obj.reset_val).val("")
-			}
-			if (data.obj.focus!=undefined) {
-				$(data.obj.focus).focus()
-			}
-		});
-	} else {
-		//配置一个透明的询问框
-		layer.msg(data.msg,  {
-				time: 2000, //2s后自动关闭
-				btn: btn,
-				skin: 'layer-black-translucent'
-			}, function() {
-				if (data.code == 302) {
-					if (data.obj.url != undefined) {
-						window.location.href = data.obj.url;
-					} else {
-						window.location.href = data.obj;
-					}
-				}
-			}
-		);
-    }
-    en_submit = false;
-}
-//提交数据之前检测信息合法
-function ajaxFormCheck() {
-	var check_ok = true;
-	$(".no-space").each(function(){
-		var nowVal = $.trim($(this).val());
-		if (nowVal.indexOf(" ")>=0 || nowVal.indexOf("	")>=0 || nowVal.indexOf("　")>=0) {
-			layer.msg("输入信息包含有异常空格，请检查重新输入！",  {
-				time: 2000, //2s后自动关闭
-				btn: [],
-				skin: 'layer-black-translucent'
-			});
-			$(this).focus();
-			check_ok = false;
-			return false;
-		}
-	})
-	if (check_ok==false) {
-		return false;
-	}
-}
-
-
-/* get执行并返回结果，执行后带跳转 */
-$(function () {
-	$('body').on('click','.confirm-rst-url-btn6',function () {
-        var $url = this.href,
-            $info = $(this).data('info');
-        layer.confirm($info, {skin: 'layer-skin6'}, function (index) {
-            layer.close(index);
-            $.get($url, function (data) {
-				var btn = [];
-				if (data.obj.btn) {
-					btn = data.obj.btn
-				}
-                if (data.code==1) {
-                    layer.msg(data.msg,  {
-                        time: 2000, //2s后自动关闭
-                        btn: btn,
-                        skin: 'layer-black-translucent'
-                    });
-                } else {
-                    layer.msg(data.msg,  {
-                            time: 2000, //2s后自动关闭
-                            btn: btn,
-                            skin: 'layer-black-translucent'
-                        }, function() {
-                            window.location.href = data.obj.url;
-                        }
-                    );
-                }
-            }, "json");
-        });
-        return false;
-    });
-});
-
-/* 多选删除操作 */
-en_submit = false;
-$(function () {
-    $('#alldel').ajaxForm({
-        beforeSubmit: confirmSelectForm2, // 此方法主要是提交前执行的方法，根据需要设置，一般是判断为空获取其他规则
-        success: ajaxFormNoJump, // 这是提交后的方法
-        dataType: 'json'
-    });
-});
-
-/**
- * 所有删除确认操作
- */
-function confirmSelectForm2() {
-	console.log(en_submit)
-	if (en_submit) { return true; }
-	var chk_value = [];
-    $('input[id="navid"]:checked').each(function () {
-        chk_value.push($(this).val());
-    });
-
-    if (!chk_value.length) {
-        layer.msg('至少选择一个删除项',  {time: 2000, btn: [], skin: 'layer-black-translucent' });
-        return false;
-    }
-    var msg = "确认执行操作？";
-
-    layer.confirm(msg, {skin: 'layer-skin6'}, function (index) {
-            layer.close(index);
-            en_submit = true;
-            $('#alldel').submit();
-            return true;
-        });
-    return false;
-}
-
 $(function(){
 	$('body').on('click','.jump-url',function () {
 		location.href = $(this).data('url');
 	})
+	// 编辑框的最大化样式调整
+	$('body').on('click', '.layui-layer-max', function () {
+		if($(this).attr('class').indexOf('layui-layer-maxmin') == -1) {
+            $('.layui-layer.layui-layer-iframe').css({'max-width':'1000px', 'max-height': '600px'})
+		} else {
+            $('.layui-layer.layui-layer-iframe').css({'max-width': '100%', 'max-height': '100%'})
+        }
+    })
 })
+
+
+$(function(){
+	$("body").on('change', '.change-show', changeShow)
+})
+/**
+ * 值改变现实不同的信息
+ */
+function changeShow(self, setself=1) {
+	if (setself==1)
+		self = this;
+	//  显示类		隐藏类		是否设置disabled
+	var showclass = hideclass = disa = '';
+	console.log($(self).is(':checkbox'))
+	console.log($(self))
+	if($(self).is('select')) {
+		showclass = $(self).find('option:selected').data('show');
+		hideclass = $(self).find('option:selected').data('hide');
+		disa = $(self).find('option:selected').data('disa');
+	} else if($(self).is(':checkbox')) {
+		if ($(self).is(':checked')) {
+			showclass = $(self).data('show');
+			hideclass = $(self).data('hide');
+		} else {
+			hideclass = $(self).data('show');
+		}
+	} else {
+		showclass = $(self).data('show');
+		hideclass = $(self).data('hide');
+		disa = $(self).data('disa');
+	}
+	console.log('show', showclass, 'hide', hideclass, 'disa', disa)
+	if(disa==1) {
+		$(hideclass).removeClass('show').addClass('hide').hide();
+        // $(hideclass).contents().find('input, textarea, select').attr({'disabled':true});
+        $(hideclass).contents().find('input, select').attr({'disabled':true});
+		$(showclass).removeClass('hide').addClass('show').show();
+		$(showclass).contents().find('input, textarea, select').attr({'disabled':false});
+	} else {
+		$(hideclass).removeClass('show').addClass('hide').hide();
+		$(showclass).removeClass('hide').addClass('show').show();
+	}
+}

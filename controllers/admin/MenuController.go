@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/enums"
-	"liumao801/lmadmin/models"
+	adminModelNS "liumao801/lmadmin/models/admin"
 	"strconv"
 	"strings"
 )
@@ -42,7 +42,7 @@ func (c *MenuController) Index()  {
 
 // 获取所有菜单列表
 func (c *MenuController) TreeGrid() {
-	tree := models.MenuTreeGrid()
+	tree := adminModelNS.MenuTreeGrid()
 	// 转换UrlFor 2 LinkUrl
 	c.UrlFor2Link(tree)
 	c.JsonResult(enums.JRCodeSucc, "", tree)
@@ -51,7 +51,7 @@ func (c *MenuController) TreeGrid() {
 func (c *MenuController) AdminMenuTree() {
 	adminid := c.currAdmin.Id
 	// 获取用户有权管理的菜单列表（包括区域）
-	tree := models.MenuTreeGridByAdminId(adminid, 1)
+	tree := adminModelNS.MenuTreeGridByAdminId(adminid, 1)
 	// 转换UrlFor 2 linkUrl
 	c.UrlFor2Link(tree)
 	c.JsonResult(enums.JRCodeSucc, "", tree)
@@ -59,13 +59,13 @@ func (c *MenuController) AdminMenuTree() {
 // 获取可以成为某节点的父节点列表
 func (c *MenuController) ParentTreeGrid() {
 	Id, _ := c.GetInt("id", 0)
-	tree := models.MenuTreeGrid4Parent(Id)
+	tree := adminModelNS.MenuTreeGrid4Parent(Id)
 	c.UrlFor2Link(tree)
 	c.JsonResult(enums.JRCodeSucc, "", tree)
 }
 
 // UrlFor2Link 使用URLFor方法，批量将资源表里的UrlFor值转成LinkUrl
-func (c *MenuController) UrlFor2Link(src []*models.Menu) {
+func (c *MenuController) UrlFor2Link(src []*adminModelNS.Menu) {
 	for _, item := range src{
 		item.LinkUrl = c.UrlFor2LinkOne(item.UrlFor)
 	}
@@ -97,12 +97,12 @@ func (c *MenuController) Edit() {
 	}
 	Id, _ := c.GetInt(":id", 0)
 	beego.Info("id = " + string(Id))
-	m := &models.Menu{}
+	m := &adminModelNS.Menu{}
 	var err error
 	if Id == 0 {
 		m.Sort = 100
 	} else {
-		m, err = models.MenuOne(Id)
+		m, err = adminModelNS.MenuOne(Id)
 		if err != nil {
 			c.PageError("数据无效， 请刷新后重试")
 		}
@@ -113,7 +113,7 @@ func (c *MenuController) Edit() {
 		c.Data["parent"] = 0
 	}
 	// 获取可以成为当前节点的父节点列表
-	c.Data["parents"] = models.MenuTreeGrid4Parent(Id)
+	c.Data["parents"] = adminModelNS.MenuTreeGrid4Parent(Id)
 	m.LinkUrl = c.UrlFor2LinkOne(m.UrlFor)
 	c.Data["m"] = m
 	if m.Parent != nil {
@@ -130,8 +130,8 @@ func (c *MenuController) Edit() {
 func (c *MenuController) Save() {
 	var err error
 	o := orm.NewOrm()
-	parent := &models.Menu{}
-	m := models.Menu{}
+	parent := &adminModelNS.Menu{}
+	m := adminModelNS.Menu{}
 	parentId, _ := c.GetInt("Parent", 0)
 	// 获取 form 里面的值
 	if err = c.ParseForm(&m); err != nil {
@@ -139,7 +139,7 @@ func (c *MenuController) Save() {
 	}
 	// 获取父节点
 	if parentId > 0 {
-		 parent, err = models.MenuOne(parentId)
+		 parent, err = adminModelNS.MenuOne(parentId)
 		if err == nil && parent != nil {
 			m.Parent = parent
 		} else {
@@ -167,7 +167,7 @@ func (c *MenuController) Delete() {
 	if Id == 0 {
 		c.JsonResult(enums.JRCodeFailed, "选择的数据无效", 0)
 	}
-	query := orm.NewOrm().QueryTable(models.MenuTBName())
+	query := orm.NewOrm().QueryTable(adminModelNS.MenuTBName())
 	if _, err := query.Filter("id", Id).Delete(); err == nil {
 		c.JsonResult(enums.JRCodeSucc, fmt.Sprintf("删除成功"), 0)
 	} else {
@@ -188,7 +188,7 @@ func (c *MenuController) Select() {
 		switch desttype {
 		case 1:
 			{
-				role := models.Role{Id: destval}
+				role := adminModelNS.Role{Id: destval}
 				o.LoadRelated(&role, "RoleMenuRel")
 				for _, item := range role.RoleMenuRel {
 					selectedIds = append(selectedIds, strconv.Itoa(item.Menu.Id))
@@ -217,7 +217,7 @@ func (c *MenuController) CheckUrlFor() {
 }
 func (c *MenuController) UpdateSort() {
 	Id, _ := c.GetInt("pk", 0)
-	oM, err := models.MenuOne(Id)
+	oM, err := adminModelNS.MenuOne(Id)
 	if err != nil || oM == nil {
 		c.JsonResult(enums.JRCodeFailed, "选择的数据无效", 0)
 	}

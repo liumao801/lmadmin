@@ -4,9 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/orm"
-	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
-	"liumao801/lmadmin/models"
+	adminModelNS "liumao801/lmadmin/models/admin"
 	"liumao801/lmadmin/utils"
 	"strconv"
 	"strings"
@@ -14,7 +13,6 @@ import (
 
 type AdminController struct {
 	AdminBaseController
-	controllers.CommonController
 }
 
 func (c *AdminController) Prepare() {
@@ -45,10 +43,10 @@ func (c *AdminController) Index() {
 
 func (c *AdminController) DataGrid() {
 	//直接反序化获取json格式的requestbody里的值（要求配置文件里 copyrequestbody=true）
-	var params models.AdminQueryParam
+	var params adminModelNS.AdminQueryParam
 	json.Unmarshal(c.Ctx.Input.RequestBody, &params)
 	// 获取数据列表和总数
-	data, total := models.AdminPageList(&params)
+	data, total := adminModelNS.AdminPageList(&params)
 	// 定义返回的数据结构
 	result := make(map[string]interface{})
 	result["total"] = total
@@ -64,10 +62,10 @@ func (c *AdminController) Edit() {
 		c.Save()
 	}
 	Id, _ := c.GetInt(":id", 0)
-	m := &models.Admin{}
+	m := &adminModelNS.Admin{}
 	var err error
 	if Id > 0 {
-		m, err = models.AdminOne(Id)
+		m, err = adminModelNS.AdminOne(Id)
 		if err != nil {
 			c.PageError("数据无效，请刷新后重试")
 		}
@@ -91,7 +89,7 @@ func (c *AdminController) Edit() {
 }
 
 func (c *AdminController) Save() {
-	m := models.Admin{}
+	m := adminModelNS.Admin{}
 	o := orm.NewOrm()
 	var err error
 	// 获取 form 里面的值
@@ -99,7 +97,7 @@ func (c *AdminController) Save() {
 		c.JsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
 	}
 	// 删除已关联的历史数据
-	if _, err := o.QueryTable(models.RoleAdminRelTBName()).Filter("admin__id", m.Id).Delete(); err != nil {
+	if _, err := o.QueryTable(adminModelNS.RoleAdminRelTBName()).Filter("admin__id", m.Id).Delete(); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "删除历史关系数据失败", "")
 	}
 	if m.Id == 0 {
@@ -109,7 +107,7 @@ func (c *AdminController) Save() {
 			c.JsonResult(enums.JRCodeFailed, "添加失败", m.Id)
 		}
 	} else {
-		if oM, err := models.AdminOne(m.Id); err != nil {
+		if oM, err := adminModelNS.AdminOne(m.Id); err != nil {
 			c.JsonResult(enums.JRCodeFailed, "数据无效，请刷新后重试", m.Id)
 		} else {
 			m.Passwd = strings.TrimSpace(m.Passwd)
@@ -128,10 +126,10 @@ func (c *AdminController) Save() {
 	}
 
 	// 添加关系
-	var relations []models.RoleAdminRel
+	var relations []adminModelNS.RoleAdminRel
 	for _, roleId := range m.RoleIds{
-		r := models.Role{Id: roleId}
-		relation := models.RoleAdminRel{Admin: &m, Role:&r}
+		r := adminModelNS.Role{Id: roleId}
+		relation := adminModelNS.RoleAdminRel{Admin: &m, Role:&r}
 		relations = append(relations, relation)
 	}
 	if len(relations) > 0 {
@@ -154,7 +152,7 @@ func (c *AdminController) Delete() {
 			ids = append(ids, id)
 		}
 	}
-	query := orm.NewOrm().QueryTable(models.AdminTBName())
+	query := orm.NewOrm().QueryTable(adminModelNS.AdminTBName())
 	if num, err := query.Filter("id__in", ids).Delete(); err == nil {
 		c.JsonResult(enums.JRCodeSucc, fmt.Sprintf("成功删除 %d 项", num), 0)
 	} else {

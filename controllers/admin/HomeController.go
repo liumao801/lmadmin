@@ -6,6 +6,7 @@ import (
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
+	adminModelNS "liumao801/lmadmin/models/admin"
 	"liumao801/lmadmin/utils"
 	"strings"
 	"time"
@@ -45,7 +46,7 @@ func (c *HomeController) Login() {
 	}
 	remInfo := c.Ctx.GetCookie(rememberKey)
 	if remInfo != "" {
-		admin, err := models.AdminOneByUsername(remInfo)
+		admin, err := adminModelNS.AdminOneByUsername(remInfo)
 		if err == nil {
 			RememberPasswd := utils.Str2md5(admin.Username + string(admin.RememberOut - rememberDay * 3600) + beego.AppConfig.String("sessionhashkey") + c.Ctx.Input.IP())
 			if RememberPasswd == admin.RememberPasswd {
@@ -78,7 +79,7 @@ func (c *HomeController) loginDo() {
 		c.JsonResult(enums.JRCodeFailed, "验证码错误", rel)
 	}
 
-	m := models.Admin{}
+	m := adminModelNS.Admin{}
 	// 获取 form 里面的值
 	err := c.ParseForm(&m)
 	m.Username = strings.TrimSpace(m.Username)
@@ -86,7 +87,7 @@ func (c *HomeController) loginDo() {
 	if err != nil || m.Username == "" || m.Passwd == "" {
 		c.JsonResult(enums.JRCodeFailed, "用户名/密码为空", m.Username)
 	}
-	u, err := models.AdminOneByUsername(m.Username)
+	u, err := adminModelNS.AdminOneByUsername(m.Username)
 	if err != nil {
 		c.JsonResult(enums.JRCodeFailed, "当前用户不存在", m.Username)
 	}
@@ -105,6 +106,8 @@ func (c *HomeController) loginDo() {
 		c.Ctx.SetCookie(rememberKey, "", 1)
 	}
 	u.RememberOut = m.RememberOut * 3600 + int(time.Now().Unix())
+	u.LoginAt = time.Now()	// 最后登录时间
+	u.LoginIp = c.Ctx.Input.IP()	// 最后登录IP
 	orm.NewOrm().Update(u)
 	if u.Status == enums.Disabled {
 		c.JsonResult(enums.JRCodeFailed, "用户被禁用，请联系管理员", "")
@@ -116,7 +119,7 @@ func (c *HomeController) loginDo() {
 }
 // 退出登录
 func (c *HomeController) Logout() {
-	admin := models.Admin{}
+	admin := adminModelNS.Admin{}
 	c.SetSession("admin", admin)
 	c.toLogin()
 }

@@ -133,7 +133,8 @@ var lmadmin = function () {
             validate: defaultvalidate,
             success: function (response, newValue) {
                 if (response.code == 0) {
-                    parent.layer.msg(response.msg, { icon: 1, title: '成功' });
+                    // parent.layer.msg(response.msg, { icon: 1, title: '成功' });
+                    parent.layer.msg(response.msg, { time: 2000, skin: 'layer-black-translucent' });
                     if (refreshPk) {
                         //刷新列表数据
                         refresh(response.obj);
@@ -156,14 +157,134 @@ var lmadmin = function () {
             }
         }
     }
+
+    //获取x-editable所需要的参数表,url为更新值时请求服务器地址，validate验证的方式，refreshPk成功后是否根据主键刷新列表
+    getEditableParamValue = function (url, value, validate, refreshPk) {
+        console.log('validate',validate);
+        console.log('refreshPk',refreshPk);
+        console.log('url:',url);
+        console.log('value:',value);
+        var defaultvalidate = function (value) {
+            if ($.trim(value).length === 0) {
+                return "必填项";
+            }
+            if (validate === 'num' && !/^\d+$/.test(value)) {
+                return "必须为正整数，且不大于999999";
+            }
+        };
+        if (validate !== null && typeof (validate) !== 'undefined' && typeof  (validate) !== 'string') {
+            defaultvalidate = validate
+        }
+        return {
+            url: url,
+            type: 'text',
+            value: value,
+            onblur: 'cancel', //Action when user clicks outside the container. Can be cancel|submit|ignore.  Setting ignore allows to have several containers open.
+            showbuttons: true,
+            ajaxOptions: {
+                type: 'post',
+                dataType: 'json'
+            },
+            validate: defaultvalidate,
+            success: function (response, newValue) {
+                if (response.code == 0) {
+                    // parent.layer.msg(response.msg, { icon: 1, title: '成功' });
+                    parent.layer.msg(response.msg, { time: 2000, skin: 'layer-black-translucent' });
+                    if (refreshPk) {
+                        //刷新列表数据
+                        refresh(response.obj);
+                    }
+                    else {
+                        refresh();
+                    }
+                } else {
+                    return response.msg;
+                }
+            },
+            error: function (response, newValue) {
+                if (response.status === 500) {
+                    return '系统错误，请刷新后重试';
+                } if (response.status === 404) {
+                    return '请求失败，请刷新后重试';
+                } else {
+                    return response.responseTexlmpostt;
+                }
+            }
+        }
+    }
+    //获取x-editable所需要的参数表,url为更新值时请求服务器地址，
+    // value 当前选择项，seclist 选项列表
+    // validate验证的方式，refreshPk成功后是否根据主键刷新列表,
+    getEditableParamSelect = function (url, value, seclist, validate, refreshPk) {
+        var defaultvalidate = function (value) {
+            if ($.trim(value).length === 0) {
+                return "必填项";
+            }
+        };
+        if (validate !== null && typeof (validate) !== 'undefined') {
+            defaultvalidate = validate
+        }
+        if (typeof seclist[0] === 'undefined' || typeof seclist[0].Value === 'undefined') {
+            // 将选项转为 x-editable select 规定的格式
+            var seclist_tmp = JSON.parse(seclist);
+            seclist = '';
+            for (item in seclist_tmp) {
+                seclist += ',{"value":"' + item + '","text":"' + seclist_tmp[item] + '"}';
+            }
+            seclist = JSON.parse( "[" + seclist.substr(1) + "]" );
+        }
+
+        return {
+            url: url,
+            type: 'select',
+            value: value,
+            source: seclist,
+            onblur: 'cancel', //Action when user clicks outside the container. Can be cancel|submit|ignore.  Setting ignore allows to have several containers open.
+            showbuttons: true,
+            ajaxOptions: {
+                type: 'post',
+                dataType: 'json'
+            },
+            validate: defaultvalidate,
+            success: function (response, newValue) {
+                if (response.code == 0) {
+                    // parent.layer.msg(response.msg, { icon: 1, title: '成功' });
+                    parent.layer.msg(response.msg, { time: 2000, skin: 'layer-black-translucent' });
+                    if (refreshPk) {
+                        //刷新列表数据
+                        refresh(response.obj);
+                    }
+                    else {
+                        refresh();
+                    }
+                } else {
+                    return response.msg;
+                }
+            },
+            error: function (response, newValue) {
+                if (response.status === 500) {
+                    return '系统错误，请刷新后重试';
+                } if (response.status === 404) {
+                    return '请求失败，请刷新后重试';
+                } else {
+                    return response.responseTexlmpostt;
+                }
+            }
+        }
+    }
+
     return {
         init: init,
         //页面左侧菜单初始化
         pageSidebarInit: pageSidebarInit,
         //全选 单选初始化
         chkAllSingleInit:chkAllSingleInit,
-        //获取Editable插件的参数
-        getEditableParam:getEditableParam
+        //获取Editable num插件的参数
+        getEditableParam:getEditableParam,
+        //获取Editable select插件的参数
+        getEditableParamSelect:getEditableParamSelect,
+        //获取Editable text插件的参数
+        getEditableParamValue:getEditableParamValue
     }
 
 }();

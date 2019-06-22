@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/enums"
-	"liumao801/lmadmin/models"
+	adminModelNS "liumao801/lmadmin/models/admin"
 	"strconv"
 	"strings"
 )
@@ -43,10 +43,10 @@ func (c *RoleController) Index() {
 // 角色管理页面 表格获取数据
 func (c *RoleController) DataGrid() {
 	// 直接反序列化获取json 格式的requestbody 里的值
-	var params models.RoleQueryParam
+	var params adminModelNS.RoleQueryParam
 	json.Unmarshal(c.Ctx.Input.RequestBody, &params)
 	// 获取数据列表和总数
-	data, total := models.RolePageList(&params)
+	data, total := adminModelNS.RolePageList(&params)
 	// 定义返回的数据结构
 	result := make(map[string]interface{})
 	result["total"] = total
@@ -56,9 +56,9 @@ func (c *RoleController) DataGrid() {
 }
 // 角色列表
 func (c *RoleController) DataList() {
-	var params = models.RoleQueryParam{}
+	var params = adminModelNS.RoleQueryParam{}
 	// 获取数据列表和总数
-	data := models.RoleDataList(&params)
+	data := adminModelNS.RoleDataList(&params)
 	// 定义返回的数据结构
 	c.JsonResult(enums.JRCodeSucc, "", data)
 }
@@ -68,7 +68,7 @@ func (c *RoleController) Edit() {
 		c.Save()
 	}
 	Id, _ := c.GetInt(":id", 0)
-	m := models.Role{Id: Id}
+	m := adminModelNS.Role{Id: Id}
 	if Id > 0 {
 		o := orm.NewOrm()
 		err := o.Read(&m)
@@ -84,7 +84,7 @@ func (c *RoleController) Edit() {
 // 添加、编辑角色保存
 func (c *RoleController) Save() {
 	var err error
-	m := models.Role{}
+	m := adminModelNS.Role{}
 	// 获取 form 里的值
 	if err = c.ParseForm(&m); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
@@ -113,7 +113,7 @@ func (c *RoleController) Delete() {
 			ids = append(ids, id)
 		}
 	}
-	if num, err := models.RoleBatchDelete(ids); err == nil {
+	if num, err := adminModelNS.RoleBatchDelete(ids); err == nil {
 		c.JsonResult(enums.JRCodeSucc, fmt.Sprintf("成功删除 %d 项", num), 0)
 	} else {
 		c.JsonResult(enums.JRCodeFailed, "删除失败", 0)
@@ -125,19 +125,19 @@ func (c *RoleController) Allocate() {
 	strs := c.GetString("ids")
 
 	o := orm.NewOrm()
-	m := models.Role{Id: roleId}
+	m := adminModelNS.Role{Id: roleId}
 	if err := o.Read(&m); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "数据无效，请刷新后重试", "")
 	}
 	// 删除已关联的历史数据
-	if _, err := o.QueryTable(models.RoleMenuRelTBName()).Filter("role__id", m.Id).Delete(); err != nil {
+	if _, err := o.QueryTable(adminModelNS.RoleMenuRelTBName()).Filter("role__id", m.Id).Delete(); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "删除历史关系失败", "")
 	}
-	var relations []models.RoleMenuRel
+	var relations []adminModelNS.RoleMenuRel
 	for _, str := range strings.Split(strs, ","){
 		if id, err := strconv.Atoi(str); err == nil {
-			r := models.Menu{Id: id}
-			relation := models.RoleMenuRel{Role:&m, Menu:&r}
+			r := adminModelNS.Menu{Id: id}
+			relation := adminModelNS.RoleMenuRel{Role:&m, Menu:&r}
 			relations = append(relations, relation)
 		}
 	}
@@ -152,7 +152,7 @@ func (c *RoleController) Allocate() {
 // 更新排序
 func (c *RoleController) UpdateSort() {
 	Id, _ := c.GetInt("pk", 0)
-	oM, err := models.RoleOne(Id)
+	oM, err := adminModelNS.RoleOne(Id)
 	if err != nil || oM == nil {
 		c.JsonResult(enums.JRCodeFailed, "选择的数据无效", 0)
 	}

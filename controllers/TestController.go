@@ -3,13 +3,38 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"liumao801/lmadmin/functions"
+
+	//"liumao801/lmadmin/controllers/common"
 	"liumao801/lmadmin/models"
 )
-
 type TestController struct {
 	beego.Controller
+	//BaseController
+	//UploadController
+}
+func (c *TestController) Upload() {
+	//beego.Info("TestController ==== ", c)
+	//beego.Info("*TestController ==== ", &c)
+	//c.UploadController.CommonUpload()
+	//c.UploadController.Controller.Ctx = &context.Context{}
+	functions.LmUpload(&c.Controller,"upload")
+	//(&(c.UploadController)).LmUpload("upload")
+	//up := &UploadController{}
+	//up.LmUpload("upload")
 }
 
+
+
+
+
+
+
+
+
+func (c *TestController) AdminTest() {
+	c.TplName = "admin/test.html"
+}
 func (c *TestController) Test() {
 	c.TplName = "test/test.html"
 

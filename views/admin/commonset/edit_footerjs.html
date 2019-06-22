@@ -1,0 +1,75 @@
+<!-- 验证插件 -->
+<script src="/static/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="/static/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+<!-- 针对当前主题进行简单封装，精简代码 -->
+<script src="/static/modules/admin/js/lmvalidate.js"></script>
+<script src="/static/lm800/js/lmajaxForm.js"></script>
+<script>
+    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+	$(function () {
+        pageInit();
+    })
+    function pageInit(){
+        //附值
+        $("#Status").selectpicker('val','{{.m.Status}}');
+        $("#ShowType").selectpicker('val','{{.m.ShowType}}');
+        // //验证
+        validateInfo();
+    }
+    //表单验证及AJAX提交
+    function validateInfo() {
+        var $thisForm = $('#thisForm');
+        $thisForm.lmvalidate({
+            rules: {
+                Title: {
+                    maxlength: 250,
+                    required: true
+                },
+                Type: {
+                    maxlength: 32,
+                    required: true
+                },
+                Name: {
+                    maxlength: 32,
+                    required: true
+                },
+                Value: {
+                    maxlength: 250,
+                    required: true
+                },
+                Sort: {
+                    digits:true,
+                    max: 255,
+                    min: 1,
+                    required: true
+                },
+            },
+            messages: {
+                // Title:{
+                //     TypeCheck:"标题最长为80个汉字"
+                // },
+                // MenuWebId:{
+                //     UrlLinkCheck:"请选择分类"
+                // }
+            },
+            submitHandler: function (form) {
+                var url = '{{ urlfor "CommonSetController.Edit"}}'
+                var data = $thisForm.serialize();
+                $.lmpost(url, data, function (re) {
+                    if (re.code === 0) {
+                        parent.layer.msg(re.msg)
+                        //刷新，并将所编辑的节点展开
+                        parent.refresh(re.obj,true)
+                        parent.layer.close(index)
+                    } else {
+                        parent.layer.alert(re.msg, { icon: 2, title: '失败' })
+                    }
+                });
+                return false;
+            }
+        });
+    }
+    function FormSubmit() {
+        $("#thisForm").submit();
+    }
+</script>
