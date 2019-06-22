@@ -146,6 +146,14 @@ func (c *MenuWebController) Delete() {
 	if Id == 0 {
 		c.JsonResult(enums.JRCodeFailed, "选择的数据无效", 0)
 	}
+	// 同步删除栏目下的文章
+	if menuWeb, err := models.MenuWebOne(Id); err == nil && menuWeb.Type == 3 {
+		queryArticle := orm.NewOrm().QueryTable(models.ArticleTBName())
+		if _, err := queryArticle.Filter("menu_web_id", menuWeb.Id).Delete(); err != nil {
+			c.JsonResult(enums.JRCodeFailed, "栏目文章删除失败", 0)
+		}
+	}
+	// 删除菜单
 	query := orm.NewOrm().QueryTable(models.MenuWebTBName())
 	if _, err := query.Filter("id", Id).Delete(); err == nil {
 		c.JsonResult(enums.JRCodeSucc, fmt.Sprintf("删除成功"), 0)

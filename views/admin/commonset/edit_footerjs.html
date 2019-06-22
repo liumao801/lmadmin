@@ -5,42 +5,43 @@
 <script src="/static/modules/admin/js/lmvalidate.js"></script>
 <script src="/static/lm800/js/lmajaxForm.js"></script>
 <script>
-    var ckeditor = CKEDITOR.replace( 'Content' , {
-        customConfig: '/static/plugins/ckeditor/lm-common-config.js'
-    });
+    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 	$(function () {
         pageInit();
     })
     function pageInit(){
         //附值
-    	$("#MenuWebId").selectpicker('val','{{.m.MenuWeb.Id}}');
         $("#Status").selectpicker('val','{{.m.Status}}');
-        $("#CommentStatus").selectpicker('val','{{.m.CommentStatus}}');
+        $("#ShowType").selectpicker('val','{{.m.ShowType}}');
         // //验证
         validateInfo();
-        ckeditorSync()
     }
     //表单验证及AJAX提交
     function validateInfo() {
-        var $thisForm = $('.vajaxFormCheckNoJump');
+        var $thisForm = $('#thisForm');
         $thisForm.lmvalidate({
             rules: {
                 Title: {
                     maxlength: 250,
                     required: true
                 },
-                Subtitle: {
+                Type: {
+                    maxlength: 32,
+                    required: true
+                },
+                Name: {
+                    maxlength: 32,
+                    required: true
+                },
+                Value: {
                     maxlength: 250,
                     required: true
                 },
-                // Sort: {
-                //     digits:true,
-                //     max: 255,
-                //     required: true
-                // },
-                MenuWebId:{
-                    required: true,
-                    //TypeCheck:true
+                Sort: {
+                    digits:true,
+                    max: 255,
+                    min: 1,
+                    required: true
                 },
             },
             messages: {
@@ -52,9 +53,7 @@
                 // }
             },
             submitHandler: function (form) {
-                ajax2Form($thisForm)
-                return false;
-                var url = '{{ urlfor "MenuWebController.Edit"}}'
+                var url = '{{ urlfor "CommonSetController.Edit"}}'
                 var data = $thisForm.serialize();
                 $.lmpost(url, data, function (re) {
                     if (re.code === 0) {

@@ -133,7 +133,7 @@ $(function () {
 });
 
 function  ckeditorSync() {
-    if (CKEDITOR.instances == undefined || typeof CKEDITOR.instances == 'undefined') {
+    if (typeof CKEDITOR == 'undefined' || CKEDITOR.instances == undefined || typeof CKEDITOR.instances == 'undefined') {
         return '';
     }
     // $('#Content').val(CKEDITOR.instances.Content.getData());
@@ -146,8 +146,6 @@ function  ckeditorSync() {
 }
 //提交数据之前检测信息合法
 function ajaxFormCheck() {
-    console.log('ajaxFormCheckNoJump')
-    console.info($(this))
     validateInfo()
     ckeditorSync()
     var check_ok = true;

@@ -53,7 +53,7 @@
             if (e.Parent) {
                 parentid = e.Parent.Id
             }
-            html.push('<tr data-tt-id="' + e.Id + '" data-tt-parent-id="' + parentid + '" data-SonNum="'+e.SonNum+'">');
+            html.push('<tr data-tt-id="' + e.Id + '" data-tt-parent-id="' + parentid + '" data-SonNum="'+e.SonNum+'" data-Type="' + e.Type + '">');
             html.push('<td class="ellipsis" title="' + e.Title + '">' + e.Title + '</td>');
             html.push('<td class="line-center hidden-xs hidden-sm">');
             if (e.Icon && e.Icon.length > 0) {
@@ -143,8 +143,13 @@
         }
         var waring = '您是否要删除所选的项？';
         var sonNum = node.attr('data-SonNUm');
+        var type = node.attr('data-Type');
+        console.log('type', type)
         if(sonNum!="0"){
             waring ='您想要的删除的节点包含子节点，将一起被删除，是否继续？';
+        }
+        if (type == 3) {
+            waring += '该操作将会把分类下的所有文章也一起删除！';
         }
         layer.confirm(waring, {
             btn: ['是', '否'], icon: 3, title: '请确认'

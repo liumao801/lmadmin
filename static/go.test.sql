@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-06-21 22:35:13
+Date: 2019-06-22 22:15:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -121,12 +121,49 @@ CREATE TABLE `lm_article` (
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='文章信息';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='文章信息';
 
 -- ----------------------------
 -- Records of lm_article
 -- ----------------------------
 INSERT INTO `lm_article` VALUES ('1', 'request', '热弯', '2', '2', ' 范德萨', '放给大家看联发科多斯拉克莲富大厦', '8', '2', '0', '0', '1', '-1', '2', '2');
+INSERT INTO `lm_article` VALUES ('2', '二级分类', '范德萨', '', '范德萨', '范德萨', '<p>范德萨范德萨</p>\n', '9', '', '1', '0', '0', '0', '2019', '0');
+
+-- ----------------------------
+-- Table structure for lm_common_set
+-- ----------------------------
+DROP TABLE IF EXISTS `lm_common_set`;
+CREATE TABLE `lm_common_set` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(32) NOT NULL COMMENT '常用设置 类型',
+  `name` varchar(32) NOT NULL COMMENT '配置名称key',
+  `value` varchar(255) CHARACTER SET utf8mb4 NOT NULL COMMENT '配置值',
+  `show_type` varchar(20) NOT NULL DEFAULT 'show' COMMENT 'show 直接显示；switch 开关；select 下拉选框',
+  `title` varchar(255) NOT NULL COMMENT '后台用于用户显示的名称',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态；0停用；1正常',
+  `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序；越小越靠前',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='公共配置信息';
+
+-- ----------------------------
+-- Records of lm_common_set
+-- ----------------------------
+INSERT INTO `lm_common_set` VALUES ('1', 'admin_conf', 'head_title', 'LM-后台管理系统', '', '后台页面顶部title', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('2', 'author_info', 'name', 'liumao801', '', '系统作者', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('3', 'author_info', 'email', 'liumao801@gmail.com', '', '系统作者邮箱', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('4', 'home_conf', 'head_title', 'LM-CMF', '', '前端页面顶部title', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('5', 'jfkdls', 'jfkdls', '辅导教师了', '', '接口封李大傻', '0', '100', '2019-06-22 14:13:28', '2019-06-22 14:13:28');
+INSERT INTO `lm_common_set` VALUES ('6', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('7', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('8', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('9', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('10', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('11', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('12', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('13', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('14', 'fds', '', '', 'show', '', '1', '100', null, null);
 
 -- ----------------------------
 -- Table structure for lm_menu
@@ -147,7 +184,7 @@ CREATE TABLE `lm_menu` (
   `updated_at` int(10) unsigned DEFAULT NULL,
   `show` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
 
 -- ----------------------------
 -- Records of lm_menu
@@ -176,6 +213,7 @@ INSERT INTO `lm_menu` VALUES ('33', '0', 'CMF系统', null, '100', 'fa-file-text
 INSERT INTO `lm_menu` VALUES ('34', '1', '文章菜单分类', '33', '100', 'fa-ge', '', null, '1', '0', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('35', '1', '文章分类管理', '34', '100', 'fa-adn', 'MenuWebController.Index', null, '1', '1', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('36', '1', '文章管理', '34', '100', 'fa-file-text-o', 'ArticleController.Index', null, '1', '1', null, null, '0');
+INSERT INTO `lm_menu` VALUES ('37', '1', '公共配置', '2', '100', 'fa-cogs', 'CommonSetController.Index', null, '1', '0', '2019', '2019', '0');
 
 -- ----------------------------
 -- Table structure for lm_menu_copy
@@ -263,7 +301,7 @@ CREATE TABLE `lm_role` (
 -- ----------------------------
 -- Records of lm_role
 -- ----------------------------
-INSERT INTO `lm_role` VALUES ('1', '管理员', '0', 'admin', '1', null, null);
+INSERT INTO `lm_role` VALUES ('1', '管理员', '1', 'admin', '1', null, null);
 INSERT INTO `lm_role` VALUES ('2', '游客', '100', 'tester', '0', '2018-12-13 11:51:51', '2018-12-13 11:51:51');
 
 -- ----------------------------

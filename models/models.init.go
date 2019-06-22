@@ -11,6 +11,7 @@ import (
 func init() {
 	orm.RegisterModel(
 		new(Article),
+		new(CommonSet),
 		new(MenuWeb),
 		new(User),
 		new(Test),
@@ -38,7 +39,9 @@ func ArticleTBName() string {
 func MenuWebTBName() string {
 	return TableName("menu_web")
 }
-
+func CommonSetTBName() string {
+	return TableName("common_set")
+}
 /**
  * 获取 Test model 对应的表名
 */

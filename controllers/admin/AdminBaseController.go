@@ -8,6 +8,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
+	"liumao801/lmadmin/models"
 	adminModelNS "liumao801/lmadmin/models/admin"
 	"liumao801/lmadmin/utils"
 	"strings"
@@ -154,7 +155,18 @@ func (c *AdminBaseController) setTpl(template ...string) {
 		actiName := strings.ToLower(c.actiName)
 		tplName = ctrlName + "/" + actiName
 	}
-	c.Data["pageTitle"] = "🐜后台管理系统🐝"
+	// 获取系统信息
+	pageTitle, err := models.CommonSetTypeNameGet("admin_conf", "head_title");
+	if err != nil {
+		pageTitle = "LM-🐜后台管理系统🐝"
+	}
+	c.Data["pageTitle"] = pageTitle
+	authorInfo, err := models.CommonSetTypeGet("author_info");
+	if err != nil {
+		authorInfo["name"] = "ActorLiu"
+		authorInfo["email"] = "744917766@qq.com"
+	}
+	c.Data["authorInfo"] = authorInfo
 
 	c.Layout = "admin/" + layout + ".html"
 	c.TplName = "admin/" + tplName + ".html"
