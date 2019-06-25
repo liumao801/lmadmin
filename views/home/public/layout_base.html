@@ -1,0 +1,23 @@
+<!-- 用于列表页 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>LM-{{.pageTitle}}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="/static/modules/admin/img/favor.ico" mce_href="/static/modules/admin/img/favor.ico" type="image/x-icon">
+
+{{template "admin/public/globalcss.html"}}
+{{ .headcssjs}}
+</head>
+<body>
+
+{{.LayoutContent}}
+{{template "admin/public/globaljs.html"}}
+{{ .footerjs}}
+
+</body>
+</html>

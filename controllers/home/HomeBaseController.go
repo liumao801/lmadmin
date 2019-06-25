@@ -1,6 +1,7 @@
 package home
 
 import (
+	"github.com/astaxie/beego"
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
@@ -39,6 +40,11 @@ func (c *HomeBaseController) setTpl(template ...string) {
 	}
 	c.Layout = "home/" + layout + ".html"
 	c.TplName = "home/" + tplName + ".html"
+
+	c.Data["menuTreeHtml"] = c.proHtmlTree(models.MenuWebTreeGridHome()) 	// 获取首页无限极菜单
+	//c.Data["MenuTreeHtml"] = `------123456------` 	// 获取首页无限极菜单
+	//utils.LogInfo(`c.Data["menuTreeHtml"]`)
+	//utils.LogInfo(c.Data["menuTreeHtml"])
 }
 
 
@@ -47,4 +53,42 @@ func (c *HomeBaseController) pageLogin() {
 	url := c.URLFor("homt/UserController.Login")
 	c.Redirect(url, enums.JRCode302)
 	c.StopRun()
+}
+// 生成 html 代码字符串
+func (c *HomeBaseController) proHtmlTree(tree []*models.MenuWeb) string {
+	//  菜单html  活动菜单class 
+	var htmlStr, isActCtrAct, dropSub string
+	for _, v := range tree{
+		isActCtrAct = ""
+		dropSub = "dropdown "
+		if strings.Index(v.Url, beego.URLFor(c.ctrlName + "." + c.actiName)) >= 0 {
+			// 是否活动菜单
+			isActCtrAct = "active"
+		}
+		if v.Level > 0 {
+			dropSub = "dropdown-submenu "
+		}
+
+		if v.Sons == nil {
+			htmlStr += `
+<!-- ------------` + v.Title + `----------- -->
+`
+			htmlStr += `<li class="` + isActCtrAct + `"><a href="` + v.Url + `" >` + v.Title + `</a></li>`
+		} else {
+			htmlStr += `
+<li class="` + dropSub + isActCtrAct + `">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		` + v.Title + ` <b class="caret"></b>
+	</a>
+	<ul class="dropdown-menu line-center">
+`
+			htmlStr += c.proHtmlTree(v.Sons)
+			htmlStr += `
+    </ul>
+</li>
+`
+		}
+	}
+
+	return  htmlStr
 }

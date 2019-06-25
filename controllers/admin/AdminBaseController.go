@@ -155,7 +155,8 @@ func (c *AdminBaseController) setTpl(template ...string) {
 		actiName := strings.ToLower(c.actiName)
 		tplName = ctrlName + "/" + actiName
 	}
-	// 获取系统信息
+
+	// 获取系统信息 --- start ---
 	pageTitle, err := models.CommonSetTypeNameGet("admin_conf", "head_title");
 	if err != nil {
 		pageTitle = "LM-🐜后台管理系统🐝"
@@ -167,6 +168,7 @@ func (c *AdminBaseController) setTpl(template ...string) {
 		authorInfo["email"] = "744917766@qq.com"
 	}
 	c.Data["authorInfo"] = authorInfo
+	// 获取系统信息 --- end ---
 
 	c.Layout = "admin/" + layout + ".html"
 	c.TplName = "admin/" + tplName + ".html"

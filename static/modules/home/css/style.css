@@ -19,6 +19,7 @@
         float: right;
     }
 }
+/* -------------------- 限制菜单栏高度 start --------------------- */
 .menu-box .navbar{border: 0px;min-height: 40px;}
 .menu-box .navbar .navbar-brand{padding: 0;height: 40px;}
 .menu-box .navbar .navbar-toggle{color:#000;}
@@ -32,6 +33,72 @@
     min-width: 80px;text-align: center;
 }
 .top-nav .active a{color:#1456AC;}
-.menu-box .top-nav>li>a:hover{background:#1456AC;color:#FFFFFF;}
+.menu-box .top-nav>li>a:hover {background:#1456AC;color:#FFFFFF;}
 /*.menu-box .nav li.dropdown a:focus {background:#fff;color:#000;}*/
 .scroll-banner{width: 100%;}
+/* -------------------- 限制菜单栏高度 end --------------------- */
+
+
+
+
+
+
+
+/*--------------公共部分---------bootstrap 3 无限极菜单---- start -----------*/
+.navbar .container {
+    position: relative;
+}
+.navbar .dropdown-menu {
+    left: auto;
+}
+.navbar .dropdown-menu > li {
+    display: block;
+}
+/*打开这一句代码，可以使当鼠标移动到下拉列表时，就展开子级列表*/
+/*.navbar .dropdown:hover > .dropdown-menu{
+    display: block;
+}*/
+.navbar .dropdown {
+    position: static;
+}
+/*----------------下来菜单-----------------------*/
+.navbar .dropdown-submenu { 
+   position: relative; 
+}
+.navbar .dropdown-submenu > a:after {
+    top: 8px;
+    right: 9px;
+    font-size: 11px;
+    /*content: "f105";*/
+    position: absolute;
+    font-weight: normal;
+    display: inline-block;
+    font-family: FontAwesome;
+}
+.navbar .dropdown-submenu > .dropdown-menu { 
+    top: 3px; 
+    left: 100%; 
+    margin-top: -5px; 
+    margin-left: 0px; 
+}
+
+/*Submenu comes from LEFT side*/
+.navbar .dropdown-submenu > .dropdown-menu.submenu-left {
+    left: -100%;
+}
+
+.navbar .dropdown-submenu:hover > .dropdown-menu {  
+    display: block;
+}
+
+/*通过这句代码可以设置当鼠标移动到子菜单时让子菜单显示不同的颜色或状态*/
+.navbar .dropdown-menu li a:hover{
+    background:#1456AC;color:#FFFFFF;
+}
+/*----------------全屏菜单-----------------------*/
+.navbar .dropdown.mega-menu-fullwidth .dropdown-menu {
+    left: 0;
+    right: 0;
+    overflow: hidden;
+}
+/*--------------公共部分---------bootstrap 3 无限极菜单---- end -----------*/

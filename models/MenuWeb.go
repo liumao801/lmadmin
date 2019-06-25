@@ -185,3 +185,38 @@ func MenuWebListForMap(params *MenuWebQueryParam) ([]*MenuWeb) {
 	query.OrderBy(sortorder).Limit(params.Limit, params.Offset).All(&data)
 	return data
 }
+
+
+// 获取前端treeGrid 顺序的列表；无限极分类菜单
+func MenuWebTreeGridHome() []*MenuWeb {
+	o := orm.NewOrm()
+	query := o.QueryTable(MenuWebTBName()).Filter("status", 1).OrderBy("Sort", "Parent", "Id")
+	list := make([]*MenuWeb, 0)
+	query.RelatedSel().All(&list)
+	//return list
+	return menuWebList2TreeGridSons(list)
+}
+// 将菜单列表转为 treegrid 格式
+func menuWebList2TreeGridSons(list []*MenuWeb) []*MenuWeb {
+	result := make([]*MenuWeb, 0)
+	for _, item := range list{
+		if item.Parent == nil || item.Parent.Id == 0 {
+			item.Level = 0
+			result = append(result, item)
+			result = menuWebAddSons2(item, list, result)
+		}
+	}
+	return result
+}
+// 添加子菜单
+func menuWebAddSons2(cur *MenuWeb, list, result []*MenuWeb) []*MenuWeb {
+	for _, item := range list {
+		if item.Parent != nil && item.Parent.Id == cur.Id {
+			cur.SonNum++
+			item.Level = cur.Level + 1
+			cur.Sons = append(cur.Sons, item)
+			result = menuWebAddSons2(item, list, result)
+		}
+	}
+	return result
+}
