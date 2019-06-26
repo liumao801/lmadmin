@@ -13,7 +13,7 @@ func (c *IndexController) Index() {
 	c.Data["pageTitle"] = "首页"
 	c.Data["logoBgImg"] = "/static/modules/home/img/logo-bg.jpg"
 	c.Data["logoImg"] = "/static/modules/home/img/logo.png"
-	//c.Data["MenuTreeHtml"] = `------123456------` 	// 获取首页无限极菜单
+
 	c.setTpl("index/index")
 }
 

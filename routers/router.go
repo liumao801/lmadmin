@@ -14,6 +14,8 @@ func init() {
 		beego.NewNamespace("/home/",
 			beego.NSAutoRouter(&home.UserController{}),
 			beego.NSAutoRouter(&home.IndexController{}),
+			beego.NSRouter("article/?:id", &home.ArticleController{}, "get:Index"), // 文章详情页
+			beego.NSRouter("onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
 		)
 	beego.AddNamespace(ns_home)
 
@@ -99,6 +101,11 @@ func init() {
 
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/home", &home.IndexController{})
+
+	beego.Include(&home.ErrorsController{}) // 系统错误提示页面
+	//beego.Router("/404", &home.ErrorsController{}, "get:Page404")
+	//beego.Router("/500", &home.ErrorsController{}, "get:Page500")
+
 	//beego.Router("/admin", &admin.IndexController{})
 	//beego.Router("/", &home.IndexController{})
 

@@ -27,3 +27,21 @@
 <!-- 当前自定义JS始化 -->
 <script src="/static/lm800/js/lm800.js"></script>
 <script src="/static/lm800/js/lmajaxForm.js"></script>
+
+
+<script type="text/javascript">
+	$(function(){
+		// =========== wap 无限极菜单处理 == start=========================
+		var enClickDropdownSubmenu = isPC();
+	    $(".navbar .dropdown-submenu").on('click', function(e) {
+	    	if (!enClickDropdownSubmenu) {
+		        $(this).next(".dropdown-submenu").children(".dropdown-menu").css({"display":"none"});
+		        $(this).prev(".dropdown-submenu").children(".dropdown-menu").css({"display":"none"});
+		    	$(this).children(".dropdown-menu").css({"display":"block"});
+		    	// $(this).children(".dropdown-menu").toggle();
+		        return false;
+	        }
+	    })
+		// =========== wap 无限极菜单处理 == end=========================
+	})
+</script>

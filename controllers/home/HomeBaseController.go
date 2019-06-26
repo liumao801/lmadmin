@@ -5,6 +5,7 @@ import (
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
+	"strconv"
 	"strings"
 )
 
@@ -42,9 +43,10 @@ func (c *HomeBaseController) setTpl(template ...string) {
 	c.TplName = "home/" + tplName + ".html"
 
 	c.Data["menuTreeHtml"] = c.proHtmlTree(models.MenuWebTreeGridHome()) 	// 获取首页无限极菜单
-	//c.Data["MenuTreeHtml"] = `------123456------` 	// 获取首页无限极菜单
-	//utils.LogInfo(`c.Data["menuTreeHtml"]`)
-	//utils.LogInfo(c.Data["menuTreeHtml"])
+
+	c.Data["pageTitle"] = "LM-Admin"
+	c.Data["logoBgImg"] = "/static/modules/home/img/logo-bg.jpg"
+	c.Data["logoImg"] = "/static/modules/home/img/logo.png"
 }
 
 
@@ -70,9 +72,10 @@ func (c *HomeBaseController) proHtmlTree(tree []*models.MenuWeb) string {
 		}
 
 		if v.Sons == nil {
-			htmlStr += `
-<!-- ------------` + v.Title + `----------- -->
-`
+			if v.Type == 4 {
+				// 单页面 URL地址
+				v.Url = "/home/onepage/" + strconv.Itoa(v.Id)
+			}
 			htmlStr += `<li class="` + isActCtrAct + `"><a href="` + v.Url + `" >` + v.Title + `</a></li>`
 		} else {
 			htmlStr += `

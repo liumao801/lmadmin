@@ -84,11 +84,11 @@ func (c *BaseController) Jump302(url string) {
 	c.StopRun()
 }
 
-// 重定向 去错误页面
+// 显示 错误页面
 func (c *BaseController) PageError(msg string) {
-	errUrl := c.URLFor("HomeController.Error") + "/" + msg
-	c.Redirect(errUrl, enums.JRCode302)
-	c.StopRun()
+	c.TplName = "home/error/msg.html"
+	c.Data["msg"] = msg
+	c.Render()
 }
 
 // 记录操作日志

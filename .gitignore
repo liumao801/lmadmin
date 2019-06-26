@@ -16,3 +16,4 @@ static/upload/*
 views/admin/public-bak
 *副本*
 *-bak*
+*.tmp

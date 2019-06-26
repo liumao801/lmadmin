@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-06-22 22:15:16
+Date: 2019-06-26 22:30:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -126,7 +126,7 @@ CREATE TABLE `lm_article` (
 -- ----------------------------
 -- Records of lm_article
 -- ----------------------------
-INSERT INTO `lm_article` VALUES ('1', 'request', '热弯', '2', '2', ' 范德萨', '放给大家看联发科多斯拉克莲富大厦', '8', '2', '0', '0', '1', '-1', '2', '2');
+INSERT INTO `lm_article` VALUES ('1', 'request', '热弯', '', '2', ' 范德萨', '<p>放给大家看联发科多斯拉克莲富大厦</p>\n', '8', '2', '0', '0', '0', '1', null, '0');
 INSERT INTO `lm_article` VALUES ('2', '二级分类', '范德萨', '', '范德萨', '范德萨', '<p>范德萨范德萨</p>\n', '9', '', '1', '0', '0', '0', '2019', '0');
 
 -- ----------------------------
@@ -270,18 +270,25 @@ CREATE TABLE `lm_menu_web` (
   `seo_desc` varchar(255) DEFAULT NULL,
   `content` text COMMENT 'type=4 的页面内容',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='前端菜单/文章分类';
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='前端菜单/文章分类';
 
 -- ----------------------------
 -- Records of lm_menu_web
 -- ----------------------------
 INSERT INTO `lm_menu_web` VALUES ('1', '顶级分类', '', '1', null, '', '1', '', '', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('2', '二级分类', '', '1', '1', '', '0', '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('3', '跳转菜单', '', '2', '2', '', '0', '', 'https://www.baidu.com', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('3', '三级跳转菜单', '', '2', '2', '', '0', '', 'https://www.baidu.com', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('6', '首页', 'fa-home', '2', null, '', null, '', '/home', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('7', '公司简介', 'fa fa-file-text', '4', null, '', null, '', '', '1', '100', '', '公司简介', '公司简介', '<p>公司简介</p>\n\n<p>公司简介</p>\n\n<p>公司简介</p>\n');
 INSERT INTO `lm_menu_web` VALUES ('8', '公告信息', ' fa-flag', '3', '1', '', null, '', '', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('9', '新闻消息', ' fa-flag', '3', '1', '', null, '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('10', '第二个三级', ' fa-flag', '3', '2', '', null, '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('11', '第三级栏目页', ' fa-flag', '1', '2', '', null, '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('12', 'request324', 'fa-cogs', '2', '11', '', null, '', 'https://www.baidu.com?name=123', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('13', '第二顶级', '', '1', null, '', null, '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('14', '第二顶级子菜单', '', '3', '13', '', null, '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('15', '第三级栏目二', '', '1', '2', '', null, '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('16', '跳转菜单32', '', '2', '15', '', null, '', 'https://www.baidu.com', '1', '100', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for lm_role

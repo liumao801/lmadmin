@@ -30,7 +30,8 @@
     color: #000;
     font-size: 15px;
     padding: 10px 15px;
-    min-width: 80px;text-align: center;
+    min-width: 80px;
+    text-align: center;
 }
 .top-nav .active a{color:#1456AC;}
 .menu-box .top-nav>li>a:hover {background:#1456AC;color:#FFFFFF;}
