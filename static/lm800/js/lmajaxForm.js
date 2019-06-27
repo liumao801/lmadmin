@@ -74,6 +74,53 @@ function ajaxFormNoJump(data){
 
 
 
+/**
+ * modal ajax 提交不跳转
+ */
+function ajaxFormModal(data){
+    console.log('ajaxFormModal data', data)
+    var btn = [];
+    var options = {
+        time: 2000,
+        skin: 'layer-black-translucent'
+    }
+    if (data.obj.btn) {
+        options.btn = data.obj.btn
+    }
+
+    if (data.code == 1) {
+        // 提交失败；返回错误信息并清理相应字段
+        parent.layer.msg(data.msg, options, function(){
+            if (data.obj.click!=undefined) {
+                $(data.obj.click).click()
+            }
+            if (data.obj.reset_val!=undefined) {
+                $(data.obj.reset_val).val("")
+            }
+            if (data.obj.focus!=undefined) {
+                $(data.obj.focus).focus()
+            }
+        });
+    } else {
+        // 提交成功；显示提示信息
+        // 配置一个透明的询问框
+        parent.layer.msg(data.msg, options, function() {
+                if (data.code == 302) {
+                    if (data.obj.url != undefined) {
+                        window.location.href = data.obj.url;
+                    } else {
+                        window.location.href = data.obj;
+                    }
+                }
+            }
+        );
+        //刷新，并将所编辑的节点展开
+        parent.refresh(data.obj,true)
+        parent.layer.close(index)
+    }
+    en_submit = false;
+}
+
 
 
 

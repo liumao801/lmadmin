@@ -9,10 +9,10 @@ import (
 type AdminLog struct {
 	Id	 		int
 	Admin 		*Admin	`orm:"rel(fk)"`
-	Menu 		*Menu	`orm:"rel(fk)"`
-	Url 		string
 	Username 	string
-	Params 		string 	`json:"params"`
+	Path 		string
+	Method 		string
+	Input 		string 	`json:"input"`
 	Ip 			string 	`orm:size(16)`
 	CreatedAt 	time.Time `orm:"auto_now_add;type(datetime)"`
 }
@@ -20,8 +20,9 @@ type AdminLog struct {
 type AdminLogQueryParam struct {
 	BaseQueryParam
 	UsernameLike 	string
-	UrlLike 		string
-	CreatedAt 		int
+	AdminId 		int
+	PathLike 		string
+	CreatedAt 		string
 	Ip 				string
 }
 
@@ -34,19 +35,24 @@ func AdminLogPageList(params *AdminLogQueryParam) ([]*AdminLog, int64) {
  	data := make([]*AdminLog, 0)
  	sortorder := "Id"
 	switch params.Sort {
-	case "Menu" :
-		sortorder = "Menu"
+	case "Path" :
+		sortorder = "Path"
+	case "AdminId" :
+		sortorder = "AdminId"
 	}
 	if strings.ToLower(params.Order) == "desc" {
 		sortorder = "-" + sortorder
 	}
  	query = query.Filter("username__istartswith", params.UsernameLike)
- 	query = query.Filter("url__istartswith", params.UrlLike)
+ 	query = query.Filter("path__istartswith", params.PathLike)
 	if len(params.Ip) > 0 {
 		query = query.Filter("ip", params.Ip)
 	}
-	if params.CreatedAt > 0 {
+	if len(params.CreatedAt) > 0 {
 		query = query.Filter("created_at", params.CreatedAt)
+	}
+	if params.AdminId > 0 {
+		query = query.Filter("admin_id", params.AdminId)
 	}
 
 	total, _ := query.Count()

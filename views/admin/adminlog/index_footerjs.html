@@ -68,8 +68,9 @@
                 //params的自带参数类型由queryParamsType决定
                 params.UserNameLike =$.trim($('.searchForm input[name="Username"]').val());
                 params.MenuLike = $.trim($('.searchForm input[name="Menu"]').val());
-                params.UrlLike = $.trim($('.searchForm input[name="Url"]').val());
-                params.Ip = $('.searchForm select[name="Ip"]').selectpicker('val');           
+                params.PathLike = $.trim($('.searchForm input[name="Path"]').val());
+                params.AdminId = parseInt($.trim($('.searchForm input[name="AdminId"]').val()));
+                params.Ip = $('.searchForm select[name="Ip"]').selectpicker('val');
                 return params;
             },
             pagination: true,
@@ -99,23 +100,25 @@
                 align: 'center',
                 sortable: true,
             }, {
-                field: 'UserName',
+                field: 'Username',
                 title: '用户名',                     
             }, {
-                field: 'Menu',
-                title: '菜单',                     
-            }, {
-                field: 'Url',
+                field: 'Path',
                 title: 'URL地址',                   
             }, {
-                field: 'Params',
-                title: '参数',                     
+                field: 'Method',
+                title: '方法',                   
+            }, {
+                field: 'input',
+                title: '参数列表',   
+                formatter: showJson                  
             }, {
                 field: 'Ip',
                 title: '操作IP',              
             }, {
                 field: 'CreatedAt',
-                title: '操作时间',              
+                title: '操作时间',
+                formatter: showDateTime
             }, {
                 field: 'operate',
                 title: '操作',              
@@ -165,6 +168,15 @@
                 layer.alert('获取数据失败,错误代码：' + status);
             }
         });
+    }
+    function showDateTime (value, row, index) {
+        var rel = value.substr(0, 19);
+        rel = rel.replace('T', ' ');
+        return rel;
+    }
+    function showJson (value, row, index) {
+        value = value.replace(/\\"/g , '"');
+        return value;
     }
     function GetStatusText(value) {
         var texts = [{ Text: '锁定', Value: -1 }, { Text: '禁用', Value: 0 }, { Text: '启用', Value: 1 } ]

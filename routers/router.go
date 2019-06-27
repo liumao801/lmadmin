@@ -59,6 +59,11 @@ func init() {
 			beego.NSRouter("admincenter/uploadimage",   &admin.AdminCenterController{}, "Post:UploadImage"),
 			beego.NSRouter("admincenter/passwdsave", 	 &admin.AdminCenterController{}, "Post:PasswdSave"),
 
+			// 后台操作日志菜单路由
+			beego.NSRouter("adminlog/index", 		&admin.AdminLogController{}, "*:Index"),
+			beego.NSRouter("adminlog/datagrid", 	&admin.AdminLogController{}, "Post:DataGrid"),
+			beego.NSRouter("adminlog/delete", 		&admin.AdminLogController{}, "Post:Delete"),
+
 			// 后台 Home
 			beego.NSRouter("home/index", 	&admin.HomeController{}, "*:Index"),
 			beego.NSRouter("home/login", 	&admin.HomeController{}, "*:Login"),

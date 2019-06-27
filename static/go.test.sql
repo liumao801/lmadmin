@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-06-26 22:30:22
+Date: 2019-06-27 22:25:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -82,23 +82,29 @@ DROP TABLE IF EXISTS `lm_admin_log`;
 CREATE TABLE `lm_admin_log` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` int(10) unsigned NOT NULL COMMENT '用户id',
-  `username` varchar(255) NOT NULL DEFAULT '' COMMENT '操作用户名',
-  `menu_id` int(10) unsigned NOT NULL COMMENT '用户id',
-  `menu_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '菜单名称',
-  `url` varchar(255) NOT NULL DEFAULT '' COMMENT 'url地址',
-  `params` varchar(255) NOT NULL DEFAULT '0' COMMENT '附加参数',
-  `created_at` datetime NOT NULL COMMENT '操作时间',
-  `ip` varchar(255) NOT NULL COMMENT '操作IP',
-  `menu` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='后台操作日志';
+  `username` varchar(32) NOT NULL DEFAULT '' COMMENT '操作用户名',
+  `path` varchar(249) NOT NULL DEFAULT '' COMMENT 'url地址',
+  `method` varchar(10) NOT NULL COMMENT 'get post put delete header option',
+  `input` text NOT NULL COMMENT '附加参数',
+  `created_at` datetime DEFAULT NULL COMMENT '操作时间',
+  `ip` varchar(16) NOT NULL COMMENT '操作IP',
+  PRIMARY KEY (`id`),
+  KEY `admin_id` (`admin_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COMMENT='后台操作日志';
 
 -- ----------------------------
 -- Records of lm_admin_log
 -- ----------------------------
-INSERT INTO `lm_admin_log` VALUES ('1', '1', 'admin', '14', '0', '/admin/role/index', '{}', '2018-12-15 12:50:10', '::1', '');
-INSERT INTO `lm_admin_log` VALUES ('2', '1', 'admin', '14', '0', '/admin/role/index', '{}', '2018-12-15 12:50:25', '::1', '');
-INSERT INTO `lm_admin_log` VALUES ('3', '1', 'admin', '14', '0', '/admin/role/index', '{}', '2018-12-15 12:50:43', '::1', '');
+INSERT INTO `lm_admin_log` VALUES ('99', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-27 22:15:01', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('100', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-27 22:15:02', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('101', '1', 'admin', '/admin/adminlog/index', 'GET', '{}', '2019-06-27 22:15:03', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('102', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-27 22:15:03', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('103', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-27 22:15:03', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('104', '1', 'admin', '/admin/commonset/edit/14', 'GET', '{}', '2019-06-27 22:15:06', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('105', '1', 'admin', '/admin/commonset/edit/14', 'POST', '{\"Id\":[\"14\"],\"Name\":[\"测试\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"测试类型|{\\\"a\\\":\\\"倒计时\\\",\\\"b\\\":\\\"减肥的\\\"}\"],\"Type\":[\"fds111\"],\"Value\":[\"a\"]}', '2019-06-27 22:15:07', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('106', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-27 22:15:07', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('107', '1', 'admin', '/admin/adminlog/index', 'GET', '{}', '2019-06-27 22:15:08', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('108', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-27 22:15:08', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for lm_article
@@ -159,11 +165,9 @@ INSERT INTO `lm_common_set` VALUES ('6', 'fds', '', '', 'show', '', '1', '100', 
 INSERT INTO `lm_common_set` VALUES ('7', 'fds', '', '', 'show', '', '1', '100', null, null);
 INSERT INTO `lm_common_set` VALUES ('8', 'fds', '', '', 'show', '', '1', '100', null, null);
 INSERT INTO `lm_common_set` VALUES ('9', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('10', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('11', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('12', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('13', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('14', 'fds', '', '', 'show', '', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('12', 'fds432', 'head_title', 'B', 'select', 'request324|{\"a\":\"123\",\"B\":\"fds\"}', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('13', 'fds范德萨', 'head_title', '321', 'show', '3232132', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('14', 'fds111', '测试', 'a', 'select', '测试类型|{\"a\":\"倒计时\",\"b\":\"减肥的\"}', '1', '100', null, null);
 
 -- ----------------------------
 -- Table structure for lm_menu
@@ -192,7 +196,7 @@ CREATE TABLE `lm_menu` (
 INSERT INTO `lm_menu` VALUES ('1', '1', '首页', null, '1', 'fa-dashboard', 'HomeController.Index', 'admin/index/index', '1', '1', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('2', '0', '系统管理', '0', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('7', '1', '系统配置', '2', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null, '0');
-INSERT INTO `lm_menu` VALUES ('8', '1', '日志管理', '2', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null, '0');
+INSERT INTO `lm_menu` VALUES ('8', '1', '日志管理', '2', '100', 'fa-dashboard', 'AdminLogController.Index', 'admin/index/index', '1', '1', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('9', '1', '网站配置', '7', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('10', '1', '注册管理', '7', '100', 'fa-dashboard', 'IndexController.Index', 'admin/index/index', '1', '1', null, null, '0');
 INSERT INTO `lm_menu` VALUES ('11', '1', '权限管理', '12', '100', 'fa fa-balance-scale', '', null, '1', '1', null, null, '0');
@@ -275,7 +279,7 @@ CREATE TABLE `lm_menu_web` (
 -- ----------------------------
 -- Records of lm_menu_web
 -- ----------------------------
-INSERT INTO `lm_menu_web` VALUES ('1', '顶级分类', '', '1', null, '', '1', '', '', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('1', '顶级分类1', '', '1', null, '', '1', '', '', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('2', '二级分类', '', '1', '1', '', '0', '', '', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('3', '三级跳转菜单', '', '2', '2', '', '0', '', 'https://www.baidu.com', '1', '100', '', '', '', '');
 INSERT INTO `lm_menu_web` VALUES ('6', '首页', 'fa-home', '2', null, '', null, '', '/home', '1', '100', '', '', '', '');

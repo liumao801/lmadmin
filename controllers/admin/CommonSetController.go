@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/enums"
+	"liumao801/lmadmin/functions"
 	"liumao801/lmadmin/models"
 	"liumao801/lmadmin/utils"
 	"strconv"
@@ -64,6 +65,7 @@ func (c *CommonSetController) Edit() {
 		if err != nil {
 			c.PageError("数据无效，请刷新后重试")
 		}
+ 		c.setInfoItems(m) // 如果是 select switch 需要设置可选项 
 	} else {
 		// 没有 Id 表示编辑文章
 		m.Sort = 100
@@ -74,6 +76,31 @@ func (c *CommonSetController) Edit() {
 	c.LayoutSections = make(map[string]string)
 	c.LayoutSections["footerjs"] = "admin/commonset/edit_footerjs.html"
 }
+// 根据类型设置选择项
+func (c *CommonSetController) setInfoItems(m *models.CommonSet) {
+	// 显示类型为 select 就设置 Items
+	if m.ShowType == "select" {
+		c.Data["enSelect"] = false // 默认不启用选择项
+		titleArr := strings.Split(m.Title, "|")
+		var jsonStr = ""
+		for k, v := range titleArr {
+			if k == 1 {
+				jsonStr = v
+				break
+			}
+		}
+		if jsonStr != "" {
+			var selItems map[string]string
+			if err := json.Unmarshal([]byte(jsonStr), &selItems); err == nil {
+				for k, v := range selItems{
+					utils.LogInfo("key = " + k + ", v = "+ v)
+				}
+				c.Data["selItems"] = selItems
+				c.Data["enSelect"] = true //启用选择项
+			}
+		}
+	}
+}
 //添加保存信息
 func (c *CommonSetController) Save() {
 	m := models.CommonSet{}
@@ -82,6 +109,15 @@ func (c *CommonSetController) Save() {
 	// 获取 form 里面的值
 	if err = c.ParseForm(&m); err != nil {
 		c.JsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
+	}
+
+	if m.ShowType == "image" {
+		c.UploadImage(&m) // 上传图片
+	}
+	// 图片上传类型更换需设置原值，不然会报异常
+	oldValue := c.GetString("oldValue", "");
+	if oldValue != "" && len(m.Value) < 1 {
+		m.Value = oldValue
 	}
 
 	c.validate(m) // 数据验证
@@ -105,21 +141,36 @@ func (c *CommonSetController) Save() {
 		}
 	}
 }
+// 上传图片
+func (c *CommonSetController) UploadImage(m *models.CommonSet) {
+	filePath, err := functions.LmUpload(&c.Controller, "Value")
+	oldValue := c.GetString("oldValue", "");
+	if err != "" {
+		if oldValue == "" {
+			c.JsonResult(enums.JRCodeFailed, err, "")
+		} else {
+			m.Value = oldValue
+		}
+	} else {
+		m.Value = filePath
+		//c.JsonResult(enums.JRCodeSucc, "上传成功", filePath)
+	}
+}
 // 保存信息的验证
 func (c *CommonSetController) validate(m models.CommonSet) {
 	if len(m.Title) < 4 {
-		c.JsonResult(enums.JRCodeFailed, "显示标题异常", "")
+		c.JsonResult(enums.JRCodeFailed, "显示标题应大于 4 个字符", "")
 	}
 
 	if len(m.Type) < 4 {
-		c.JsonResult(enums.JRCodeFailed, "类型异常", "")
+		c.JsonResult(enums.JRCodeFailed, "类型应大于 4 个字符", "")
 	}
 
 	if len(m.Name) < 4 {
-		c.JsonResult(enums.JRCodeFailed, "类型名称异常", "")
+		c.JsonResult(enums.JRCodeFailed, "类型名称应大于 4 个字符", "")
 	}
 
-	if len(m.Value) < 4 {
+	if len(m.Value) < 1 {
 		c.JsonResult(enums.JRCodeFailed, "值异常", "")
 	}
 }

@@ -28,7 +28,7 @@ func (c *AdminBaseController) Prepare() {
 	// 从 session 获取数据，设置用户信息
 	c.adapterAdminInfo()
 	// 记录操作日志
-	//c.OperationLog()
+	c.OperationLog()
 }
 
 // checkLogin 判断用户是否登录，未登录跳转登录页面
@@ -198,27 +198,23 @@ func (c *AdminBaseController) LMURLFor(endpoint string, values ...interface{}) s
 }
 
 // 记录操作日志
-// 没有实现参数记录
 func (c *AdminBaseController) OperationLog() error {
 	if c.currAdmin.Id == 0 {
 		return errors.New("暂时没有登录")
 	}
 	log := adminModelNS.AdminLog{}
 	log.Username = c.currAdmin.Username
-	log.Url = c.Ctx.Input.URL()
+	log.Path = c.Ctx.Input.URL()
 	log.Ip = c.Ctx.Input.IP()
-	beego.Info(c.Ctx.Input.Params())
-	params, err := json.Marshal(c.Ctx.Input.Params())
-	if err == nil {
-		log.Params = string(params)
+	log.Method = c.Ctx.Input.Method()
+	params, err := json.Marshal(c.Input())
+	if err != nil {
+		log.Input = "数据解析异常：" + err.Error()
+	} else {
+		log.Input = string(params)
 	}
 	log.Admin = &c.currAdmin
-	m, err := adminModelNS.MenuOneByUrlFor(c.ctrlName + "." + c.actiName)
-	if err == nil {
-		log.Menu = m
-	} else {
-		return errors.New("菜单不存在")
-	}
+
 	orm.NewOrm().Insert(&log)
 	return nil
 }

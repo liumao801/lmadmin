@@ -20,11 +20,12 @@ func InitDatabase() {
 	dbPwd := beego.AppConfig.String(dbType + "::db_pwd")
 	dbHost := beego.AppConfig.String(dbType + "::db_host")
 	dbPort := beego.AppConfig.String(dbType + "::db_port")
+	dbTimeZone := beego.AppConfig.String(dbType + "::db_time_zone")
 
 	switch dbType {
 	case "mysql":
 		dbCharset := beego.AppConfig.String(dbType + "::db_charset")
-		orm.RegisterDataBase(dbAlias, dbType, dbUser+":"+dbPwd+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?charset="+dbCharset, 30)
+		orm.RegisterDataBase(dbAlias, dbType, dbUser+":"+dbPwd+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?charset="+dbCharset+"&loc="+dbTimeZone, 30)
 	case "sqlite3":
 		orm.RegisterDataBase(dbAlias, dbType, dbName)
 	}
