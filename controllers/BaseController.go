@@ -86,7 +86,7 @@ func (c *BaseController) Jump302(url string) {
 
 // 显示 错误页面
 func (c *BaseController) PageError(msg string) {
-	c.TplName = "home/error/msg.html"
+	c.TplName = "error/msg.html"
 	c.Data["msg"] = msg
 	c.Render()
 }

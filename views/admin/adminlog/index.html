@@ -20,7 +20,7 @@
             <form id="searchForm" class="searchForm">
                 <div class="box box-solid collapsed-box">
                     <div class="box-header with-border">                     
-                        <input type="text" name="UserName" class="form-control pull-left input-wd-md" placeholder="用户名">
+                        <input type="text" name="AdminId" class="form-control pull-left input-wd-md" placeholder="用户ID">
                         <input type="text" name="Path" class="form-control pull-left input-wd-md" placeholder="页面地址">
                         <div class="btn-group">
                             <button type="button" class="btn btn-warning" id="btnSearch"><i class="fa fa-search"></i> 搜索</button>
@@ -36,9 +36,20 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body" style="display: none;">
-                        <input type="text" name="Url" class="form-control pull-left input-wd-md" placeholder="URL地址">
+                        <input type="text" name="UserName" class="form-control pull-left input-wd-md" placeholder="用户名">
                         <input type="text" name="Ip" class="form-control pull-left input-wd-md" placeholder="操作IP">
-                        <input type="text" name="CreatedAt" class="form-control pull-left input-wd-md" placeholder="操作时间">
+                        <select name="Method" class="form-control input-wd-md bs-select" data-width="200px">
+                            <option value="">- 全部类型 -</option>
+                            <option value="get">Get 请求</option>
+                            <option value="post">Post 请求</option>
+                            <option value="put">Put 请求</option>
+                            <option value="patch">Patch 请求</option>
+                            <option value="head">Head 请求</option>
+                            <option value="options">Options 请求</option>
+                            <option value="delete">Delete 请求</option>
+                            <!-- <option value="">Any 请求</option> -->
+                        </select>
+                        <input type="text" name="CreatedAt" class="form-control pull-left input-wd-md datetimepicker" placeholder="操作时间" data-date-format="yyyy-mm-dd hh:ii:ss">
                     </div>
                     <!-- /.box-body -->
                 </div>

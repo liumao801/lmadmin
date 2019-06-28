@@ -19,6 +19,7 @@ type MenuWeb struct {
 	ArticleTpl 	string		`orm"size(64)"`
 	Url 		string		`orm"size(64)"`
 	Status 		int8
+	FrontShow	int8
 	Sort 		uint8
 	Img 		string
 	SeoTitle 	string
@@ -34,6 +35,7 @@ type MenuWebQueryParam struct {
 	Type 		int
 	ParentId 	int
 	Status 		string
+	FrontShow 	string
 }
 
 func (m *MenuWeb) TableName() string {
@@ -100,6 +102,9 @@ func MenuWebPageList(params *MenuWebQueryParam) ([]*MenuWeb, int64) {
 	if len(params.Status) > 0 {
 		query = query.Filter("status", params.Status)
 	}
+	if len(params.FrontShow) > 0 {
+		query = query.Filter("front_show", params.FrontShow)
+	}
 	if params.ParentId > 0 {
 		query = query.Filter("par_id", params.ParentId)
 	}
@@ -119,6 +124,19 @@ func MenuWebOne(id int) (*MenuWeb, error) {
 		return nil, err
 	}
 	return &m, err
+}
+/**
+ * 根据parent_id查询一个菜单信息
+ */
+func MenuWebListForParentId(pid, limit int) ([]*MenuWeb, error) {
+	o := orm.NewOrm()
+	query := o.QueryTable(MenuWebTBName())
+	data := make([]*MenuWeb, 0)
+	_, err := query.Filter("parent_id", pid).Limit(limit).All(&data)
+	if err != nil {
+		return nil, err
+	}
+	return data, err
 }
 
 func MenuWebTreeGrid4Parent(id int) []*MenuWeb {
@@ -178,6 +196,9 @@ func MenuWebListForMap(params *MenuWebQueryParam) ([]*MenuWeb) {
 	if len(params.Status) > 0 {
 		query = query.Filter("status", params.Status)
 	}
+	if len(params.FrontShow) > 0 {
+		query = query.Filter("front_show", params.FrontShow)
+	}
 	if params.ParentId > 0 {
 		query = query.Filter("par_id", params.ParentId)
 	}
@@ -190,7 +211,7 @@ func MenuWebListForMap(params *MenuWebQueryParam) ([]*MenuWeb) {
 // 获取前端treeGrid 顺序的列表；无限极分类菜单
 func MenuWebTreeGridHome() []*MenuWeb {
 	o := orm.NewOrm()
-	query := o.QueryTable(MenuWebTBName()).Filter("status", 1).OrderBy("Sort", "Parent", "Id")
+	query := o.QueryTable(MenuWebTBName()).Filter("status", 1).Filter("front_show", 1).OrderBy("Sort", "Parent", "Id")
 	list := make([]*MenuWeb, 0)
 	query.RelatedSel().All(&list)
 	//return list

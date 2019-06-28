@@ -146,10 +146,15 @@ func (c *CommonSetController) UploadImage(m *models.CommonSet) {
 	filePath, err := functions.LmUpload(&c.Controller, "Value")
 	oldValue := c.GetString("oldValue", "");
 	if err != "" {
-		if oldValue == "" {
+		nowValue := c.GetString("Value", "");
+		if oldValue == "" && nowValue == "" {
 			c.JsonResult(enums.JRCodeFailed, err, "")
 		} else {
-			m.Value = oldValue
+			if oldValue == "" {
+				m.Value = nowValue
+			} else {
+				m.Value = oldValue
+			}
 		}
 	} else {
 		m.Value = filePath

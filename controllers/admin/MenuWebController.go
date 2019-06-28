@@ -138,6 +138,14 @@ func (c *MenuWebController) validate(m models.MenuWeb) {
 			c.JsonResult(enums.JRCodeFailed, "请编辑页面内容", "")
 		}
 	}
+
+	if m.Id > 0 && m.Type != 1 {
+		// 检测是否存在子菜单
+		pm, _ := models.MenuWebListForParentId(m.Id, 1)
+		if pm != nil && len(pm) > 0 {
+			c.JsonResult(enums.JRCodeFailed, "该菜单存在子菜单，不能修改为频道类之外的分类", "")
+		}
+	}
 }
 
 func (c *MenuWebController) Delete() {

@@ -31,7 +31,36 @@ $(function () {
             }
         }
         // $(".switch input").bootstrapSwitch()
-	}
+    }
+    // 初始化 datetimepicker 组件
+    if ($(".datetimepicker").length > 0) {
+        var datetimepickerTime
+        if (typeof $(".datetimepicker").datetimepicker == 'undefined') {
+            datetimepickerTime = setInterval(initDatetimepicker, 50)
+        } else {
+            initDatetimepicker()
+        }
+        function initDatetimepicker() {
+            $(".datetimepicker").datetimepicker({
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                // initialDate: new Date(), // 默认时间
+                // startDate: new Date(), // 最小可选时间
+                // endDate: new Date, // 最大可选时间
+            })
+            if (datetimepickerTime != undefined) {
+                clearInterval(datetimepickerTime)
+            }
+        }
+        // $('#datetimepicker').datetimepicker('setStartDate', '2012-01-01'); // 设置最小可选时间
+        // $('#datetimepicker').datetimepicker('setEndDate', '2012-01-01'); // 设置最大可选时间
+    }
 });
 /**
  * 切换 switch 的状态

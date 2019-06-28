@@ -2,11 +2,13 @@ package home
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/cache"
 	"liumao801/lmadmin/controllers"
 	"liumao801/lmadmin/enums"
 	"liumao801/lmadmin/models"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type HomeBaseController struct {
@@ -39,14 +41,36 @@ func (c *HomeBaseController) setTpl(template ...string) {
 		actionName := strings.ToLower(c.actiName)
 		tplName = ctrlName + "/" + actionName
 	}
-	c.Layout = "home/" + layout + ".html"
-	c.TplName = "home/" + tplName + ".html"
 
-	c.Data["menuTreeHtml"] = c.proHtmlTree(models.MenuWebTreeGridHome()) 	// 获取首页无限极菜单
+	tplPre := c.viewTpl()
+	c.Layout = tplPre + layout + ".html"
+	c.TplName = tplPre + tplName + ".html"
+}
+// 设置layoutSections 其他包含文件
+func (c *HomeBaseController)  setLayoutSections(layoutSections map[string]string) {
+	c.LayoutSections = make(map[string]string)
+	tplPre := c.viewTpl()
+	for key, val := range layoutSections {
+		c.LayoutSections[key] = tplPre + val + ".html"
+	}
+}
+// 获取前端使用网站模板
+func (c *HomeBaseController) viewTpl() string {
+	tpl, err := models.CommonSetTypeNameGet("home_conf", "view_tpl")
+	if tpl == "cms" {
+		c.Data["menuTreeHtml"] = c.menuTree() 	// 获取首页无限极菜单
+	}
+	if err == nil {
+		if c.actiName == "Index" && tpl != "" && tpl != strings.ToLower(c.ctrlName[0 : len(c.ctrlName)-10]) {
+			c.Redirect("/home/" + tpl + "/index", 302) // 跳转到对应模板
+		}
 
-	c.Data["pageTitle"] = "LM-Admin"
-	c.Data["logoBgImg"] = "/static/modules/home/img/logo-bg.jpg"
-	c.Data["logoImg"] = "/static/modules/home/img/logo.png"
+		tpl += "/"
+	}
+	tpl = "home/" + tpl
+	c.Data["actMenu"] = strings.ToLower(c.actiName) // 活动菜单
+	c.Data["pageTitlePre"], _ = models.CommonSetTypeNameGet("home_conf", "head_title") // 系统标题前缀
+	return tpl
 }
 
 
@@ -56,9 +80,26 @@ func (c *HomeBaseController) pageLogin() {
 	c.Redirect(url, enums.JRCode302)
 	c.StopRun()
 }
+// 生成前端菜单列表
+func (c *HomeBaseController) menuTree() string {
+	memc, err := cache.NewCache("memory", `{"interval":600}`)
+	if err == nil {
+		if memc.IsExist("menuTreeHtml") {
+			// 有缓存直接返回
+			return memc.Get("menuTreeHtml").(string)
+		}
+	} else {
+		beego.Info("================== memory cache init faild. ========================")
+	}
+
+	menuHtml := c.proHtmlTree(models.MenuWebTreeGridHome())
+	memc.Put("menuTreeHtml", menuHtml, 10*time.Minute) // 缓存10分钟
+
+	return menuHtml
+}
 // 生成 html 代码字符串
 func (c *HomeBaseController) proHtmlTree(tree []*models.MenuWeb) string {
-	//  菜单html  活动菜单class 
+	//  菜单html  活动菜单class
 	var htmlStr, isActCtrAct, dropSub string
 	for _, v := range tree{
 		isActCtrAct = ""

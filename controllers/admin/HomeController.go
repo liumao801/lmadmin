@@ -44,6 +44,9 @@ func (c *HomeController) Login() {
 	if c.Ctx.Request.Method == "POST" {
 		c.loginDo()
 	}
+	if c.currAdmin.Id > 0 {
+		c.Redirect("/admin", 302)
+	}
 	remInfo := c.Ctx.GetCookie(rememberKey)
 	if remInfo != "" {
 		admin, err := adminModelNS.AdminOneByUsername(remInfo)
@@ -128,6 +131,9 @@ func (c *HomeController) Register() {
 	// 如果是 post 请求，则由save 处理
 	if c.Ctx.Request.Method == "POST" {
 		c.registerDo()
+	}
+	if c.currAdmin.Id > 0 {
+		c.Redirect("/admin", 302)
 	}
 	c.setTpl("home/register", "public/layout_pullbox")
 	c.Data["pageTitle"] = "用户注册"

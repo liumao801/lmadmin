@@ -63,6 +63,7 @@
             html.push('<td class="line-center">' + GetTypeText(e.Type) + '</td>');
             html.push('<td class="hidden-xs hidden-sm ellipsis" title="' + e.Url + '">' + e.Url + '</td>');
             html.push('<td class="line-center hidden-xs hidden-sm">' + GetStatusText(e.Status) + '</td>');
+            html.push('<td class="line-center hidden-xs hidden-sm">' + GetShowText(e.FrontShow) + '</td>');
             html.push('<td class="line-center hidden-xs hidden-sm" ><a href="javascript:;" class="editable-weight" data-pk="' + e.Id + '" data-name="Sort">' + e.Sort + '</a></td>');
             html.push('<td>');
             html.push('  <div class="btn-group">');

@@ -21,6 +21,7 @@
         //附值
         $("#Type").selectpicker('val','{{.m.Type}}');
         switchState("#Status", '{{.m.Status}}')
+        switchState("#FrontShow", '{{.m.FrontShow}}')
         //验证
         validateInfo();
         changeShow('#Type', 0)

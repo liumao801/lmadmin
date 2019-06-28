@@ -13,7 +13,11 @@ func init() {
 	ns_home :=
 		beego.NewNamespace("/home/",
 			beego.NSAutoRouter(&home.UserController{}),
-			beego.NSAutoRouter(&home.IndexController{}),
+			//beego.NSAutoRouter(&home.IndexController{}),
+			beego.NSRouter("/", &home.IndexController{}, "get:Index"), // 首页路由
+
+			beego.NSAutoRouter(&home.PortalController{}), // 门户网站自动匹配路由
+
 			beego.NSRouter("article/?:id", &home.ArticleController{}, "get:Index"), // 文章详情页
 			beego.NSRouter("onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
 		)

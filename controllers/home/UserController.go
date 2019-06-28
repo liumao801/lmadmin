@@ -19,10 +19,11 @@ func (c *UserController) Login() {
 		c.loginDo()
 	}
 	c.Data["pageTitle"] = "用户登录"
-	c.setTpl()
-	c.LayoutSections = make(map[string]string)
-	c.LayoutSections["headcssjs"] = "home/user/login_headcssjs.html"
-	c.LayoutSections["footerjs"] = "home/user/login_footerjs.html"
+	c.setTpl("user/login", "public/layout_base")
+	layoutSections := make(map[string]string)
+	layoutSections["headcssjs"] = "user/login_headcssjs"
+	layoutSections["footerjs"] = "user/login_footerjs"
+	c.setLayoutSections(layoutSections)
 }
 
 // 执行登录
@@ -60,10 +61,11 @@ func (c *UserController) Register() {
 		c.registerDo()
 	}
 	c.Data["pageTitle"] = "用户注册"
-	c.setTpl()
-	c.LayoutSections = make(map[string]string)
-	c.LayoutSections["headcssjs"] = "home/user/login_headcssjs.html"
-	c.LayoutSections["footerjs"] = "home/user/login_footerjs.html"
+	c.setTpl("user/login", "public/layout_base")
+	layoutSections := make(map[string]string)
+	layoutSections["headcssjs"] = "user/login_headcssjs"
+	layoutSections["footerjs"] = "user/login_footerjs"
+	c.setLayoutSections(layoutSections)
 }
 
 // 执行注册

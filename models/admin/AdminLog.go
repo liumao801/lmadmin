@@ -24,6 +24,7 @@ type AdminLogQueryParam struct {
 	PathLike 		string
 	CreatedAt 		string
 	Ip 				string
+	Method 			string
 }
 
 func (m *AdminLog) TableName() string {
@@ -44,12 +45,15 @@ func AdminLogPageList(params *AdminLogQueryParam) ([]*AdminLog, int64) {
 		sortorder = "-" + sortorder
 	}
  	query = query.Filter("username__istartswith", params.UsernameLike)
- 	query = query.Filter("path__istartswith", params.PathLike)
+ 	query = query.Filter("path__icontains", params.PathLike)
 	if len(params.Ip) > 0 {
 		query = query.Filter("ip", params.Ip)
 	}
 	if len(params.CreatedAt) > 0 {
-		query = query.Filter("created_at", params.CreatedAt)
+		query = query.Filter("created_at__gte", params.CreatedAt)
+	}
+	if len(params.Method) > 0 {
+		query = query.Filter("method", params.Method)
 	}
 	if params.AdminId > 0 {
 		query = query.Filter("admin_id", params.AdminId)

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-06-27 22:25:15
+Date: 2019-06-28 21:36:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,33 +49,6 @@ INSERT INTO `lm_admin` VALUES ('3', 'customer', '111111', '游客', '13288743837
 INSERT INTO `lm_admin` VALUES ('4', 'tester', '96e79218965eb72c92a549dd5a330112', '测试用户', '13221234543', '231@gmail.com', '0', '-1', '', '0', null, null, null, '', '', '', '0');
 
 -- ----------------------------
--- Table structure for lm_admin_copy
--- ----------------------------
-DROP TABLE IF EXISTS `lm_admin_copy`;
-CREATE TABLE `lm_admin_copy` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL COMMENT '用户名',
-  `passwd` varchar(255) NOT NULL COMMENT '密码',
-  `face` varchar(255) DEFAULT NULL COMMENT '头像',
-  `name` varchar(255) DEFAULT NULL COMMENT '真实姓名',
-  `tel` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `is_super` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否超级管理员 0否；1是',
-  `status` tinyint(1) NOT NULL DEFAULT '-1' COMMENT '-1停用；1正常；0已删除',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联用户表id',
-  `created_at` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
-  `updated_at` int(10) unsigned DEFAULT NULL COMMENT '最后更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='管理员信息表';
-
--- ----------------------------
--- Records of lm_admin_copy
--- ----------------------------
-INSERT INTO `lm_admin_copy` VALUES ('1', 'admin', '222222', null, '管理员', '13838383838', '138@gmail.com', '1', '1', '0', null, null);
-INSERT INTO `lm_admin_copy` VALUES ('2', 'test', '111111', null, '测试', '13909820984', '213@qq.com', '0', '1', '0', null, null);
-INSERT INTO `lm_admin_copy` VALUES ('3', 'customer', '111111', null, '游客', '13288743837', '123@qq.com', '0', '1', '0', null, null);
-
--- ----------------------------
 -- Table structure for lm_admin_log
 -- ----------------------------
 DROP TABLE IF EXISTS `lm_admin_log`;
@@ -90,21 +63,98 @@ CREATE TABLE `lm_admin_log` (
   `ip` varchar(16) NOT NULL COMMENT '操作IP',
   PRIMARY KEY (`id`),
   KEY `admin_id` (`admin_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8 COMMENT='后台操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=540 DEFAULT CHARSET=utf8 COMMENT='后台操作日志';
 
 -- ----------------------------
 -- Records of lm_admin_log
 -- ----------------------------
 INSERT INTO `lm_admin_log` VALUES ('99', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-27 22:15:01', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('100', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-27 22:15:02', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('101', '1', 'admin', '/admin/adminlog/index', 'GET', '{}', '2019-06-27 22:15:03', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('102', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-27 22:15:03', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('103', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-27 22:15:03', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('104', '1', 'admin', '/admin/commonset/edit/14', 'GET', '{}', '2019-06-27 22:15:06', '127.0.0.1');
 INSERT INTO `lm_admin_log` VALUES ('105', '1', 'admin', '/admin/commonset/edit/14', 'POST', '{\"Id\":[\"14\"],\"Name\":[\"测试\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"测试类型|{\\\"a\\\":\\\"倒计时\\\",\\\"b\\\":\\\"减肥的\\\"}\"],\"Type\":[\"fds111\"],\"Value\":[\"a\"]}', '2019-06-27 22:15:07', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('106', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-27 22:15:07', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('107', '1', 'admin', '/admin/adminlog/index', 'GET', '{}', '2019-06-27 22:15:08', '127.0.0.1');
-INSERT INTO `lm_admin_log` VALUES ('108', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-27 22:15:08', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('242', '1', 'admin', '/admin/adminlog/delete', 'POST', '{\"ids\":[\"241,240,239,238,237,236,235,234,233,232,231,230,229,228,227,226,225,224,223,222,221,220,219,218,217,216,215,214,213,212,211,210,209,208,207,206,205,204,203,202,201,200,199,198,197,196,195,194,193,192\"]}', '2019-06-28 13:13:30', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('244', '1', 'admin', '/admin/adminlog/delete', 'POST', '{\"ids\":[\"243,191,190,189,188,187,186,185,184,183,182,181,180,179,178,177,176,175,174,173,172,171,170,169,168,167,166,165,164,108,107,106,104,103,102,101,100\"]}', '2019-06-28 13:13:56', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('245', '1', 'admin', '/admin/adminlog/datagrid', 'POST', '{}', '2019-06-28 13:13:56', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('378', '1', 'admin', '/admin/commonset/index', 'GET', '{}', '2019-06-28 16:51:27', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('379', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 16:51:28', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('380', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 16:51:28', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('381', '1', 'admin', '/admin/commonset/edit/0', 'GET', '{}', '2019-06-28 16:51:31', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('382', '1', 'admin', '/admin/commonset/edit/0', 'POST', '{\"Id\":[\"0\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"protal\\\":\\\"门户网站\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"protal\"]}', '2019-06-28 16:52:01', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('388', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 16:53:08', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('389', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"1\"]}', '2019-06-28 16:53:08', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('395', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 16:59:21', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('396', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 16:59:21', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('397', '1', 'admin', '/admin/menuweb/edit', 'POST', '{\"Content\":[\"\"],\"Icon\":[\" fa-flag\"],\"Id\":[\"11\"],\"Parent\":[\"2\"],\"Sort\":[\"100\"],\"Title\":[\"第三级栏目页\"],\"Type\":[\"1\"]}', '2019-06-28 16:59:23', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('416', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:01:56', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('417', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:01:56', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('418', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:01:56', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('419', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:03:13', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('420', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:03:13', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('421', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:03:13', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('422', '1', 'admin', '/admin/menuweb/edit', 'POST', '{\"Content\":[\"\"],\"FrontShow\":[\"1\"],\"Icon\":[\" fa-flag\"],\"Id\":[\"11\"],\"Parent\":[\"2\"],\"Sort\":[\"100\"],\"Title\":[\"第三级栏目页\"],\"Type\":[\"1\"]}', '2019-06-28 17:03:15', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('423', '1', 'admin', '/admin/menuweb/index', 'GET', '{}', '2019-06-28 17:03:17', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('424', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:03:17', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('425', '1', 'admin', '/admin/menuweb/treegrid', 'POST', '{}', '2019-06-28 17:03:17', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('426', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:03:22', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('427', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:03:23', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('428', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:03:23', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('429', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:03:54', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('430', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:03:54', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('431', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:03:54', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('432', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:03:55', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('433', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:03:55', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('434', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:03:55', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('435', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:04:20', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('436', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:04:20', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('437', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:04:20', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('438', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:04:30', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('439', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:04:30', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('440', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:04:30', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('441', '1', 'admin', '/admin/menuweb/edit/11', 'GET', '{}', '2019-06-28 17:04:31', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('442', '1', 'admin', '/admin/menu/adminmenutree', 'POST', '{}', '2019-06-28 17:04:31', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('443', '1', 'admin', '/admin/menuweb/parent', 'POST', '{\"id\":[\"11\"]}', '2019-06-28 17:04:31', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('444', '1', 'admin', '/admin/commonset/edit/15', 'GET', '{}', '2019-06-28 17:10:04', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('445', '1', 'admin', '/admin/commonset/edit/15', 'POST', '{\"Id\":[\"15\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"portal\\\":\\\"门户网站\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"protal\"]}', '2019-06-28 17:10:11', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('446', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 17:10:11', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('447', '1', 'admin', '/admin/commonset/edit/15', 'GET', '{}', '2019-06-28 17:10:12', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('448', '1', 'admin', '/admin/commonset/edit/15', 'POST', '{\"Id\":[\"15\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"portal\\\":\\\"门户网站\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"portal\"]}', '2019-06-28 17:10:15', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('460', '1', 'admin', '/admin/commonset/edit/15', 'GET', '{}', '2019-06-28 19:30:09', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('461', '1', 'admin', '/admin/commonset/edit/15', 'POST', '{\"Id\":[\"15\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"portal\\\":\\\"门户网站模板\\\",\\\"cms\\\":\\\"内容关系系统模板\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"portal\"]}', '2019-06-28 19:31:34', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('462', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 19:31:35', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('463', '1', 'admin', '/admin/commonset/edit/15', 'GET', '{}', '2019-06-28 19:31:37', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('464', '1', 'admin', '/admin/commonset/edit/15', 'POST', '{\"Id\":[\"15\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"portal\\\":\\\"门户网站模板\\\",\\\"cms\\\":\\\"内容管理系统模板\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"portal\"]}', '2019-06-28 19:31:48', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('465', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 19:31:48', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('466', '1', 'admin', '/admin/commonset/edit/15', 'GET', '{}', '2019-06-28 19:31:49', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('467', '1', 'admin', '/admin/commonset/edit/15', 'POST', '{\"Id\":[\"15\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"portal\\\":\\\"门户网站模板\\\",\\\"cms\\\":\\\"内容管理系统模板\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"cms\"]}', '2019-06-28 19:31:54', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('476', '1', 'admin', '/admin/commonset/edit/15', 'GET', '{}', '2019-06-28 20:41:23', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('477', '1', 'admin', '/admin/commonset/edit/15', 'POST', '{\"Id\":[\"15\"],\"Name\":[\"view_tpl\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"1\"],\"Title\":[\"前端使用模板|{\\\"portal\\\":\\\"门户网站模板\\\",\\\"cms\\\":\\\"内容管理系统模板\\\"}\"],\"Type\":[\"home_conf\"],\"Value\":[\"portal\"]}', '2019-06-28 20:41:29', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('478', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 20:41:29', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('502', '1', 'admin', '/admin/commonset/edit/5', 'GET', '{}', '2019-06-28 21:32:03', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('503', '1', 'admin', '/admin/commonset/edit/5', 'POST', '{\"Id\":[\"5\"],\"Name\":[\"show\"],\"ShowType\":[\"show\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试显示类型\"],\"Type\":[\"test\"],\"Value\":[\"show-value\"]}', '2019-06-28 21:32:32', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('504', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:32:32', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('505', '1', 'admin', '/admin/commonset/edit/6', 'GET', '{}', '2019-06-28 21:32:35', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('506', '1', 'admin', '/admin/commonset/edit/6', 'POST', '{\"Id\":[\"6\"],\"Name\":[\"switch\"],\"ShowType\":[\"switch\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试开关类型\"],\"Type\":[\"test\"],\"Value\":[\"0\"]}', '2019-06-28 21:33:02', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('507', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:33:02', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('508', '1', 'admin', '/admin/commonset/edit/7', 'GET', '{}', '2019-06-28 21:33:04', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('509', '1', 'admin', '/admin/commonset/edit/7', 'POST', '{\"Id\":[\"7\"],\"Name\":[\"select\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试下拉选框类型|{\\\"select1\\\":\\\"测试-123\\\",\\\"select4\\\":\\\"测试-456\\\",\\\"select7\\\":\\\"测试-789\\\"}\"],\"Type\":[\"test\"],\"Value\":[\"select1\"]}', '2019-06-28 21:33:42', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('510', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:33:42', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('511', '1', 'admin', '/admin/commonset/edit/8', 'GET', '{}', '2019-06-28 21:33:45', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('512', '1', 'admin', '/admin/commonset/edit/8', 'POST', '{\"Id\":[\"8\"],\"Name\":[\"image\"],\"ShowType\":[\"image\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试图片类型\"],\"Type\":[\"test\"],\"Value\":[\"123\"]}', '2019-06-28 21:34:06', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('513', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:34:06', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('514', '1', 'admin', '/admin/commonset/edit/8', 'GET', '{}', '2019-06-28 21:34:07', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('515', '1', 'admin', '/admin/commonset/edit/123', 'GET', '{}', '2019-06-28 21:34:07', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('516', '1', 'admin', '/admin/commonset/edit/123', 'GET', '{}', '2019-06-28 21:34:11', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('517', '1', 'admin', '/admin/commonset/edit/8', 'POST', '{\"Id\":[\"8\"],\"Name\":[\"image\"],\"ShowType\":[\"image\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试图片类型\"],\"Type\":[\"test\"],\"oldValue\":[\"123\"]}', '2019-06-28 21:34:13', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('518', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:34:13', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('519', '1', 'admin', '/admin/commonset/edit/7', 'GET', '{}', '2019-06-28 21:34:16', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('520', '1', 'admin', '/admin/commonset/edit/7', 'POST', '{\"Id\":[\"7\"],\"Name\":[\"select\"],\"ShowType\":[\"select\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试下拉选框类型|{\\\"select1\\\":\\\"测试-123\\\",\\\"select4\\\":\\\"测试-456\\\",\\\"select7\\\":\\\"测试-789\\\"}\"],\"Type\":[\"test\"],\"Value\":[\"select4\"]}', '2019-06-28 21:34:19', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('521', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:34:19', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('522', '1', 'admin', '/admin/commonset/edit/6', 'GET', '{}', '2019-06-28 21:34:22', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('523', '1', 'admin', '/admin/commonset/edit/6', 'POST', '{\"Id\":[\"6\"],\"Name\":[\"switch\"],\"ShowType\":[\"switch\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试开关类型\"],\"Type\":[\"test\"],\"Value\":[\"1\"]}', '2019-06-28 21:34:25', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('524', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:34:25', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('525', '1', 'admin', '/admin/commonset/edit/5', 'GET', '{}', '2019-06-28 21:34:28', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('526', '1', 'admin', '/admin/commonset/edit/5', 'POST', '{\"Id\":[\"5\"],\"Name\":[\"show\"],\"ShowType\":[\"show\"],\"Sort\":[\"100\"],\"Status\":[\"0\"],\"Title\":[\"测试显示类型\"],\"Type\":[\"test\"],\"Value\":[\"show-value0\"]}', '2019-06-28 21:34:32', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('527', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:34:32', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('528', '1', 'admin', '/admin/commonset/delete', 'POST', '{\"ids\":[\"14,13,12,9\"]}', '2019-06-28 21:34:45', '127.0.0.1');
+INSERT INTO `lm_admin_log` VALUES ('529', '1', 'admin', '/admin/commonset/datagrid', 'POST', '{}', '2019-06-28 21:34:45', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for lm_article
@@ -151,7 +201,7 @@ CREATE TABLE `lm_common_set` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='公共配置信息';
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='公共配置信息';
 
 -- ----------------------------
 -- Records of lm_common_set
@@ -160,14 +210,11 @@ INSERT INTO `lm_common_set` VALUES ('1', 'admin_conf', 'head_title', 'LM-后台�
 INSERT INTO `lm_common_set` VALUES ('2', 'author_info', 'name', 'liumao801', '', '系统作者', '1', '100', null, null);
 INSERT INTO `lm_common_set` VALUES ('3', 'author_info', 'email', 'liumao801@gmail.com', '', '系统作者邮箱', '1', '100', null, null);
 INSERT INTO `lm_common_set` VALUES ('4', 'home_conf', 'head_title', 'LM-CMF', '', '前端页面顶部title', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('5', 'jfkdls', 'jfkdls', '辅导教师了', '', '接口封李大傻', '0', '100', '2019-06-22 14:13:28', '2019-06-22 14:13:28');
-INSERT INTO `lm_common_set` VALUES ('6', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('7', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('8', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('9', 'fds', '', '', 'show', '', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('12', 'fds432', 'head_title', 'B', 'select', 'request324|{\"a\":\"123\",\"B\":\"fds\"}', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('13', 'fds范德萨', 'head_title', '321', 'show', '3232132', '1', '100', null, null);
-INSERT INTO `lm_common_set` VALUES ('14', 'fds111', '测试', 'a', 'select', '测试类型|{\"a\":\"倒计时\",\"b\":\"减肥的\"}', '1', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('5', 'test', 'show', 'show-value0', 'show', '测试显示类型', '0', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('6', 'test', 'switch', '1', 'switch', '测试开关类型', '0', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('7', 'test', 'select', 'select4', 'select', '测试下拉选框类型|{\"select1\":\"测试-123\",\"select4\":\"测试-456\",\"select7\":\"测试-789\"}', '0', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('8', 'test', 'image', '/static/upload/commonset/2019-06/28/8kz6b_1561728853.png', 'image', '测试图片类型', '0', '100', null, null);
+INSERT INTO `lm_common_set` VALUES ('9', 'home_conf', 'view_tpl', 'portal', 'select', '前端使用模板|{\"portal\":\"门户网站模板\",\"cms\":\"内容管理系统模板\"}', '1', '100', null, null);
 
 -- ----------------------------
 -- Table structure for lm_menu
@@ -220,40 +267,6 @@ INSERT INTO `lm_menu` VALUES ('36', '1', '文章管理', '34', '100', 'fa-file-t
 INSERT INTO `lm_menu` VALUES ('37', '1', '公共配置', '2', '100', 'fa-cogs', 'CommonSetController.Index', null, '1', '0', '2019', '2019', '0');
 
 -- ----------------------------
--- Table structure for lm_menu_copy
--- ----------------------------
-DROP TABLE IF EXISTS `lm_menu_copy`;
-CREATE TABLE `lm_menu_copy` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '菜单名称',
-  `url_for` varchar(256) NOT NULL DEFAULT '',
-  `url` varchar(255) NOT NULL,
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0菜单分类无链接；1菜单有链接；2页面菜单',
-  `icon` varchar(255) DEFAULT 'fa-circle-o' COMMENT '菜单图标',
-  `status` tinyint(1) NOT NULL DEFAULT '-1' COMMENT '-1停用；1正常；0已删除',
-  `show` tinyint(1) unsigned DEFAULT '1' COMMENT '1显示；0隐藏',
-  `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序；越小越靠前',
-  `parent_id` int(11) unsigned DEFAULT '0',
-  `created_at` int(10) unsigned DEFAULT NULL,
-  `updated_at` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜单资源信息表';
-
--- ----------------------------
--- Records of lm_menu_copy
--- ----------------------------
-INSERT INTO `lm_menu_copy` VALUES ('1', '首页', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '0', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('2', '系统管理', 'admin/IndexController.index', 'admin/index/index', '0', 'fa-dashboard', '1', '1', '100', '0', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('3', '权限管理', 'admin/IndexController.index', 'admin/index/index', '0', 'fa-dashboard', '1', '1', '100', '0', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('4', '菜单管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '3', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('5', '角色管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '3', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('6', '管理员', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '3', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('7', '系统设置', 'admin/IndexController.index', 'admin/index/index', '0', 'fa-dashboard', '1', '1', '100', '2', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('8', '日志管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '2', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('9', '网站配置', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '7', null, null);
-INSERT INTO `lm_menu_copy` VALUES ('10', '注册管理', 'admin/IndexController.index', 'admin/index/index', '1', 'fa-dashboard', '1', '1', '100', '7', null, null);
-
--- ----------------------------
 -- Table structure for lm_menu_web
 -- ----------------------------
 DROP TABLE IF EXISTS `lm_menu_web`;
@@ -268,6 +281,7 @@ CREATE TABLE `lm_menu_web` (
   `article_tpl` varchar(255) DEFAULT NULL COMMENT '文章页模板',
   `url` varchar(255) DEFAULT NULL COMMENT 'type=2 时的跳转地址',
   `status` tinyint(3) NOT NULL DEFAULT '0' COMMENT '0停用；1正常；-1已删除',
+  `front_show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '前端菜单列表显示 0不显示；1显示',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
   `img` varchar(255) DEFAULT NULL COMMENT 'type=4 的缩略图',
   `seo_title` varchar(255) DEFAULT NULL,
@@ -279,20 +293,20 @@ CREATE TABLE `lm_menu_web` (
 -- ----------------------------
 -- Records of lm_menu_web
 -- ----------------------------
-INSERT INTO `lm_menu_web` VALUES ('1', '顶级分类1', '', '1', null, '', '1', '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('2', '二级分类', '', '1', '1', '', '0', '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('3', '三级跳转菜单', '', '2', '2', '', '0', '', 'https://www.baidu.com', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('6', '首页', 'fa-home', '2', null, '', null, '', '/home', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('7', '公司简介', 'fa fa-file-text', '4', null, '', null, '', '', '1', '100', '', '公司简介', '公司简介', '<p>公司简介</p>\n\n<p>公司简介</p>\n\n<p>公司简介</p>\n');
-INSERT INTO `lm_menu_web` VALUES ('8', '公告信息', ' fa-flag', '3', '1', '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('9', '新闻消息', ' fa-flag', '3', '1', '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('10', '第二个三级', ' fa-flag', '3', '2', '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('11', '第三级栏目页', ' fa-flag', '1', '2', '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('12', 'request324', 'fa-cogs', '2', '11', '', null, '', 'https://www.baidu.com?name=123', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('13', '第二顶级', '', '1', null, '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('14', '第二顶级子菜单', '', '3', '13', '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('15', '第三级栏目二', '', '1', '2', '', null, '', '', '1', '100', '', '', '', '');
-INSERT INTO `lm_menu_web` VALUES ('16', '跳转菜单32', '', '2', '15', '', null, '', 'https://www.baidu.com', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('1', '顶级分类1', '', '1', null, '', '1', '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('2', '二级分类', '', '1', '1', '', '0', '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('3', '三级跳转菜单', '', '2', '2', '', '0', '', 'https://www.baidu.com', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('6', '首页', 'fa-home', '2', null, '', null, '', '/home', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('7', '公司简介', 'fa fa-file-text', '4', null, '', null, '', '', '1', '1', '100', '', '公司简介', '公司简介', '<p>公司简介</p>\n\n<p>公司简介</p>\n\n<p>公司简介</p>\n');
+INSERT INTO `lm_menu_web` VALUES ('8', '公告信息', ' fa-flag', '3', '1', '', null, '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('9', '新闻消息', ' fa-flag', '3', '1', '', null, '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('10', '第二个三级', ' fa-flag', '3', '2', '', null, '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('11', '第三级栏目页', ' fa-flag', '1', '2', '', null, '', '', '0', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('12', 'request324', 'fa-cogs', '2', '11', '', null, '', 'https://www.baidu.com?name=123', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('13', '第二顶级', '', '1', null, '', null, '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('14', '第二顶级子菜单', '', '3', '13', '', null, '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('15', '第三级栏目二', '', '1', '2', '', null, '', '', '1', '1', '100', '', '', '', '');
+INSERT INTO `lm_menu_web` VALUES ('16', '跳转菜单32', '', '2', '15', '', null, '', 'https://www.baidu.com', '1', '1', '100', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for lm_role
@@ -334,41 +348,6 @@ CREATE TABLE `lm_role_admin_rel` (
 INSERT INTO `lm_role_admin_rel` VALUES ('4', '1', '4', '2019-06-21 14:12:58', '2019-06-21 14:12:58');
 
 -- ----------------------------
--- Table structure for lm_role_admin_rel_copy
--- ----------------------------
-DROP TABLE IF EXISTS `lm_role_admin_rel_copy`;
-CREATE TABLE `lm_role_admin_rel_copy` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `role_id` int(10) unsigned NOT NULL,
-  `admin_id` int(10) unsigned NOT NULL,
-  `created_at` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色用户关联表';
-
--- ----------------------------
--- Records of lm_role_admin_rel_copy
--- ----------------------------
-
--- ----------------------------
--- Table structure for lm_role_copy
--- ----------------------------
-DROP TABLE IF EXISTS `lm_role_copy`;
-CREATE TABLE `lm_role_copy` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL COMMENT '角色名称',
-  `mark` varchar(255) NOT NULL COMMENT '角色标识',
-  `sort` tinyint(3) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
-  `status` tinyint(1) NOT NULL DEFAULT '-1' COMMENT '-1停用；1正常；0已删除',
-  `created_at` int(10) unsigned DEFAULT NULL,
-  `updated_at` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色信息表';
-
--- ----------------------------
--- Records of lm_role_copy
--- ----------------------------
-
--- ----------------------------
 -- Table structure for lm_role_menu_rel
 -- ----------------------------
 DROP TABLE IF EXISTS `lm_role_menu_rel`;
@@ -392,24 +371,6 @@ INSERT INTO `lm_role_menu_rel` VALUES ('18', '1', '9', '2018-12-13 12:26:31', '2
 INSERT INTO `lm_role_menu_rel` VALUES ('19', '1', '10', '2018-12-13 12:26:31', '2018-12-13 12:26:31', '0000-00-00 00:00:00');
 INSERT INTO `lm_role_menu_rel` VALUES ('20', '1', '8', '2018-12-13 12:26:31', '2018-12-13 12:26:31', '0000-00-00 00:00:00');
 INSERT INTO `lm_role_menu_rel` VALUES ('21', '1', '18', '2018-12-13 12:26:31', '2018-12-13 12:26:31', '0000-00-00 00:00:00');
-
--- ----------------------------
--- Table structure for lm_role_menu_rel_copy
--- ----------------------------
-DROP TABLE IF EXISTS `lm_role_menu_rel_copy`;
-CREATE TABLE `lm_role_menu_rel_copy` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `role_id` int(10) unsigned NOT NULL,
-  `menu_id` int(10) unsigned NOT NULL,
-  `created_at` int(10) unsigned NOT NULL,
-  `created` datetime NOT NULL,
-  `updated_at` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色菜单关联表';
-
--- ----------------------------
--- Records of lm_role_menu_rel_copy
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for lm_test
