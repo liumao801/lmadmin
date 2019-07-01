@@ -1,0 +1,19 @@
+<!-- ======== 单页面菜单模板 ========= -->
+<hr>
+<div class="container">
+    <div class="col-lg-8 article-box">
+        <h3 class="line-center">{{ .pageInfo.Title}}</h3>
+        <div class="padding-v10px line-center">
+            <span class="padding-h5px inline-block">作者：{{.pageInfo.Author}}</span>
+            <span class="padding-h5px inline-block">阅读：<!-- </span><span class="label label-success"> -->{{.pageInfo.ViewNum}}</span>
+            <span class="padding-h5px">发布时间：{{date .pageInfo.CreatedAt "Y-m-d H:i"}}</span>
+        </div>
+        <div>
+            {{ str2html .pageInfo.Content}}
+        </div>
+    </div>
+
+    <div class="col-lg-4 ad-box">
+        {{ str2html .pageInfo.Content}}
+    </div>
+</div>

@@ -162,7 +162,7 @@ func (c *AdminBaseController) setTpl(template ...string) {
 		pageTitle = "LM-🐜后台管理系统🐝"
 	}
 	c.Data["pageTitle"] = pageTitle
-	authorInfo, err := models.CommonSetTypeGet("author_info");
+	authorInfo, err := models.CommonSetTypeGetName2Value("author_info");
 	if err != nil {
 		authorInfo["name"] = "ActorLiu"
 		authorInfo["email"] = "744917766@qq.com"

@@ -43,5 +43,19 @@
 	        }
 	    })
 		// =========== wap 无限极菜单处理 == end=========================
+
+		$(".index-search .search-btn").on("click", function (e) {
+		    var url = $(".index-search input").val();
+		    if (url == "") {
+                layer.msg("搜索关键字不能为空！", {
+						time: 2000,
+						skin: 'layer-black-translucent'
+					}
+                );
+                return false;
+			}
+		    url = $(this).data("href") + '?key_word=' + url;
+            window.open(url, '_blank');
+        })
 	})
 </script>

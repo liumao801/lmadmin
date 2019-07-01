@@ -10,6 +10,7 @@ import (
 	"liumao801/lmadmin/utils"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type ArticleController struct {
@@ -93,6 +94,8 @@ func (c *ArticleController) Save() {
 		c.JsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
 	}
 
+	m.UpdatedAt = time.Now()
+
 	c.validate(m) // 数据验证
 
 	var menu_web_id int
@@ -105,7 +108,7 @@ func (c *ArticleController) Save() {
 	}
 
 	if m.Id == 0 {
-		// 对密码进行加密
+		// 新建文章
 		if _, err := o.Insert(&m); err != nil {
 			c.JsonResult(enums.JRCodeFailed, "添加失败", m.Id)
 		} else {
@@ -114,8 +117,16 @@ func (c *ArticleController) Save() {
 			c.JsonResult(enums.JRCode302, "添加成功", obj)
 		}
 	} else {
-		if _, err := models.ArticleOne(m.Id); err != nil {
+		// 更新文章
+		if oM, err := models.ArticleOne(m.Id); err != nil {
 			c.JsonResult(enums.JRCodeFailed, "数据无效，请刷新后重试", m.Id)
+		} else {
+			m.CreatedAt = oM.CreatedAt
+			m.UpdatedAt = time.Now()
+			m.ViewNum = oM.ViewNum
+			if m.Author == "" {
+				m.Author = oM.Author
+			}
 		}
 		if _, err := o.Update(&m); err != nil {
 			utils.LogInfo(err)

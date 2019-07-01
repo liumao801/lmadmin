@@ -8,6 +8,7 @@ import (
 	adminModelNS "liumao801/lmadmin/models/admin"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type MenuController struct {
@@ -153,6 +154,13 @@ func (c *MenuController) Save() {
 			c.JsonResult(enums.JRCodeFailed, "添加失败", m.Id)
 		}
 	} else {
+		// 更新文章
+		if oM, err := adminModelNS.MenuOne(m.Id); err != nil {
+			c.JsonResult(enums.JRCodeFailed, "数据无效，请刷新后重试", m.Id)
+		} else {
+			m.CreatedAt = oM.CreatedAt
+			m.UpdatedAt = time.Now()
+		}
 		if _, err = o.Update(&m); err == nil {
 			c.JsonResult(enums.JRCodeSucc, "编辑成功", m.Id)
 		} else {

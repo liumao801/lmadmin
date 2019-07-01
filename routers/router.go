@@ -18,8 +18,12 @@ func init() {
 
 			beego.NSAutoRouter(&home.PortalController{}), // 门户网站自动匹配路由
 
-			beego.NSRouter("article/?:id", &home.ArticleController{}, "get:Index"), // 文章详情页
-			beego.NSRouter("onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
+			beego.NSAutoRouter(&home.CmsController{}), // 门户网站自动匹配路由
+
+			beego.NSRouter("article/search", &home.ArticleController{}, "get:Search"), // 文章搜索页面
+			beego.NSRouter("article/article/?:id", &home.ArticleController{}, "get:Article"), // 文章详情页
+			beego.NSRouter("article/onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
+			beego.NSRouter("article/typelist/?:id", &home.ArticleController{}, "get:TypeList"), // 菜单单页面
 		)
 	beego.AddNamespace(ns_home)
 

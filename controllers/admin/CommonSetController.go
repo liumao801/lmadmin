@@ -10,6 +10,7 @@ import (
 	"liumao801/lmadmin/utils"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type CommonSetController struct {
@@ -130,8 +131,11 @@ func (c *CommonSetController) Save() {
 			c.JsonResult(enums.JRCodeSucc, "添加成功", m.Id)
 		}
 	} else {
-		if _, err := models.CommonSetOne(m.Id); err != nil {
+		if oM, err := models.CommonSetOne(m.Id); err != nil {
 			c.JsonResult(enums.JRCodeFailed, "数据无效，请刷新后重试", m.Id)
+		} else {
+			m.CreatedAt = oM.CreatedAt
+			m.UpdatedAt = time.Now()
 		}
 		if _, err := o.Update(&m); err != nil {
 			utils.LogInfo(err)

@@ -33,6 +33,9 @@
 .border-radius10px{border-radius: 10px;}
 .border-radius15px{border-radius: 15px;}
 
+.border-bottom1{border-bottom: 1px solid #ddd;}
+.border-bottom-dashed{border-bottom: 1px dashed #ddd;}
+
 .padding5px{padding: 5px;}
 .padding10px{padding: 10px;}
 .padding15px{padding: 15px;}

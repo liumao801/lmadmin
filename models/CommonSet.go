@@ -81,14 +81,14 @@ func CommonSetOne(id int) (*CommonSet, error) {
 }
 
 /**
- * 根据 type 获取数据
+ * 根据 type 获取数据 name=>value
  */
-func CommonSetTypeGet(tp string) (map[string]string, error) {
+func CommonSetTypeGetName2Value(tp string) (map[string]string, error) {
 	// 实例化 orm 对象
 	query := orm.NewOrm().QueryTable(CommonSetTBName())
 
 	data := make([]*CommonSet, 0)
-	_, err := query.Filter("type", tp).Filter("status", 1).All(&data, "Name", "Value")
+	_, err := query.Filter("type", tp).Filter("status", 1).All(&data, "Name", "Value", "Title")
 
 	if err != nil {
 		return nil, err
@@ -100,6 +100,22 @@ func CommonSetTypeGet(tp string) (map[string]string, error) {
 	}
 
 	return rel, nil
+}
+/**
+ * 根据 type 获取数据
+ */
+func CommonSetTypeGet(tp string) ([]*CommonSet, error) {
+	// 实例化 orm 对象
+	query := orm.NewOrm().QueryTable(CommonSetTBName())
+
+	data := make([]*CommonSet, 0)
+	_, err := query.Filter("type", tp).Filter("status", 1).OrderBy("Id").All(&data, "Name", "Value", "Title")
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
 /**
  * 根据 type name 获取数据

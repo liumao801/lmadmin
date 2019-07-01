@@ -1,0 +1,15 @@
+<!-- ======== 文章搜索页模板 ========= -->
+<div class="container">
+	<div class="row">
+        {{range .list}}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-v10px border-bottom1">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <a href="article/{{.Id}}" target="">
+                        <font class="article-title">{{.Title}}</font>
+                    </a>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 line-right"><font class="article-title">&nbsp;</font>{{date .CreatedAt "Y-m-d H:i"}}</div>
+            </div>
+        {{end}}
+	</div>
+</div>

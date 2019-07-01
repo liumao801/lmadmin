@@ -89,6 +89,7 @@ func (c *BaseController) PageError(msg string) {
 	c.TplName = "error/msg.html"
 	c.Data["msg"] = msg
 	c.Render()
+	//c.StopRun()
 }
 
 // 记录操作日志

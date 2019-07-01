@@ -69,7 +69,9 @@ func (c *HomeBaseController) viewTpl() string {
 	}
 	tpl = "home/" + tpl
 	c.Data["actMenu"] = strings.ToLower(c.actiName) // 活动菜单
-	c.Data["pageTitlePre"], _ = models.CommonSetTypeNameGet("home_conf", "head_title") // 系统标题前缀
+	//c.Data["pageTitlePre"], _ = models.CommonSetTypeNameGet("home_conf", "head_title") // 系统标题前缀
+
+	c.Data["HomeConf"], _ = models.CommonSetTypeGetName2Value("home_conf")
 	return tpl
 }
 
@@ -115,7 +117,10 @@ func (c *HomeBaseController) proHtmlTree(tree []*models.MenuWeb) string {
 		if v.Sons == nil {
 			if v.Type == 4 {
 				// 单页面 URL地址
-				v.Url = "/home/onepage/" + strconv.Itoa(v.Id)
+				v.Url = "/home/article/onepage/" + strconv.Itoa(v.Id)
+			} else if v.Type == 3 {
+				// 频道页面 URL地址
+				v.Url = "/home/article/typelist/" + strconv.Itoa(v.Id)
 			}
 			htmlStr += `<li class="` + isActCtrAct + `"><a href="` + v.Url + `" >` + v.Title + `</a></li>`
 		} else {
