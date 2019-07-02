@@ -86,7 +86,7 @@ func ArticlePageList(params *ArticleQueryParam) ([]*Article, int64) {
 /**
  * 获取分页数据
  */
-func ArticleKeyWordPageList(key_word string) ([]*Article, int64) {
+func ArticleKeyWordPageList(key_word string, params *ArticleQueryParam) ([]*Article, int64) {
 	query := orm.NewOrm().QueryTable(ArticleTBName())
 	data := make([]*Article, 0)
 
@@ -95,7 +95,6 @@ func ArticleKeyWordPageList(key_word string) ([]*Article, int64) {
 	query = query.SetCond(cond)
 
 	total, _ := query.Count()
-	params := ArticleQueryParam{}
 	// RelatedSel() 调用模型关联查询，即查询 MenuWeb
 	query.RelatedSel().OrderBy("-id").Limit(params.Limit, params.Offset).All(&data)
 	return data, total

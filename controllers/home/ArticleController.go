@@ -2,12 +2,15 @@ package home
 
 import (
 	"liumao801/lmadmin/models"
+	"liumao801/lmadmin/utils"
 	"strconv"
 )
 
 type ArticleController struct {
 	HomeBaseController
 }
+
+var limit int = 15 // 每页显示几条数据
 
 // 文章详情页
 func (c *ArticleController) Article() {
@@ -48,7 +51,12 @@ func (c *ArticleController) OnePage() {
 func (c *ArticleController) Search() {
 	key_word := c.GetString("key_word")
 
-	pageInfo, _ := models.ArticleKeyWordPageList(key_word)
+	var params models.ArticleQueryParam
+	c.setPageOffset(&params) // 设置分页
+
+	pageInfo, total := models.ArticleKeyWordPageList(key_word, &params)
+	c.SetPaginator(total)
+
 
 	c.setTpl("article/search", "public/layout_base")
 	c.Data["pageTitle"] = key_word
@@ -70,8 +78,28 @@ func (c *ArticleController) TypeList() {
 
 	var params models.ArticleQueryParam
 	params.MenuWebId = menu_web_id
-	c.Data["list"], _ = models.ArticlePageList(&params)
+	c.setPageOffset(&params) // 设置分页
+
+	list, total := models.ArticlePageList(&params)
+	c.Data["list"] = list
+	c.SetPaginator(total)
 
 	c.setTpl("article/typelist", "public/layout_base")
 	c.Data["pageTitle"] = menu.Title
+}
+
+// 分页
+// @params totals 总数据条数
+func (c *ArticleController) SetPaginator(totals int64) *utils.Paginator {
+	per := limit // 每页显示几条数据  per := 10
+	p := utils.NewPaginator(c.Ctx.Request, per, totals)
+	c.Data["paginator"] = p
+	return p
+}
+// 设置分页参数
+func (c *ArticleController) setPageOffset(params *models.ArticleQueryParam) {
+	params.Limit = limit
+	page, _ := c.GetInt("p", 1)
+	offset := limit * (page - 1)
+	params.Offset = int64(offset)
 }

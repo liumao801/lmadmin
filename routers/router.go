@@ -23,7 +23,7 @@ func init() {
 			beego.NSRouter("article/search", &home.ArticleController{}, "get:Search"), // 文章搜索页面
 			beego.NSRouter("article/article/?:id", &home.ArticleController{}, "get:Article"), // 文章详情页
 			beego.NSRouter("article/onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
-			beego.NSRouter("article/typelist/?:id", &home.ArticleController{}, "get:TypeList"), // 菜单单页面
+			beego.NSRouter("article/typelist/?:id", &home.ArticleController{}, "get:TypeList"), // 文章分类页面
 		)
 	beego.AddNamespace(ns_home)
 

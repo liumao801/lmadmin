@@ -7,12 +7,41 @@
         {{range .list}}
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-v10px border-bottom1">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <a href="article/{{.Id}}" target="">
+                    <a href="{{urlfor ".Article"}}/{{.Id}}" target="">
                         <font class="article-title">{{.Title}}</font>
                     </a>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 line-right"><font class="article-title">&nbsp;</font>{{date .CreatedAt "Y-m-d H:i"}}</div>
             </div>
         {{end}}
+
+        <!-- 分页信息 start -->
+    {{if gt .paginator.PageNums 1}}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-v10px line-right">
+            <ul class="pagination pagination-sm" style="margin: 0;">
+            {{if .paginator.HasPrev}}
+                <li><a href="{{.paginator.PageLinkFirst}}" title="首页">&lt;&lt;</a></li>
+                <li><a href="{{.paginator.PageLinkPrev}}" title="上一页">&lt;</a></li>
+            {{else}}
+                <li class="disabled"><a>&lt;&lt;</a></li>
+                <li class="disabled"><a>&lt;</a></li>
+            {{end}}
+            {{range $index, $page := .paginator.Pages}}
+                <li{{if $.paginator.IsActive .}} class="active"{{end}}>
+                    <a href="{{$.paginator.PageLink $page}}" title="第{{$page}}页">{{$page}}</a>
+                </li>
+            {{end}}
+            {{if .paginator.HasNext}}
+                <li><a href="{{.paginator.PageLinkNext}}" title="下一页">&gt;</a></li>
+                <li><a href="{{.paginator.PageLinkLast}}" title="最后页">&gt;&gt;</a></li>
+            {{else}}
+                <li class="disabled"><a>&gt;</a></li>
+                <li class="disabled"><a>&gt;&gt;</a></li>
+            {{end}}
+            </ul>
+        </div>
+    {{end}}
+        <!-- 分页信息 end -->
+
 	</div>
 </div>
