@@ -200,7 +200,7 @@ func MenuWebListForMap(params *MenuWebQueryParam) ([]*MenuWeb) {
 		query = query.Filter("front_show", params.FrontShow)
 	}
 	if params.ParentId > 0 {
-		query = query.Filter("par_id", params.ParentId)
+		query = query.Filter("parent_id", params.ParentId)
 	}
 
 	query.OrderBy(sortorder).Limit(params.Limit, params.Offset).All(&data)

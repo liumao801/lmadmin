@@ -2,10 +2,12 @@ package admin
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"liumao801/lmadmin/enums"
+	"liumao801/lmadmin/functions"
 	"liumao801/lmadmin/models"
 	"liumao801/lmadmin/utils"
 	"strconv"
@@ -69,12 +71,17 @@ func (c *ArticleController) Edit() {
 		}
 		o := orm.NewOrm()
 		o.LoadRelated(m, "MenuWeb") // 关联查询菜单信息
+		o.LoadRelated(m, "ArticleTagRel")
 	} else {
 		// 没有 Id 表示编辑文章
 		m.MenuWeb = &models.MenuWeb{}
 	}
+	// 文章分类列表
 	param := &models.MenuWebQueryParam{Status:"1", Type:3}
 	c.Data["articleTypes"] = models.MenuWebListForMap(param)
+	// 文章分类标签列表
+	tag_params := &models.ArticleTagQueryParam{Status:"1"}
+	c.Data["articleTags"] = models.ArticleTagListForMap(tag_params)
 
 	c.Data["m"] = m
 	utils.LogInfo(m)
@@ -95,6 +102,7 @@ func (c *ArticleController) Save() {
 	}
 
 	m.UpdatedAt = time.Now()
+	c.UploadImage(&m)
 
 	c.validate(m) // 数据验证
 
@@ -107,13 +115,17 @@ func (c *ArticleController) Save() {
 		c.JsonResult(enums.JRCodeFailed, "文章类型异常", "")
 	}
 
+	// c.setArticleTags(&m)
+	// c.JsonResult(enums.JRCodeFailed, "------", m)
+
 	if m.Id == 0 {
 		// 新建文章
 		if _, err := o.Insert(&m); err != nil {
 			c.JsonResult(enums.JRCodeFailed, "添加失败", m.Id)
 		} else {
-			obj := map[string]string{"url": beego.URLFor(c.ctrlName + ".Index")}
+			c.setArticleTags(&m) // 设置关联文章标签
 
+			obj := map[string]string{"url": beego.URLFor(c.ctrlName + ".Index")}
 			c.JsonResult(enums.JRCode302, "添加成功", obj)
 		}
 	} else {
@@ -132,13 +144,47 @@ func (c *ArticleController) Save() {
 			utils.LogInfo(err)
 			c.JsonResult(enums.JRCodeFailed, "编辑失败.", m.Id)
 		} else {
+			c.setArticleTags(&m) // 设置关联文章标签
+			c.JsonResult(enums.JRCodeFailed, "获取数据失败", m)
 			obj := map[string]string{"url": beego.URLFor(c.ctrlName + ".Index")}
-
 			c.JsonResult(enums.JRCode302, "修改成功", obj)
 		}
 	}
 
 	c.JsonResult(enums.JRCodeSucc, "保存成功", m.Id)
+}
+// 查询文章所对应的标签
+func (c *ArticleController) setArticleTags(m *models.Article) error {
+	var input = c.Input()
+	var atRel []models.ArticleTagRel
+	//var tag_ids []int
+	for _, v := range input["ArticleTagIds"] {
+		id, err := strconv.Atoi(v)
+		if err != nil {
+			c.JsonResult(enums.JRCodeFailed, err.Error(), v)
+		}
+		r := models.ArticleTag{Id:id}
+		temRel := models.ArticleTagRel{Article:m, ArticleTag:&r}
+		atRel = append(atRel, temRel)
+		//tag_ids = append(tag_ids, id)
+	}
+	if len(atRel) > 0 {
+		o := orm.NewOrm()
+		//cond := orm.NewCondition().And("article_id", m.Id).AndNot("article_tag_id__in", tag_ids)
+
+		// 删除已关联的历史数据
+		if _, err := o.QueryTable(models.ArticleTagRelTBName()).Filter("article__id", m.Id).Delete(); err != nil {
+			c.JsonResult(enums.JRCodeFailed, "删除历史关系失败", "")
+		}
+		// 批量添加
+		if _, err := o.InsertMulti(len(atRel), atRel); err != nil {
+			c.JsonResult(enums.JRCodeFailed, "标签关系保存失败", m.Id)
+		}
+	} else {
+		return errors.New("关联关系保存失败")
+	}
+
+	return nil
 }
 // 保存信息的验证
 func (c *ArticleController) validate(m models.Article) {
@@ -148,6 +194,14 @@ func (c *ArticleController) validate(m models.Article) {
 
 	if len(m.Content) < 4 {
 		c.JsonResult(enums.JRCodeFailed, "文章内容异常", "")
+	}
+
+	if len(m.Img) < 4 {
+		c.JsonResult(enums.JRCodeFailed, "请上传图片", "")
+	}
+
+	if m.PubAt.IsZero() {
+		c.JsonResult(enums.JRCodeFailed, "请设置文章发布时间", "")
 	}
 }
 
@@ -164,5 +218,26 @@ func (c *ArticleController) Delete() {
 		c.JsonResult(enums.JRCodeSucc, fmt.Sprintf("成功删除 %d 项", num), 0)
 	} else {
 		c.JsonResult(enums.JRCodeFailed, "删除失败", 0)
+	}
+}
+
+// 上传图片
+func (c *ArticleController) UploadImage(m *models.Article) {
+	filePath, err := functions.LmUpload(&c.Controller, "Img")
+	oldImg := c.GetString("oldImg", "");
+	if err != "" {
+		nowValue := c.GetString("Value", "");
+		if oldImg == "" && nowValue == "" {
+			c.JsonResult(enums.JRCodeFailed, err, "")
+		} else {
+			if oldImg == "" {
+				m.Img = nowValue
+			} else {
+				m.Img = oldImg
+			}
+		}
+	} else {
+		m.Img = filePath
+		//c.JsonResult(enums.JRCodeSucc, "上传成功", filePath)
 	}
 }

@@ -6,28 +6,11 @@ import (
 	"liumao801/lmadmin/controllers/admin"
 	"liumao801/lmadmin/controllers/common"
 	"liumao801/lmadmin/controllers/home"
+	"liumao801/lmadmin/controllers/portal"
 )
 
 func init() {
-	// 前端 namespace 路由
-	ns_home :=
-		beego.NewNamespace("/home/",
-			beego.NSAutoRouter(&home.UserController{}),
-			//beego.NSAutoRouter(&home.IndexController{}),
-			beego.NSRouter("/", &home.IndexController{}, "get:Index"), // 首页路由
-
-			beego.NSAutoRouter(&home.PortalController{}), // 门户网站自动匹配路由
-
-			beego.NSAutoRouter(&home.CmsController{}), // 门户网站自动匹配路由
-
-			beego.NSRouter("article/search", &home.ArticleController{}, "get:Search"), // 文章搜索页面
-			beego.NSRouter("article/article/?:id", &home.ArticleController{}, "get:Article"), // 文章详情页
-			beego.NSRouter("article/onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
-			beego.NSRouter("article/typelist/?:id", &home.ArticleController{}, "get:TypeList"), // 文章分类页面
-		)
-	beego.AddNamespace(ns_home)
-
-	// 后端 namespace 路由
+	// ============================ 后端 管理后台 namespace 路由 ============ start ======================
 	ns_admin :=
 		beego.NewNamespace("/admin/",
 			beego.NSAutoRouter(&admin.IndexController{}),
@@ -95,6 +78,12 @@ func init() {
 			beego.NSRouter("article/edit/?:id", &admin.ArticleController{}, "Get,Post:Edit"),
 			beego.NSRouter("article/delete", 	 &admin.ArticleController{}, "Post:Delete"),
 
+			// 文章标签菜单路由
+			beego.NSRouter("articletag/index", 		&admin.ArticleTagController{}, "*:Index"),
+			beego.NSRouter("articletag/datagrid", 	&admin.ArticleTagController{}, "Post:DataGrid"),
+			beego.NSRouter("articletag/edit/?:id", 	&admin.ArticleTagController{}, "Get,Post:Edit"),
+			beego.NSRouter("articletag/delete", 		&admin.ArticleTagController{}, "Post:Delete"),
+
 			// 公共配置菜单路由
 			beego.NSRouter("commonset/index", 		&admin.CommonSetController{}, "*:Index"),
 			beego.NSRouter("commonset/datagrid", 	&admin.CommonSetController{}, "Post:DataGrid"),
@@ -103,6 +92,31 @@ func init() {
 
 		)
 	beego.AddNamespace(ns_admin)
+	// ============================ 后端 管理后台 namespace 路由 ============ end ========================
+
+	// ============================ 前端 CMS系统 namespace 路由 ============ start ======================
+	ns_home :=
+		beego.NewNamespace("/home/",
+			beego.NSAutoRouter(&home.UserController{}),
+			//beego.NSAutoRouter(&home.IndexController{}),
+			//beego.NSRouter("/", &home.IndexController{}, "get:Index"), // 首页路由
+			beego.NSAutoRouter(&home.IndexController{}), // CMS 网站自动匹配路由
+
+			beego.NSRouter("article/search", &home.ArticleController{}, "get:Search"), // 文章搜索页面
+			beego.NSRouter("article/article/?:id", &home.ArticleController{}, "get:Article"), // 文章详情页
+			beego.NSRouter("article/onepage/?:id", &home.ArticleController{}, "get:OnePage"), // 菜单单页面
+			beego.NSRouter("article/typelist/?:id", &home.ArticleController{}, "get:TypeList"), // 文章分类页面
+		)
+	beego.AddNamespace(ns_home)
+	// ============================ 前端 CMS系统 namespace 路由 ============ end ========================
+
+	// ============================ 前端 门户网站 namespace 路由 ============ start ======================
+	ns_portal :=
+		beego.NewNamespace("/portal/",
+			beego.NSAutoRouter(&portal.IndexController{}), // 门户网站自动匹配路由
+		)
+	beego.AddNamespace(ns_portal)
+	// ============================ 前端 门户网站 namespace 路由 ============ end ========================
 
 	// 公共 namespace 路由
 	ns_common :=
@@ -112,19 +126,17 @@ func init() {
 		)
 	beego.AddNamespace(ns_common)
 
-	beego.Router("/", &controllers.MainController{})
-	beego.Router("/home", &home.IndexController{})
+	// 公共模块
+	beego.Router("/beego", &controllers.MainController{}) // 显示beego 欢迎页
+	beego.Router("/", &controllers.IndexController{}) // 首页跳转地址
 
-	beego.Include(&home.ErrorsController{}) // 系统错误提示页面
+	beego.Include(&controllers.ErrorController{}) // 系统错误提示页面
 	//beego.Router("/404", &home.ErrorsController{}, "get:Page404")
 	//beego.Router("/500", &home.ErrorsController{}, "get:Page500")
 
-	//beego.Router("/admin", &admin.IndexController{})
-	//beego.Router("/", &home.IndexController{})
-
 	// 自动匹配路由
 	// test/insert 匹配 TestController 的 func Insert
-	beego.AutoRouter(&controllers.TestController{})
+	beego.AutoRouter(&controllers.TestController{}) // 测试路由
 
 	// 管理员用户路由
 	//beego.Router("admin/index", &controllers.AdminController{}, "*:Index")

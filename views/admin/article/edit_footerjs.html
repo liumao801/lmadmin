@@ -1,6 +1,10 @@
 <!-- 验证插件 -->
 <script src="/static/plugins/jquery-validation/jquery.validate.min.js"></script>
 <script src="/static/plugins/jquery-validation/localization/messages_zh.min.js"></script>
+<script src="/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/static/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<!-- 文件上传插件 -->
+<script src="/static/plugins/bootstrap-fileinput-kartik-v/js/fileinput.js"></script>
 <!-- 针对当前主题进行简单封装，精简代码 -->
 <script src="/static/modules/admin/js/lmvalidate.js"></script>
 <script src="/static/lm800/js/lmajaxForm.js"></script>
@@ -16,13 +20,24 @@
     	$("#MenuWebId").selectpicker('val','{{.m.MenuWeb.Id}}');
         $("#Status").selectpicker('val','{{.m.Status}}');
         $("#CommentStatus").selectpicker('val','{{.m.CommentStatus}}');
+
+        var tagIds = [];
+        {{range $key, $item := .m.ArticleTagRel}}
+            tagIds.push('{{$item.ArticleTag.Id}}');
+        {{end}}
+        $("#ArticleTagIds").selectpicker('val', tagIds);
+
         // //验证
         validateInfo();
-        ckeditorSync()
+        ckeditorSync();
+
+        //图片上传初始化
+        updloadCtrolInit("#Img");
+        
     }
     //表单验证及AJAX提交
     function validateInfo() {
-        var $thisForm = $('.vajaxFormCheckNoJump');
+        var $thisForm = $('#thisForm');
         $thisForm.lmvalidate({
             rules: {
                 Title: {
@@ -52,25 +67,46 @@
                 // }
             },
             submitHandler: function (form) {
-                ajax2Form($thisForm)
-                return false;
-                var url = '{{ urlfor "MenuWebController.Edit"}}'
-                var data = $thisForm.serialize();
-                $.lmpost(url, data, function (re) {
-                    if (re.code === 0) {
-                        parent.layer.msg(re.msg)
-                        //刷新，并将所编辑的节点展开
-                        parent.refresh(re.obj,true)
-                        parent.layer.close(index)
-                    } else {
-                        parent.layer.alert(re.msg, { icon: 2, title: '失败' })
-                    }
-                });
-                return false;
+                var options = {
+                    error: ajaxFormError,
+                    success: ajaxFormModal,
+                    forceSync: true,
+                    dataType: 'JSON',
+                    // clearForm: true,
+                    // resetForm: true,
+                    timeout: 3000
+                }
+                $thisForm.ajaxSubmit(options)
             }
         });
     }
     function FormSubmit() {
         $("#thisForm").submit();
+    }
+
+    //image upolad init
+    function updloadCtrolInit(ele) {
+        $(ele).fileinput({
+            language: 'zh', //设置语言
+            dropZoneEnabled: false,//是否显示拖拽区域
+
+            overwriteInitial: true,
+            maxFileSize: 2048,
+            showClose: false,
+            showCaption: false,
+            showCancel: true,
+            showBrowse: false,
+            showBrowse: false,
+            // showRemove: false,
+            browseOnZoneClick: true,
+            removeLabel: '',
+            removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+            removeTitle: '取消选择',
+            elErrorContainer: '#kv-avatar-errors-1',
+            msgErrorClass: 'alert alert-block alert-danger',
+            defaultPreviewContent: '<img class="width100" src="{{if ne .m.Img ""}}{{.m.Img}}{{else}}/static/lm800/img/select_file.jpg{{end}}" alt="Your Avatar"><h6 class="text-muted">选择图片</h6>',
+            layoutTemplates: {main2: '{preview}  {remove} {browse}'},
+            allowedFileExtensions: ["jpg", "png", "gif"],
+        });
     }
 </script>

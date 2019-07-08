@@ -11,6 +11,8 @@ import (
 func init() {
 	orm.RegisterModel(
 		new(Article),
+		new(ArticleTag),
+		new(ArticleTagRel),
 		new(CommonSet),
 		new(MenuWeb),
 		new(User),
@@ -35,6 +37,12 @@ func UserTBName() string {
 }
 func ArticleTBName() string {
 	return TableName("article")
+}
+func ArticleTagTBName() string {
+	return TableName("article_tag")
+}
+func ArticleTagRelTBName() string {
+	return TableName("article_tag_rel")
 }
 func MenuWebTBName() string {
 	return TableName("menu_web")

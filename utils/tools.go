@@ -17,6 +17,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"hash"
 	"math/big"
@@ -309,3 +310,20 @@ func (a argAny) Get(i int, args ...interface{}) (r interface{}) {
 	}
 	return
 }
+
+
+
+
+// ================================================== 以下自己添加的工具类 = start ======================================================
+func InSlice(slice []interface{}, val interface{}) (index int, err error) {
+	if len(slice) > 0 {
+		for k, v := range slice {
+			if v == val {
+				return k, nil
+			}
+		}
+	}
+
+	return -1, errors.New("slice不存在该值")
+}
+// ================================================== 以下自己添加的工具类 = end ========================================================

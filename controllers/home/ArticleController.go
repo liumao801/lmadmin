@@ -7,7 +7,7 @@ import (
 )
 
 type ArticleController struct {
-	HomeBaseController
+	BaseController
 }
 
 var limit int = 15 // 每页显示几条数据

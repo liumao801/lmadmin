@@ -2,7 +2,7 @@
 * @Author: Actor Liu
 * @Date:   2018-12-26 21:42:30
 * @Last Modified by:   Actor Liu
-* @Last Modified time: 2019-01-04 23:13:26
+* @Last Modified time: 2019-07-08 17:08:02
 */
 CKEDITOR.editorConfig = function( config ) {
 	config.toolbarGroups = [
@@ -30,11 +30,21 @@ CKEDITOR.editorConfig = function( config ) {
 	config.allowedContent = true; 	// 抓取什么就是什么；不过滤html标签
 	config.autoGrow_minHeight = 200;	// 编辑器可以采用的最小高度
 	
+	// Configure your file manager integration. This example uses CKFinder 3 for PHP.
+	// config.filebrowserBrowseUrl = '/apps/ckfinder/3.4.5/ckfinder.html';
+	// config.filebrowserImageBrowseUrl = '/apps/ckfinder/3.4.5/ckfinder.html?type=Images';
 	config.filebrowserUploadUrl = '/common/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
-	// config.filebrowserUploadUrl = '/upload/commonupload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
-	// config.filebrowserUploadUrl = '/test/upload?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
-	// config.filebrowserUploadUrl = '/home/test/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
-	// config.filebrowserUploadUrl = '/admin/test/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
-    config.removeDialogTabs = 'link:advanced;link:target;image:Upload;image:target;flash:Upload;flash:target;'; // 移除超链接的“目标”、“上传”工具栏
+	config.filebrowserImageUploadUrl = '/common/upload.html?command=QuickUpload&type=Images&responseType=json&refer=CKEDITOR';	// 超链接上传地址 
+	// config.removeDialogTabs = 'link:advanced;link:target;image:Upload;image:target;flash:Upload;flash:target;'; // 移除超链接的“目标”、“上传”工具栏
+	config.removeDialogTabs = 'link:advanced;image:advanced;flash:Upload;'; // 移除超链接的“高级”、图片的“高级”、flash的“上传”工具栏
 
+
+
+	// Adding drag and drop image upload.
+	// config.extraPlugins = 'print,format,font,colorbutton,justify,uploadimage';
+	config.uploadUrl = '/common/upload.html?command=QuickUpload&type=Files&responseType=json&refer=CKEDITOR';
+
+	config.height = 460;
+
+	// config.removeDialogTabs = 'image:advanced;link:advanced';
 };

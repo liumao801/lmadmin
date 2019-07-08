@@ -5,7 +5,7 @@ import (
 )
 
 type CmsController struct {
-	HomeBaseController
+	BaseController
 }
 
 

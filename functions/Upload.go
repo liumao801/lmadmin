@@ -2,6 +2,7 @@ package functions
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego"
 	"io"
@@ -150,4 +151,71 @@ func LmUpload(c *beego.Controller,fileName string) (string, string) {
 	// 保存位置在 static/upload， 没有文件夹要先创建
 	c.SaveToFile(fileName, filePath)
 	return "/" + filePath, ""
+}
+
+type UploadRel struct {
+	Url 		 string `json:"url,omitempty"`
+	ThumbnailUrl string `json:"thumbnailUrl,omitempty"`
+	Name 		 string `json:"name"`
+	Type 		 string `json:"type"`
+	Size 		 int64  `json:"size"`
+	Error 		 string `json:"error,omitempty"`
+}
+
+// 文件上传的公共保存方法
+// 返回文件路径和错误信息
+// 返回第一个参数是文件；第二个参数是错误提示，""代表没有错误
+func LmUpload2(c *beego.Controller, fileName string) (rel UploadRel, err error) {
+	file, fileHeader, err := c.GetFile(fileName)
+	if err != nil {
+		err = errors.New("文件获取失败")
+		return
+	}
+	defer file.Close()
+
+	fi := &FileInfo{
+		Name: fileHeader.Filename,
+	}
+	// 获取文件类型
+	fi.fileExt()
+
+	if !fi.ValidateType() {
+		err = errors.New("文件类型错误")
+		return
+	}
+
+	if sizeInterface, ok := file.(Sizer); ok {
+		fi.Size = sizeInterface.Size()
+		if !fi.ValidateSize() {
+			err = errors.New(fi.Error)
+			return
+		}
+	} else {
+		err = errors.New("文件大小获取失败")
+		return
+	}
+	now := time.Now()
+	ctrlName, _ := c.GetControllerAndAction()
+	dirPath := LOCAL_FILE_DIR + strings.ToLower(ctrlName[0 : len(ctrlName)-10]) + "/" + now.Format("2006-01") + "/" + now.Format("02")
+	fileExt := strings.TrimLeft(fi.Type, ".")
+	fileSaveName := fmt.Sprintf("%s_%d.%s", RandCode(5, 3), now.Unix(), fileExt)
+	filePath := fmt.Sprintf("%s/%s", dirPath, fileSaveName)
+
+	if !IsDir(dirPath) {
+		if err = os.MkdirAll(dirPath, os.ModePerm); err != nil {
+			err = errors.New("文件夹“" + dirPath + "”创建失败")
+			return
+		}
+	}
+	// 保存位置在 static/upload， 没有文件夹要先创建
+	c.SaveToFile(fileName, filePath)
+
+	// 设置成功返回信息
+	rel.Name = fi.Name
+	rel.Url = "/" + filePath
+	rel.Type = fi.Type
+	rel.Size = fi.Size
+	rel.Error = fi.Error
+	rel.ThumbnailUrl = fi.ThumbnailUrl
+	return
 }

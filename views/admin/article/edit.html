@@ -17,7 +17,7 @@
     <!-- 页面内容开始 -->
     <div class="row">
         <div class="col-md-12">
-            <form id="this0Form" class="margin5px padding15px bg-white ajaxFormCheckNoJump" method="post" action="{{ urlfor "ArticleController.Edit"}}">
+            <form id="thisForm" class="margin5px padding15px bg-white ajaxFormCheckNoJump0" method="post" action="{{ urlfor "ArticleController.Edit"}}" enctype="multipart/form-data">
                 <input type="hidden" name="Id" id="Id" value="{{.m.Id}}">
                 <div class="row">
                     <div class="col-md-6">
@@ -84,6 +84,38 @@
                         <div class="form-group">
                             <label>视频地址</label>
                             <input type="text" name="Video" class="form-control" placeholder="" value="{{.m.Video}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>文章标签</label>
+                            <select name="ArticleTagIds" id="ArticleTagIds" class="form-control bs-select" multiple="multiple">
+                                <option value="" disabled>- 选择标签 -</option>
+                                {{range $key, $item := .articleTags}}
+                                    <option value="{{$item.Id}}">{{$item.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>发布时间</label>
+                            <input type="text" name="PubAt" class="form-control pull-left input-wd-md datetimepicker" placeholder="操作时间" value="{{date .m.PubAt `Y-m-d H:i:s`}}" data-date-format="yyyy-mm-dd hh:ii:ss">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">                        
+                        <div class="form-group">
+                            <label>文章封面图</label>
+
+                            <div class="file-loading line-center" style="width: 200px;">
+                                <input id="Img" name="Img" type="file">                            
+                                <!-- 老图片 -->
+                                <input id="oldImg" name="oldImg" type="hidden" value="{{.m.Img}}">
+                            </div>
                         </div>
                     </div>
                 </div>

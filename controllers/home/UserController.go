@@ -8,7 +8,7 @@ import (
 )
 
 type UserController struct {
-	HomeBaseController
+	BaseController
 	controllers.CommonController
 }
 

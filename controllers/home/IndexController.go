@@ -1,7 +1,7 @@
 package home
 
 type IndexController struct {
-	HomeBaseController
+	BaseController
 }
 
 func (c *IndexController) Index() {

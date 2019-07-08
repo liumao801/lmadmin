@@ -23,10 +23,13 @@ type Article struct {
 	Status 			int8
 	ViewNum			uint
 	Author			string
+	Img				string
+	PubAt			time.Time
 	CreatedAt		time.Time 	`orm:"auto_now_add;type(datetime)"`
 	UpdatedAt 		time.Time 	`orm:"auto_now_add;type(datetime)"`
 	//Menu			*MenuWeb	`orm:"rel(fk)"`	// 对表 MenuWeb 进行关联查询， 如果字段此处定义字段名称为 Menu 那么表里面的和 MenuWeb 表关联的 ForeignKey 字段就要定义为 menu_id
 	MenuWeb			*MenuWeb	`orm:"rel(fk)"`	// 上面的 Menu  *MenuWeb  `orm:"rel(fk)"` 定义方式也是可以的
+	ArticleTagRel	[]*ArticleTagRel	`orm:"reverse(many)"`
 }
 
 type ArticleQueryParam struct {

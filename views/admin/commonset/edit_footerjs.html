@@ -21,7 +21,7 @@
         validateInfo();
         //图片上传初始化
         if ("{{.m.ShowType}}" == "image") {
-            updloadCtrolInit();
+            updloadCtrolInit("#Value");
         }
     }
     //表单验证及AJAX提交
@@ -80,8 +80,8 @@
 
     var uploader;
     //image upolad init
-    function updloadCtrolInit() {
-        $("#Value").fileinput({
+    function updloadCtrolInit(ele) {
+        $(ele).fileinput({
             language: 'zh', //设置语言
             dropZoneEnabled: false,//是否显示拖拽区域
 
@@ -99,7 +99,7 @@
             removeTitle: '取消选择',
             elErrorContainer: '#kv-avatar-errors-1',
             msgErrorClass: 'alert alert-block alert-danger',
-            defaultPreviewContent: '<img src="{{if ne .m.Value ""}}{{.m.Value}}{{else}}/static/upload/1.jpg{{end}}" alt="Your Avatar"><h6 class="text-muted">选择图片</h6>',
+            defaultPreviewContent: '<img src="{{if ne .m.Value ""}}{{.m.Value}}{{else}}/static/lm800/img/select_file.jpg{{end}}" alt="Your Avatar"><h6 class="text-muted">选择图片</h6>',
             layoutTemplates: {main2: '{preview}  {remove} {browse}'},
             allowedFileExtensions: ["jpg", "png", "gif"],
         });
