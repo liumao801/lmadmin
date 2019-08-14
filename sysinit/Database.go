@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	//_ "github.com/astaxie/beego/session/mysql" // mysql 存储 session 时启用，需注释上一行 mysql-driver 因为该包已导入了 mysql-driver
+	_ "github.com/astaxie/beego/session/redis" // redis 存储 session 时启用
 	_ "liumao801/lmadmin/models"
 )
 
@@ -39,6 +40,12 @@ func InitDatabase() {
 	}
 }
 
+// 初始化 session 配置
 func InitSession()  {
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = beego.AppConfig.String("sessionproviderconfig")
+}
+
+// 初始化 cache 配置
+func InitCache() {
+
 }

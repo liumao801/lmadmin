@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <!-- <link rel="shortcut icon" href="/static/modules/home/img/xiaohui.jpg" mce_href="/static/modules/home/img/xiaohui.jpg" type="image/x-icon"> -->
+    <!-- <link rel="shortcut icon" href="/static/modules/home/default/img/xiaohui.jpg" mce_href="/static/modules/home/default/img/xiaohui.jpg" type="image/x-icon"> -->
     <link rel="shortcut icon" href="{{.HomeConf.logo}}" mce_href="{{.HomeConf.logo}}" type="image/x-icon">
     <title>{{.HomeConf.head_title}} {{.pageTitle}}</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -24,25 +24,26 @@
                 <div class="container relative line-left">
                     <div class="row">
                         <div class="col-sm-6 col-xs-12">
-                            <a href="/home" class="parts">首页</a>
-                            <a href="/home" class="parts">官网</a>
-                            <a href="/home" class="parts">其他</a>
+                            <a href="/" class="parts">首页</a>
+                            <a href="/" class="parts">官网</a>
+                            <a href="/" class="parts">其他</a>
                         </div>
                         <div class="col-sm-6 col-xs-12 line-right">
-                            <a href="/home" class="parts">校园门户</a>
-                            <a href="/home" class="parts">数字图书</a>
-                            <a href="/home" class="parts">自服务系统</a>
+                            <a href="/" class="parts">校园门户</a>
+                            <a href="/" class="parts">数字图书</a>
+                            <a href="/" class="parts">自服务系统</a>
+                            <a href="/" class="parts"><img src="/static/modules/common/images/qq_logo_1.png" style="margin-top: -3px;"> QQ登录</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="logo-box line-center">
                 <div class="container line-left xiaohui-bg">
-                    <a href="/home"><img src="{{.HomeConf.logo}}"></a>
-                    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 pull-right margin-v30px">
-                        <div class="input-group index-search">
-                            <input type="text" class="form-control" placeholder="请输入查询关键字" value="">
-                            <span class="input-group-addon search-btn" data-href="/home/article/search"> <i class="fa fa-search"></i> </span>
+                    <a href="/"><img src="{{.HomeConf.logo}}"></a>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-right margin-v30px">
+                        <div class="input-group index-search border-radius3px">
+                            <input type="text" class="form-control border-radius3px border-radius-right0 border-right0" placeholder="请输入查询关键字" value="">
+                            <span class="input-group-addon search-btn border-radius3pxi border-radius-left0 border-left0" data-href="/home/article/search" title="搜索"> <i class="fa fa-search"></i> </span>
                         </div>
                     </div>
                 </div>

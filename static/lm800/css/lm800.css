@@ -28,13 +28,23 @@
 .right0{right: 0;}
 .bottom0{bottom: 0;}
 
+.border-radius3px{border-radius: 3px;}
+.border-radius3pxi{border-radius: 3px!important;}
 .border-radius5px{border-radius: 5px;}
+.border-radius5pxi{border-radius: 5px!important;}
 .border-radius8px{border-radius: 8px;}
 .border-radius10px{border-radius: 10px;}
 .border-radius15px{border-radius: 15px;}
+.border-radius-left0{border-bottom-left-radius: 0px!important;border-top-left-radius: 0px!important;;}
+.border-radius-right0{border-bottom-right-radius: 0px!important;border-top-right-radius: 0px!important;}
 
 .border-bottom1{border-bottom: 1px solid #ddd;}
 .border-bottom-dashed{border-bottom: 1px dashed #ddd;}
+
+.border-left0{border-left: 0px!important;}
+.border-right0{border-right: 0px!important;}
+.border-top0{border-top: 0px!important;}
+.border-bottom0{border-bottom: 0px!important;}
 
 .padding5px{padding: 5px;}
 .padding10px{padding: 10px;}

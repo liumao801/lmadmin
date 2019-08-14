@@ -1,3 +1,6 @@
+/**
+ * 内容管理系统
+ */
 package home
 
 import (
@@ -121,12 +124,12 @@ func (c *BaseController) proHtmlTree(tree []*models.MenuWeb) string {
 				// 频道页面 URL地址
 				v.Url = "/home/article/typelist/" + strconv.Itoa(v.Id)
 			}
-			htmlStr += `<li class="` + isActCtrAct + `"><a href="` + v.Url + `" >` + v.Title + `</a></li>`
+			htmlStr += `<li class="` + isActCtrAct + `"><a href="` + v.Url + `" ><i class="fa ` + v.Icon + `"></i> ` + v.Title + `</a></li>`
 		} else {
 			htmlStr += `
 <li class="` + dropSub + isActCtrAct + `">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		` + v.Title + ` <b class="caret"></b>
+		<i class="fa ` + v.Icon + `"></i> ` + v.Title + ` <b class="caret"></b>
 	</a>
 	<ul class="dropdown-menu line-center">
 `

@@ -127,6 +127,8 @@ func (c *AdminBaseController) adapterAdminInfo() {
 func (c *AdminBaseController) setAdmin2Session(adminId int) error {
 	m, err := adminModelNS.AdminOne(adminId)
 	if err != nil {
+		utils.LogInfo("session-error: ")
+		utils.LogInfo(err)
 		return err
 	}
 

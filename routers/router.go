@@ -6,6 +6,7 @@ import (
 	"liumao801/lmadmin/controllers/admin"
 	"liumao801/lmadmin/controllers/common"
 	"liumao801/lmadmin/controllers/home"
+	"liumao801/lmadmin/controllers/novel"
 	"liumao801/lmadmin/controllers/portal"
 )
 
@@ -109,6 +110,15 @@ func init() {
 		)
 	beego.AddNamespace(ns_home)
 	// ============================ 前端 CMS系统 namespace 路由 ============ end ========================
+
+	// ============================ 前端 小说系统 namespace 路由 ============ start ======================
+	ns_novel :=
+		beego.NewNamespace("/novel/",
+			beego.NSAutoRouter(&novel.UserController{}),
+			beego.NSAutoRouter(&novel.IndexController{}), // CMS 网站自动匹配路由
+		)
+	beego.AddNamespace(ns_novel)
+	// ============================ 前端 小说系统 namespace 路由 ============ end ========================
 
 	// ============================ 前端 门户网站 namespace 路由 ============ start ======================
 	ns_portal :=
